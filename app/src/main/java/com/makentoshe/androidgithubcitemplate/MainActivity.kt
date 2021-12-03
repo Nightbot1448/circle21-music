@@ -15,18 +15,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        Log.v(TAG, "Initializing sounds...")
-
-        val mp: MediaPlayer = MediaPlayer.create(this, R.raw.sound)
-
-        val play_button: Button = findViewById<View>(R.id.button) as Button
-        play_button.setOnClickListener(object : OnClickListener() {
-            fun onClick(v: View?) {
-                Log.v(TAG, "Playing sound...")
-                mp.start()
-            }
-        })
+        setContentView(com.makentoshe.androidgithubcitemplate.R.layout.activity_main)
     }
 }
-//123
