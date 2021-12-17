@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -99,4 +100,21 @@
         android:text="Kick 3"
         tools:layout_editor_absoluteX="82dp"
         tools:layout_editor_absoluteY="219dp" />
+
+    <TextView
+        android:id="@+id/textView23"
+        android:layout_width="111dp"
+        android:layout_height="24dp"
+        android:text="find something"
+        tools:layout_editor_absoluteX="43dp"
+        tools:layout_editor_absoluteY="270dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:srcCompat="@android:drawable/ic_menu_search"
+        tools:layout_editor_absoluteX="154dp"
+        tools:layout_editor_absoluteY="253dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
