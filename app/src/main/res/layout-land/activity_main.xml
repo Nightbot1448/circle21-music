@@ -1,288 +1,300 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:ignore="MissingDefaultResource"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
+    <!-- Это временно!!!-->
+
     <TextView
-        android:id="@+id/textView12"
+        android:id="@+id/file"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="File"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.228"
+        app:layout_constraintHorizontal_bias="0.107"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.04" />
+        app:layout_constraintVertical_bias="0.038" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/KICK"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
         android:layout_marginEnd="15dp"
-        android:text="KICK"
         android:onClick="playSound"
-        app:layout_constraintBaseline_toBaselineOf="@+id/button2"
-        app:layout_constraintEnd_toStartOf="@+id/button2"
-        app:layout_constraintStart_toEndOf="@+id/textView7" />
-    <!-- Это временно!!!-->
+        android:text="KICK"
+        app:layout_constraintEnd_toStartOf="@+id/TYPE1"
+        app:layout_constraintStart_toStartOf="@+id/file"
+        app:layout_constraintTop_toBottomOf="@+id/file" />
+
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/TYPE1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginStart="10dp"
         android:text="TYPE 1"
-        app:layout_constraintEnd_toStartOf="@+id/progressBar"
-        app:layout_constraintStart_toEndOf="@+id/button"
-        app:layout_constraintTop_toBottomOf="@+id/seekBar2" />
+        app:layout_constraintBottom_toBottomOf="@+id/KICK"
+        app:layout_constraintStart_toEndOf="@+id/KICK"
+        app:layout_constraintTop_toTopOf="@+id/KICK" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/SNARE"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:text="SNARE"
-        app:layout_constraintBottom_toBottomOf="@+id/textView8"
-        app:layout_constraintStart_toStartOf="@+id/button"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        app:layout_constraintStart_toStartOf="@+id/KICK"
+        app:layout_constraintTop_toBottomOf="@+id/KICK" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/TYPE4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="9dp"
+        android:layout_marginTop="10dp"
         android:text="TYPE 4"
-        app:layout_constraintStart_toStartOf="@+id/button2"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
+        app:layout_constraintEnd_toEndOf="@+id/TYPE1"
+        app:layout_constraintStart_toStartOf="@+id/TYPE1"
+        app:layout_constraintTop_toBottomOf="@+id/TYPE1" />
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/HIHAT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="10dp"
         android:text="HIHAT"
-        app:layout_constraintStart_toStartOf="@+id/button3"
-        app:layout_constraintTop_toBottomOf="@+id/button3" />
+        app:layout_constraintStart_toStartOf="@+id/SNARE"
+        app:layout_constraintTop_toBottomOf="@+id/SNARE" />
 
     <Button
-        android:id="@+id/button6"
+        android:id="@+id/TYPE7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="1dp"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="9dp"
         android:text="TYPE 7"
-        app:layout_constraintBottom_toTopOf="@+id/button8"
-        app:layout_constraintEnd_toEndOf="@+id/button8" />
+        app:layout_constraintBottom_toTopOf="@+id/ADD2"
+        app:layout_constraintEnd_toEndOf="@+id/TYPE4"
+        app:layout_constraintTop_toBottomOf="@+id/TYPE4" />
 
     <Button
-        android:id="@+id/button7"
+        android:id="@+id/ADD1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="9dp"
         android:text="ADD +"
-        app:layout_constraintStart_toStartOf="@+id/button5"
-        app:layout_constraintTop_toBottomOf="@+id/button5" />
+        app:layout_constraintStart_toStartOf="@+id/HIHAT"
+        app:layout_constraintTop_toBottomOf="@+id/HIHAT" />
 
     <Button
-        android:id="@+id/button8"
+        android:id="@+id/ADD2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
         android:text="ADD +"
-        app:layout_constraintStart_toEndOf="@+id/button7"
-        app:layout_constraintTop_toTopOf="@+id/button7" />
+        app:layout_constraintEnd_toEndOf="@+id/TYPE7"
+        app:layout_constraintStart_toEndOf="@+id/ADD1"
+        app:layout_constraintTop_toBottomOf="@+id/TYPE7" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/instruments"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="128dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="128dp"
+        android:layout_marginStart="50dp"
         android:text="Instruments"
-        app:layout_constraintEnd_toStartOf="@+id/textView3"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/textView12"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/file"
+        app:layout_constraintStart_toEndOf="@+id/file"
+        app:layout_constraintTop_toTopOf="@+id/file" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/settings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="7dp"
+        android:layout_marginStart="50dp"
         android:text="Settings"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/instruments"
+        app:layout_constraintStart_toEndOf="@+id/instruments"
+        app:layout_constraintTop_toTopOf="@+id/instruments" />
 
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="31dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="69dp"
+        android:layout_height="29dp"
+        android:layout_marginStart="50dp"
         android:text="Tutorial"
-        app:layout_constraintStart_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/settings"
+        app:layout_constraintStart_toEndOf="@+id/settings"
+        app:layout_constraintTop_toTopOf="@+id/settings" />
 
     <TextView
         android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="91dp"
-        android:layout_marginEnd="91dp"
-        android:layout_marginBottom="22dp"
+        android:layout_width="56dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="50dp"
         android:text="Help"
-        app:layout_constraintBottom_toTopOf="@+id/seekBar2"
-        app:layout_constraintEnd_toStartOf="@+id/textView11"
-        app:layout_constraintStart_toStartOf="@+id/progressBar3" />
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView3"
+        app:layout_constraintStart_toEndOf="@+id/textView3"
+        app:layout_constraintTop_toTopOf="@+id/textView3" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
+        android:id="@+id/next"
+        android:contentDescription="Enter How Much Cookies You Want"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
+        android:layout_marginStart="20dp"
         android:clickable="true"
-        app:layout_constraintStart_toEndOf="@+id/floatingActionButton3"
-        app:layout_constraintTop_toTopOf="@+id/floatingActionButton3"
+        app:layout_constraintStart_toEndOf="@+id/play"
+        app:layout_constraintTop_toTopOf="@+id/play"
         app:srcCompat="@android:drawable/ic_media_ff" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton2"
+        android:id="@+id/back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="20dp"
+        android:contentDescription="Enter How Much Cookies You Want"
         android:clickable="true"
-        app:layout_constraintEnd_toStartOf="@+id/floatingActionButton3"
-        app:layout_constraintTop_toTopOf="@+id/floatingActionButton3"
+        app:layout_constraintEnd_toStartOf="@+id/play"
+        app:layout_constraintTop_toTopOf="@+id/play"
         app:srcCompat="@android:drawable/ic_media_rew" />
 
+    <!-- TODO: Артем, добавь, пожалуйста, на ВСЕ кнопки такой onClick (и замени id) на совпадающий с текстом кнопки или соответствующий ее предназначению -->
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton3"
+        android:id="@+id/play"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="90dp"
-        android:layout_marginTop="35dp"
-        android:layout_marginEnd="90dp"
+        android:layout_marginStart="170dp"
+        android:layout_marginTop="270dp"
         android:clickable="true"
+        android:contentDescription="Enter How Much Cookies You Want"
         android:onClick="playSound"
-        app:layout_constraintEnd_toStartOf="@+id/progressBar4"
-        app:layout_constraintStart_toStartOf="@+id/seekBar2"
-        app:layout_constraintTop_toBottomOf="@+id/button8"
+        app:layout_constraintStart_toEndOf="@+id/stop"
+        app:layout_constraintTop_toBottomOf="@+id/way"
         app:srcCompat="@android:drawable/ic_media_play" />
 
-    <!-- TODO: Артем, добавь, пожалуйста, на ВСЕ кнопки такой onClick (и замени id) на совпадающий с текстом кнопки или соответствующий ее предназначению -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton4"
+        android:id="@+id/record"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="27dp"
-        android:layout_marginTop="35dp"
+        android:layout_marginEnd="25dp"
         android:clickable="true"
-        app:layout_constraintStart_toEndOf="@+id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/button7"
+        android:contentDescription="Enter How Much Cookies You Want"
+        app:layout_constraintEnd_toStartOf="@+id/stop"
+        app:layout_constraintTop_toTopOf="@+id/stop"
         app:srcCompat="@android:drawable/radiobutton_on_background" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton5"
+        android:id="@+id/stop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="3dp"
-        android:layout_marginBottom="2dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="20dp"
         android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="@+id/floatingActionButton4"
-        app:layout_constraintStart_toStartOf="@+id/button8"
+        android:contentDescription="Enter How Much Cookies You Want"
+        app:layout_constraintEnd_toEndOf="@+id/ADD2"
+        app:layout_constraintTop_toBottomOf="@+id/ADD2"
         app:srcCompat="@android:drawable/alert_dark_frame" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="51dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="38dp"
         android:text="00:09:13"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button7" />
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/record"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <SeekBar
-        android:id="@+id/seekBar2"
+        android:id="@+id/way"
         style="@style/Widget.AppCompat.SeekBar.Discrete"
         android:layout_width="415dp"
         android:layout_height="13dp"
         android:layout_marginStart="23dp"
-        android:layout_marginTop="41dp"
-        android:layout_marginBottom="41dp"
+        android:layout_marginBottom="15dp"
         android:max="10"
         android:progress="3"
-        app:layout_constraintBottom_toBottomOf="@+id/progressBar"
-        app:layout_constraintStart_toEndOf="@+id/button2"
-        app:layout_constraintTop_toTopOf="@+id/textView2" />
+        app:layout_constraintBottom_toTopOf="@+id/TYPE1"
+        app:layout_constraintStart_toEndOf="@+id/TYPE1" />
 
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="30dp"
         android:layout_marginEnd="47dp"
         app:layout_constraintBottom_toBottomOf="@+id/progressBar6"
         app:layout_constraintEnd_toStartOf="@+id/progressBar6"
-        app:layout_constraintStart_toEndOf="@+id/button2"
-        app:layout_constraintTop_toTopOf="@+id/progressBar6" />
+        app:layout_constraintStart_toEndOf="@+id/TYPE1"
+        app:layout_constraintTop_toTopOf="@+id/progressBar6"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ProgressBar
         android:id="@+id/progressBar2"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="156dp"
-        android:layout_marginEnd="21dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginStart="50dp"
+        app:layout_constraintBottom_toBottomOf="@+id/TYPE4"
+        app:layout_constraintStart_toEndOf="@+id/TYPE4"
+        app:layout_constraintTop_toTopOf="@+id/TYPE4" />
 
     <ProgressBar
         android:id="@+id/progressBar3"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        app:layout_constraintStart_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/progressBar2" />
+        android:layout_marginStart="50dp"
+        app:layout_constraintStart_toEndOf="@+id/progressBar5"
+        app:layout_constraintTop_toTopOf="@+id/progressBar5" />
 
     <ProgressBar
         android:id="@+id/progressBar4"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="6dp"
-        app:layout_constraintStart_toEndOf="@+id/progressBar9"
-        app:layout_constraintTop_toTopOf="@+id/progressBar3" />
+        android:layout_marginStart="50dp"
+        app:layout_constraintStart_toEndOf="@+id/progressBar2"
+        app:layout_constraintTop_toTopOf="@+id/progressBar2" />
 
     <ProgressBar
         android:id="@+id/progressBar5"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginBottom="42dp"
-        app:layout_constraintBottom_toTopOf="@+id/progressBar10"
-        app:layout_constraintStart_toStartOf="@+id/progressBar10" />
+        android:layout_marginStart="50dp"
+        app:layout_constraintStart_toEndOf="@+id/progressBar4"
+        app:layout_constraintTop_toTopOf="@+id/progressBar4" />
 
     <ProgressBar
         android:id="@+id/progressBar6"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="0dp"
         android:layout_height="15dp"
-        android:layout_marginTop="61dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="34dp"
         android:layout_marginBottom="61dp"
         app:layout_constraintBottom_toBottomOf="@+id/progressBar3"
         app:layout_constraintEnd_toStartOf="@+id/progressBar7"
         app:layout_constraintStart_toEndOf="@+id/progressBar"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toTopOf="@+id/TYPE1" />
 
     <ProgressBar
         android:id="@+id/progressBar7"
@@ -294,121 +306,82 @@
         app:layout_constraintStart_toEndOf="@+id/progressBar6"
         app:layout_constraintTop_toTopOf="@+id/progressBar6" />
 
-    <ProgressBar
-        android:id="@+id/progressBar8"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="0dp"
-        android:layout_height="13dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="75dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="77dp"
-        app:layout_constraintBottom_toBottomOf="@+id/button8"
-        app:layout_constraintEnd_toEndOf="@+id/progressBar2"
-        app:layout_constraintStart_toStartOf="@+id/floatingActionButton2"
-        app:layout_constraintTop_toTopOf="@+id/button4" />
-
-    <ProgressBar
-        android:id="@+id/progressBar9"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="85dp"
-        android:layout_height="10dp"
-        android:layout_marginStart="99dp"
-        android:layout_marginTop="58dp"
-        android:layout_marginEnd="99dp"
-        android:layout_marginBottom="58dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView9"
-        app:layout_constraintEnd_toStartOf="@+id/progressBar11"
-        app:layout_constraintStart_toStartOf="@+id/progressBar2"
-        app:layout_constraintTop_toTopOf="@+id/progressBar3" />
-
-    <ProgressBar
-        android:id="@+id/progressBar10"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="0dp"
-        android:layout_height="7dp"
-        android:layout_marginStart="19dp"
-        android:layout_marginTop="104dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="104dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView10"
-        app:layout_constraintEnd_toEndOf="@+id/textView11"
-        app:layout_constraintStart_toEndOf="@+id/progressBar4"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar7" />
-
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/track1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="15dp"
         android:text="Track 1"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        android:textSize="15dp"
+        app:layout_constraintBottom_toTopOf="@+id/KICK"
+        app:layout_constraintEnd_toStartOf="@+id/KICK"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/button" />
+        app:layout_constraintTop_toTopOf="@+id/KICK"
+        app:layout_constraintVertical_bias="0.421" />
 
     <TextView
-        android:id="@+id/textView7"
+        android:id="@+id/track2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="14dp"
-        android:layout_marginEnd="28dp"
+        android:layout_marginEnd="15dp"
         android:text="Track 2"
-        app:layout_constraintEnd_toStartOf="@+id/button"
+        android:textSize="15dp"
+        app:layout_constraintEnd_toStartOf="@+id/KICK"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        app:layout_constraintTop_toBottomOf="@+id/track1" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="17dp"
+        android:layout_marginEnd="15dp"
         android:text="Add +"
+        android:textSize="15dp"
+        app:layout_constraintEnd_toStartOf="@+id/KICK"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+        app:layout_constraintTop_toBottomOf="@+id/track2" />
 
     <ProgressBar
         android:id="@+id/progressBar11"
         style="?android:attr/progressBarStyle"
-        android:layout_width="0dp"
-        android:layout_height="37dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="31dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView10"
-        app:layout_constraintEnd_toEndOf="@+id/progressBar12"
-        app:layout_constraintStart_toStartOf="@+id/progressBar12"
-        app:layout_constraintTop_toTopOf="@+id/textView11" />
+        android:layout_width="34dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/progressBar12"
+        app:layout_constraintStart_toStartOf="@+id/progressBar12" />
 
     <ProgressBar
         android:id="@+id/progressBar12"
         style="?android:attr/progressBarStyle"
         android:layout_width="32dp"
         android:layout_height="35dp"
-        android:layout_marginStart="214dp"
-        android:layout_marginTop="19dp"
-        android:layout_marginBottom="19dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView5"
-        app:layout_constraintStart_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+        android:layout_marginStart="75dp"
+        app:layout_constraintBottom_toBottomOf="@+id/next"
+        app:layout_constraintStart_toEndOf="@+id/next" />
 
     <TextView
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="6dp"
-        android:layout_marginTop="17dp"
+        android:layout_marginStart="10dp"
         android:text="Volume"
+        app:layout_constraintBottom_toBottomOf="@+id/progressBar11"
         app:layout_constraintStart_toEndOf="@+id/progressBar11"
-        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+        app:layout_constraintTop_toTopOf="@+id/progressBar11" />
 
     <TextView
         android:id="@+id/textView10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="7dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginStart="10dp"
         android:text="Reverb"
+        app:layout_constraintBottom_toBottomOf="@+id/progressBar12"
         app:layout_constraintStart_toEndOf="@+id/progressBar12"
         app:layout_constraintTop_toTopOf="@+id/progressBar12" />
 
@@ -416,11 +389,8 @@
         android:id="@+id/textView11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="74dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="74dp"
+        android:layout_marginBottom="20dp"
         android:text="Hihat #4"
-        app:layout_constraintBottom_toTopOf="@+id/floatingActionButton"
-        app:layout_constraintEnd_toEndOf="@+id/textView9"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar4" />
+        app:layout_constraintBottom_toTopOf="@+id/textView9"
+        app:layout_constraintStart_toEndOf="@+id/progressBar11" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,120 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:ignore="MissingDefaultResource"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView12"
-        android:layout_width="88dp"
-        android:layout_height="23dp"
+        android:id="@+id/file"
+        android:layout_width="199dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="321dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="250dp"
         android:text="Adding files"
-        tools:layout_editor_absoluteX="321dp"
-        tools:layout_editor_absoluteY="16dp" />
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button9"
+        android:id="@+id/official"
         android:layout_width="112dp"
         android:layout_height="57dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="20dp"
         android:text="Offical library"
-        tools:layout_editor_absoluteX="14dp"
-        tools:layout_editor_absoluteY="70dp" />
+        app:layout_constraintEnd_toEndOf="@+id/from"
+        app:layout_constraintTop_toBottomOf="@+id/from" />
 
     <Button
-        android:id="@+id/button10"
+        android:id="@+id/my"
         android:layout_width="126dp"
         android:layout_height="56dp"
+        android:layout_marginStart="10dp"
         android:text="My library"
-        tools:layout_editor_absoluteX="129dp"
-        tools:layout_editor_absoluteY="70dp" />
+        app:layout_constraintStart_toEndOf="@+id/official"
+        app:layout_constraintTop_toTopOf="@+id/official" />
 
     <TextView
-        android:id="@+id/textView13"
+        android:id="@+id/from"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="150dp"
         android:text="FROM"
-        tools:layout_editor_absoluteX="111dp"
-        tools:layout_editor_absoluteY="39dp" />
+        android:textSize="15dp"
+        app:layout_constraintEnd_toStartOf="@+id/file"
+        app:layout_constraintTop_toBottomOf="@+id/file" />
 
     <TextView
-        android:id="@+id/textView14"
+        android:id="@+id/to"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="24dp"
         android:text="TO"
-        tools:layout_editor_absoluteX="514dp"
-        tools:layout_editor_absoluteY="39dp" />
+        android:textSize="15dp"
+        app:layout_constraintStart_toEndOf="@+id/file"
+        app:layout_constraintTop_toBottomOf="@+id/file" />
 
     <TextView
-        android:id="@+id/textView15"
+        android:id="@+id/ex1b"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="3dp"
         android:text="Kicks"
-        tools:layout_editor_absoluteX="463dp"
-        tools:layout_editor_absoluteY="80dp" />
+        android:textSize="15dp"
+        app:layout_constraintEnd_toStartOf="@+id/to"
+        app:layout_constraintTop_toBottomOf="@+id/to" />
 
     <TextView
-        android:id="@+id/textView16"
+        android:id="@+id/ex2b"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:text="Snares"
-        tools:layout_editor_absoluteX="463dp"
-        tools:layout_editor_absoluteY="108dp" />
+        android:textSize="15dp"
+        app:layout_constraintStart_toStartOf="@+id/ex1b"
+        app:layout_constraintTop_toBottomOf="@+id/ex1b" />
 
     <TextView
-        android:id="@+id/textView17"
+        android:id="@+id/ex3b"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:text="Hihats"
-        tools:layout_editor_absoluteX="463dp"
-        tools:layout_editor_absoluteY="138dp" />
+        android:textSize="15dp"
+        app:layout_constraintStart_toStartOf="@+id/ex2b"
+        app:layout_constraintTop_toBottomOf="@+id/ex2b" />
 
     <TextView
-        android:id="@+id/textView18"
+        android:id="@+id/ex4b"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:text="New"
-        tools:layout_editor_absoluteX="463dp"
-        tools:layout_editor_absoluteY="169dp" />
+        android:textSize="15dp"
+        app:layout_constraintStart_toStartOf="@+id/ex3b"
+        app:layout_constraintTop_toBottomOf="@+id/ex3b" />
 
     <TextView
-        android:id="@+id/textView19"
+        android:id="@+id/ex1a"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
         android:text="Kick 1"
-        tools:layout_editor_absoluteX="82dp"
-        tools:layout_editor_absoluteY="157dp" />
+        android:textSize="15dp"
+        app:layout_constraintStart_toStartOf="@+id/from"
+        app:layout_constraintTop_toBottomOf="@+id/from" />
 
     <TextView
-        android:id="@+id/textView20"
+        android:id="@+id/ex2a"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:text="Kick 2"
-        tools:layout_editor_absoluteX="82dp"
-        tools:layout_editor_absoluteY="187dp" />
+        android:textSize="15dp"
+        app:layout_constraintStart_toStartOf="@+id/ex1a"
+        app:layout_constraintTop_toBottomOf="@+id/ex1a" />
 
     <TextView
-        android:id="@+id/textView21"
+        android:id="@+id/ex3a"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:text="Kick 3"
-        tools:layout_editor_absoluteX="82dp"
-        tools:layout_editor_absoluteY="219dp" />
+        android:textSize="15dp"
+        app:layout_constraintStart_toStartOf="@+id/ex2a"
+        app:layout_constraintTop_toBottomOf="@+id/ex2a" />
 
     <TextView
-        android:id="@+id/textView23"
+        android:id="@+id/find"
         android:layout_width="111dp"
         android:layout_height="24dp"
+        android:layout_marginTop="50dp"
         android:text="find something"
-        tools:layout_editor_absoluteX="43dp"
-        tools:layout_editor_absoluteY="270dp" />
+        android:textSize="15dp"
+        app:layout_constraintStart_toStartOf="@+id/ex1a"
+        app:layout_constraintTop_toBottomOf="@+id/ex3a" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton8"
+        android:id="@+id/search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="160dp"
         android:clickable="true"
-        app:srcCompat="@android:drawable/ic_menu_search"
-        tools:layout_editor_absoluteX="154dp"
-        tools:layout_editor_absoluteY="253dp" />
+        android:contentDescription="Enter How Much Cookies You Want"
+        app:layout_constraintStart_toEndOf="@+id/find"
+        app:layout_constraintTop_toBottomOf="@+id/my"
+        app:srcCompat="@android:drawable/ic_menu_search" />
 </androidx.constraintlayout.widget.ConstraintLayout>
