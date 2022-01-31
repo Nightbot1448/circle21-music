@@ -25,8 +25,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(com.makentoshe.androidgithubcitemplate.R.layout.activity_main)
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         soundPool = SoundPool(1, AudioManager.STREAM_MUSIC, 0)
-        soundId = soundPool!!.load(baseContext, com.makentoshe.androidgithubcitemplate.R.raw.yf___vinnyx__crash_, 0)
-        soundId2 = soundPool!!.load(baseContext, com.makentoshe.androidgithubcitemplate.R.raw.yf___vinnyx__crash_, 0)
+        soundId = soundPool!!.load(baseContext, com.makentoshe.androidgithubcitemplate.R.raw.file1, 0)
+        soundId2 = soundPool!!.load(baseContext, com.makentoshe.androidgithubcitemplate.R.raw.file1, 0)
     }
     fun playSound(view: View) { // TODO: заменить onClick у KICK с этого на правильный, когда будет исправлена раскладка
         Toast.makeText(this, "Playing compilated music...", Toast.LENGTH_SHORT).show()
@@ -38,4 +38,3 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, "Completed!", Toast.LENGTH_SHORT).show()
     }
 }
-//321123
