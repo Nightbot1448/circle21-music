@@ -27,7 +27,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(com.makentoshe.androidgithubcitemplate.R.layout.activity_main)
-        setContentView(com.makentoshe.androidgithubcitemplate.R.layout.activity_addfiles)
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         soundPool = SoundPool(1, AudioManager.STREAM_MUSIC, 0)
         soundId = soundPool!!.load(baseContext, com.makentoshe.androidgithubcitemplate.R.raw.file1, 0)
