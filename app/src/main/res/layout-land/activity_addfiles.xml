@@ -147,8 +147,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="160dp"
+        android:onClick="openFile"
         android:clickable="true"
-        android:contentDescription="Enter How Much Cookies You Want"
+        android:contentDescription="Select file"
         app:layout_constraintStart_toEndOf="@+id/find"
         app:layout_constraintTop_toBottomOf="@+id/my"
         app:srcCompat="@android:drawable/ic_menu_search" />
