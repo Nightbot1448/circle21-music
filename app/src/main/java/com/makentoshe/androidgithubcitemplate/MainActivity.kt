@@ -19,6 +19,8 @@ import android.view.ContextMenu
 import android.widget.TextView
 import androidx.navigation.findNavController
 
+import android.widget.ProgressBar
+import android.os.Handler
 
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
@@ -30,6 +32,10 @@ class MainActivity : AppCompatActivity() {
     private var menu1 = 1
     private var menu2 = 2
     private var menu3 = 3
+    private var progressBar: ProgressBar? = null
+    private var i = 0
+    private var txtView: TextView? = null
+    private val handler = Handler()
     //опишем создание контекстных меню
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,11 +77,66 @@ class MainActivity : AppCompatActivity() {
                 menu.add(0, menu2, 0, "snare")
                 menu.add(0, menu3, 0, "hihat")
             }
-
         }
     }
+    override fun onContextItemSelected(item: menu1?): Boolean {
+        return when (item!!.itemId) {
+            R.id.menu1->{
+                Toast.makeText(applicationContext, "call code", Toast.LENGTH_LONG).show()
+                return true
+            }
+            R.id.menu2->{
+                Toast.makeText(applicationContext, "sms code", Toast.LENGTH_LONG).show()
+                return true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
-    fun playSound(view: View) { // TODO: заменить onClick у KICK с этого на правильный, когда будет исправлена раскладка
+        // finding progressbar by its id
+        progressBar = findViewById<ProgressBar>(R.id.progressBarM) as ProgressBar
+
+        // finding button by its id
+        val btn = findViewById<Button>(R.id.play)
+
+        // handling click on button
+        btn.setOnClickListener {
+            // Before clicking the button the progress bar will invisible
+            // so we have to change the visibility of the progress bar to visible
+            // setting the progressbar visibility to visible
+            progressBar!!.visibility = View.VISIBLE
+
+            i = progressBar!!.progress
+
+            Thread(Runnable {
+                // this loop will run until the value of i becomes 99
+                while (i < 100) {
+                    i += 1
+                    // Update the progress bar and display the current value
+                    handler.post(Runnable {
+                        progressBar!!.progress = i
+                    })
+                    try {
+                        Thread.sleep(100)
+                    } catch (e: InterruptedException) {
+                        e.printStackTrace()
+                    }
+                }
+
+                // setting the visibility of the progressbar to invisible
+                // or you can use View.GONE instead of invisible
+                // View.GONE will remove the progressbar
+                progressBar!!.visibility = View.INVISIBLE
+
+            }).start()
+        }
+    }
+}
+
+fun playSound(view: View) { // TODO: заменить onClick у KICK с этого на правильный, когда будет исправлена раскладка
         Toast.makeText(this, "Playing compilated music...", Toast.LENGTH_SHORT).show()
         var ratio = 0.5F // по фану, для демонстрации
         soundPool?.play(soundId, 0.5F, 0.5F, 0, 0, ratio)
