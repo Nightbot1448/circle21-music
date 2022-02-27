@@ -40,6 +40,7 @@
         android:layout_height="48dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="15dp"
+        android:onClick="playSound"
         android:text="KICK"
         app:layout_constraintEnd_toStartOf="@+id/TYPE1"
         app:layout_constraintStart_toStartOf="@+id/file"
@@ -50,7 +51,6 @@
         android:layout_width="92dp"
         android:layout_height="48dp"
         android:layout_marginStart="10dp"
-        android:onClick="openFile"
         android:text="TYPE 1"
         app:layout_constraintBottom_toBottomOf="@+id/KICK"
         app:layout_constraintStart_toEndOf="@+id/KICK"
@@ -144,7 +144,7 @@
         app:layout_constraintTop_toTopOf="@+id/settings" />
 
     <TextView
-        android:id="@+id/help"
+        android:id="@+id/textView4"
         android:layout_width="56dp"
         android:layout_height="28dp"
         android:layout_marginStart="50dp"
