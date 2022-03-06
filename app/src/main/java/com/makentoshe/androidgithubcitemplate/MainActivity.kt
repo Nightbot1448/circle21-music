@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         soundId2 = soundPool!!.load(baseContext, R.raw.file1, 0)
     }
     fun playSound(view: View) { // TODO: заменить onClick у KICK с этого на правильный, когда будет исправлена раскладка
-        Toast.makeText(this, "Playing compilated music...", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Playing compiled music...", Toast.LENGTH_SHORT).show()
         var ratio = 0.5F // по фану, для демонстрации
         soundPool?.play(soundId, 0.5F, 0.5F, 0, 0, ratio)
         var soundLen : Long = 4 // TODO: заменить на подсчет длины звука
