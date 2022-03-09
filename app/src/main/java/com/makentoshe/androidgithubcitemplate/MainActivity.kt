@@ -1,8 +1,8 @@
 package com.makentoshe.androidgithubcitemplate
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.media.AudioManager
 import android.media.SoundPool
@@ -11,7 +11,10 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import android.widget.Button
+import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
+import java.io.File
+import java.io.FileOutputStream
 import java.util.concurrent.TimeUnit
 import android.view.ContextMenu.ContextMenuInfo
 
@@ -95,49 +98,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        // finding progressbar by its id
-        progressBar = findViewById<ProgressBar>(R.id.progressBarM) as ProgressBar
-
-        // finding button by its id
-        val btn = findViewById<Button>(R.id.play)
-
-        // handling click on button
-        btn.setOnClickListener {
-            // Before clicking the button the progress bar will invisible
-            // so we have to change the visibility of the progress bar to visible
-            // setting the progressbar visibility to visible
-            progressBar!!.visibility = View.VISIBLE
-
-            i = progressBar!!.progress
-
-            Thread(Runnable {
-                // this loop will run until the value of i becomes 99
-                while (i < 100) {
-                    i += 1
-                    // Update the progress bar and display the current value
-                    handler.post(Runnable {
-                        progressBar!!.progress = i
-                    })
-                    try {
-                        Thread.sleep(100)
-                    } catch (e: InterruptedException) {
-                        e.printStackTrace()
-                    }
-                }
-
-                // setting the visibility of the progressbar to invisible
-                // or you can use View.GONE instead of invisible
-                // View.GONE will remove the progressbar
-                progressBar!!.visibility = View.INVISIBLE
-
-            }).start()
-        }
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        soundPool = SoundPool(1, AudioManager.STREAM_MUSIC, 0)
+        soundId = soundPool!!.load(baseContext, R.raw.file1, 0)
+        soundId2 = soundPool!!.load(baseContext, R.raw.file1, 0)
     }
-}
-
-fun playSound(view: View) { // TODO: заменить onClick у KICK с этого на правильный, когда будет исправлена раскладка
-        Toast.makeText(this, "Playing compilated music...", Toast.LENGTH_SHORT).show()
+    fun playSound(view: View) { // TODO: заменить onClick у KICK с этого на правильный, когда будет исправлена раскладка
+        Toast.makeText(this, "Playing compiled music...", Toast.LENGTH_SHORT).show()
         var ratio = 0.5F // по фану, для демонстрации
         soundPool?.play(soundId, 0.5F, 0.5F, 0, 0, ratio)
         var soundLen : Long = 4 // TODO: заменить на подсчет длины звука
@@ -145,16 +112,4 @@ fun playSound(view: View) { // TODO: заменить onClick у KICK с это�
         soundPool?.play(soundId2, 1F, 1F, 0, 0, 1F)
         Toast.makeText(this, "Completed!", Toast.LENGTH_SHORT).show()
     }
-    fun playSound1(view: View) { // TODO: заменить onClick у KICK с этого на правильный, когда будет исправлена раскладка
-        Toast.makeText(this, "Playing compilated music...", Toast.LENGTH_SHORT).show()
-        var ratio = 0.5F // по фану, для демонстрации
-        soundPool?.play(soundId3, 0.5F, 0.5F, 0, 0, ratio)
-        var soundLen1 : Long = 2 // TODO: заменить на подсчет длины звука
-        TimeUnit.SECONDS.sleep((soundLen1 / ratio).toLong())
-        soundPool?.play(soundId4, 1F, 1F, 0, 0, 1F)
-        Toast.makeText(this, "Completed 22!", Toast.LENGTH_SHORT).show()
-    }
-
 }
-
-
