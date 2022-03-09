@@ -17,10 +17,9 @@ import java.io.File
 import java.io.FileOutputStream
 import java.util.concurrent.TimeUnit
 import android.view.ContextMenu.ContextMenuInfo
-
 import android.view.ContextMenu
-import android.widget.TextView
-import androidx.navigation.findNavController
+
+
 
 import android.widget.ProgressBar
 import android.os.Handler
@@ -69,40 +68,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     //findNavController(R.id.app_graph).navigate(R.id.action_mainActivity_to_helpActivity)
-    override fun onCreateContextMenu(
-        menu: ContextMenu, v: View,
-        menuInfo: ContextMenuInfo?
-    ) {
-        // TODO Auto-generated method stub
-        when (v.id) {
-            R.id.KICK -> {
-                menu.add(0, menu1, 0, "kick")
-                menu.add(0, menu2, 0, "snare")
-                menu.add(0, menu3, 0, "hihat")
-            }
-        }
-    }
-    override fun onContextItemSelected(item: menu1?): Boolean {
-        return when (item!!.itemId) {
-            R.id.menu1->{
-                Toast.makeText(applicationContext, "call code", Toast.LENGTH_LONG).show()
-                return true
-            }
-            R.id.menu2->{
-                Toast.makeText(applicationContext, "sms code", Toast.LENGTH_LONG).show()
-                return true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        soundPool = SoundPool(1, AudioManager.STREAM_MUSIC, 0)
-        soundId = soundPool!!.load(baseContext, R.raw.file1, 0)
-        soundId2 = soundPool!!.load(baseContext, R.raw.file1, 0)
-    }
+
+
     fun playSound(view: View) { // TODO: заменить onClick у KICK с этого на правильный, когда будет исправлена раскладка
         Toast.makeText(this, "Playing compiled music...", Toast.LENGTH_SHORT).show()
         var ratio = 0.5F // по фану, для демонстрации
