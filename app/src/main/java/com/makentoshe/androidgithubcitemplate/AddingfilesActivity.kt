@@ -17,7 +17,7 @@ class AddingfilesActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         val intent = Intent(this, MainActivity::class.java)
-        findViewById<TextView>(R.id.file).setOnClickListener {
+        findViewById<TextView>(R.id.back_A).setOnClickListener {
             startActivity(intent)
         }
     }

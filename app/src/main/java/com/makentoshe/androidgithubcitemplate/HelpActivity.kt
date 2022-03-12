@@ -14,7 +14,7 @@ class HelpActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         val intent = Intent(this, MainActivity::class.java)
-        findViewById<TextView>(R.id.help).setOnClickListener {
+        findViewById<TextView>(R.id.back_H).setOnClickListener {
             startActivity(intent)
         }
     }
