@@ -19,6 +19,10 @@ import java.util.concurrent.TimeUnit
 import android.view.ContextMenu.ContextMenuInfo
 import android.view.ContextMenu
 
+import android.view.Menu
+import android.view.MenuItem
+
+
 
 
 import android.widget.ProgressBar
@@ -38,6 +42,13 @@ class MainActivity : AppCompatActivity() {
     private var i = 0
     private var txtView: TextView? = null
     private val handler = Handler()
+    companion object {
+        const val IDM_OPEN = 101
+        const val IDM_SAVE = 102
+    }
+
+    private lateinit var textView: TextView
+
     //опишем создание контекстных меню
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,10 +60,12 @@ class MainActivity : AppCompatActivity() {
         soundId3 = soundPool!!.load(baseContext, com.makentoshe.androidgithubcitemplate.R.raw.file2, 0)
         soundId4 = soundPool!!.load(baseContext, com.makentoshe.androidgithubcitemplate.R.raw.file2, 0)
 
-        var firstsound = findViewById<Button>(R.id.KICK)
+        //var firstsound = findViewById<Button>(R.id.KICK)
 
+        textView = findViewById(R.id.txt)
+        registerForContextMenu(textView)
         //создание контекстного меню
-        registerForContextMenu(firstsound);
+
     }
 // ниже создание переходов между экранами
     override fun onStart() {
@@ -67,6 +80,29 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
+    override fun onCreateContextMenu(
+        menu: ContextMenu?,
+        v: View?,
+        menuInfo: ContextMenu.ContextMenuInfo?
+    ) {
+        super.onCreateContextMenu(menu, v, menuInfo)
+
+        menu?.add(Menu.NONE, IDM_OPEN, Menu.NONE, "KICK")
+        menu?.add(Menu.NONE, IDM_SAVE, Menu.NONE, "SNARE")
+    }
+    //сообщение:
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+
+        val message: CharSequence = when (item.itemId) {
+            IDM_OPEN -> "Выбран KICK"
+            IDM_SAVE -> "Выбран SNARE"
+            else -> return super.onContextItemSelected(item)
+        }
+
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+
+        return true
+    }
     //findNavController(R.id.app_graph).navigate(R.id.action_mainActivity_to_helpActivity)
 
 
