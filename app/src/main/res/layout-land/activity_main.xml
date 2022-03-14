@@ -9,6 +9,17 @@
 
     <!-- Это временно!!!-->
 
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/scroll"
+        android:layout_width="644dp"
+        android:layout_height="194dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@+id/track1"
+        app:layout_constraintTop_toBottomOf="@+id/file">
+
+    </com.google.android.material.card.MaterialCardView>
+
     <TextView
         android:id="@+id/file"
         android:layout_width="wrap_content"
@@ -21,82 +32,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.038" />
-
-    <Button
-        android:id="@+id/KICK"
-        android:layout_width="84dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="15dp"
-        android:text="KICK"
-        app:layout_constraintEnd_toStartOf="@+id/TYPE1"
-        app:layout_constraintStart_toStartOf="@+id/file"
-        app:layout_constraintTop_toBottomOf="@+id/file" />
-
-    <Button
-        android:id="@+id/TYPE1"
-        android:layout_width="92dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="10dp"
-        android:onClick="openFile"
-        android:text="TYPE 1"
-        app:layout_constraintBottom_toBottomOf="@+id/KICK"
-        app:layout_constraintStart_toEndOf="@+id/KICK"
-        app:layout_constraintTop_toTopOf="@+id/KICK" />
-
-    <Button
-        android:id="@+id/SNARE"
-        android:layout_width="85dp"
-        android:layout_height="48dp"
-        android:onClick="playSound1"
-        android:text="SNARE"
-        app:layout_constraintStart_toStartOf="@+id/KICK"
-        app:layout_constraintTop_toBottomOf="@+id/KICK" />
-
-    <Button
-        android:id="@+id/TYPE4"
-        android:layout_width="92dp"
-        android:layout_height="48dp"
-        android:text="TYPE 4"
-        app:layout_constraintEnd_toEndOf="@+id/TYPE1"
-        app:layout_constraintStart_toStartOf="@+id/TYPE1"
-        app:layout_constraintTop_toBottomOf="@+id/TYPE1" />
-
-    <Button
-        android:id="@+id/HIHAT"
-        android:layout_width="88dp"
-        android:layout_height="48dp"
-        android:text="HIHAT"
-        app:layout_constraintStart_toStartOf="@+id/SNARE"
-        app:layout_constraintTop_toBottomOf="@+id/SNARE" />
-
-    <Button
-        android:id="@+id/TYPE7"
-        android:layout_width="87dp"
-        android:layout_height="48dp"
-        android:layout_marginBottom="9dp"
-        android:text="TYPE 7"
-        app:layout_constraintBottom_toTopOf="@+id/ADD2"
-        app:layout_constraintEnd_toEndOf="@+id/TYPE4"
-        app:layout_constraintTop_toBottomOf="@+id/TYPE4" />
-
-    <Button
-        android:id="@+id/ADD1"
-        android:layout_width="90dp"
-        android:layout_height="48dp"
-        android:text="ADD +"
-        app:layout_constraintStart_toStartOf="@+id/HIHAT"
-        app:layout_constraintTop_toBottomOf="@+id/HIHAT" />
-
-    <Button
-        android:id="@+id/ADD2"
-        android:layout_width="88dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="10dp"
-        android:text="ADD +"
-        app:layout_constraintEnd_toEndOf="@+id/TYPE7"
-        app:layout_constraintStart_toEndOf="@+id/ADD1"
-        app:layout_constraintTop_toBottomOf="@+id/TYPE7" />
 
     <TextView
         android:id="@+id/instruments"
@@ -132,7 +67,7 @@
         app:layout_constraintTop_toTopOf="@+id/settings" />
 
     <TextView
-        android:id="@+id/help"
+        android:id="@+id/textView4"
         android:layout_width="56dp"
         android:layout_height="28dp"
         android:layout_marginStart="50dp"
@@ -194,13 +129,14 @@
         android:id="@+id/stop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="115dp"
         android:clickable="true"
         android:contentDescription="Enter How Much Cookies You Want"
-        app:layout_constraintEnd_toEndOf="@+id/ADD2"
-        app:layout_constraintTop_toBottomOf="@+id/ADD2"
-        app:srcCompat="@android:drawable/alert_dark_frame" />
+        app:layout_constraintStart_toEndOf="@+id/file"
+        app:layout_constraintTop_toBottomOf="@+id/add"
+        app:srcCompat="@android:drawable/alert_dark_frame"
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/time"
@@ -215,93 +151,15 @@
         app:layout_constraintEnd_toStartOf="@+id/record"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="47dp"
-        app:layout_constraintBottom_toBottomOf="@+id/progressBar6"
-        app:layout_constraintEnd_toStartOf="@+id/progressBar6"
-        app:layout_constraintStart_toEndOf="@+id/TYPE1"
-        app:layout_constraintTop_toTopOf="@+id/progressBar6"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <ProgressBar
-        android:id="@+id/progressBar2"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        app:layout_constraintBottom_toBottomOf="@+id/TYPE4"
-        app:layout_constraintStart_toEndOf="@+id/TYPE4"
-        app:layout_constraintTop_toTopOf="@+id/TYPE4" />
-
-    <ProgressBar
-        android:id="@+id/progressBar3"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        app:layout_constraintStart_toEndOf="@+id/progressBar5"
-        app:layout_constraintTop_toTopOf="@+id/progressBar5" />
-
-    <ProgressBar
-        android:id="@+id/progressBar4"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        app:layout_constraintStart_toEndOf="@+id/progressBar2"
-        app:layout_constraintTop_toTopOf="@+id/progressBar2" />
-
-    <ProgressBar
-        android:id="@+id/progressBar5"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        app:layout_constraintStart_toEndOf="@+id/progressBar4"
-        app:layout_constraintTop_toTopOf="@+id/progressBar4" />
-
-    <ProgressBar
-        android:id="@+id/progressBar6"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="0dp"
-        android:layout_height="15dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="34dp"
-        android:layout_marginBottom="61dp"
-        app:layout_constraintBottom_toBottomOf="@+id/progressBar3"
-        app:layout_constraintEnd_toStartOf="@+id/progressBar7"
-        app:layout_constraintStart_toEndOf="@+id/progressBar"
-        app:layout_constraintTop_toTopOf="@+id/TYPE1" />
-
-    <ProgressBar
-        android:id="@+id/progressBar7"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/progressBar6"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/progressBar6"
-        app:layout_constraintTop_toTopOf="@+id/progressBar6" />
-
     <TextView
         android:id="@+id/track1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="15dp"
         android:text="Track 1"
         android:textSize="15dp"
-        app:layout_constraintBottom_toTopOf="@+id/KICK"
-        app:layout_constraintEnd_toStartOf="@+id/KICK"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/KICK"
-        app:layout_constraintVertical_bias="0.421" />
+        app:layout_constraintTop_toBottomOf="@+id/file" />
 
     <TextView
         android:id="@+id/track2"
@@ -309,10 +167,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="14dp"
-        android:layout_marginEnd="15dp"
         android:text="Track 2"
         android:textSize="15dp"
-        app:layout_constraintEnd_toStartOf="@+id/KICK"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/track1" />
 
@@ -322,67 +178,19 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="17dp"
-        android:layout_marginEnd="15dp"
         android:text="Add +"
         android:textSize="15dp"
-        app:layout_constraintEnd_toStartOf="@+id/KICK"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/track2" />
 
-    <ProgressBar
-        android:id="@+id/progressBar11"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="34dp"
-        android:layout_height="30dp"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/progressBar12"
-        app:layout_constraintStart_toStartOf="@+id/progressBar12" />
-
-    <ProgressBar
-        android:id="@+id/progressBar12"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="32dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="75dp"
-        app:layout_constraintBottom_toBottomOf="@+id/next"
-        app:layout_constraintStart_toEndOf="@+id/next" />
-
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:text="Volume"
-        app:layout_constraintBottom_toBottomOf="@+id/progressBar11"
-        app:layout_constraintStart_toEndOf="@+id/progressBar11"
-        app:layout_constraintTop_toTopOf="@+id/progressBar11" />
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:text="example"
+        app:layout_constraintStart_toEndOf="@+id/next"
+        app:layout_constraintTop_toTopOf="@+id/next" />
 
-    <TextView
-        android:id="@+id/textView10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:text="Reverb"
-        app:layout_constraintBottom_toBottomOf="@+id/progressBar12"
-        app:layout_constraintStart_toEndOf="@+id/progressBar12"
-        app:layout_constraintTop_toTopOf="@+id/progressBar12" />
-
-    <TextView
-        android:id="@+id/textView11"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:text="Hihat #4"
-        app:layout_constraintBottom_toTopOf="@+id/textView9"
-        app:layout_constraintStart_toEndOf="@+id/progressBar11" />
-
-    <ProgressBar
-        android:id="@+id/progressBarM"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="426dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="2dp"
-        app:layout_constraintStart_toEndOf="@+id/TYPE1"
-        app:layout_constraintTop_toBottomOf="@+id/file" />
 </androidx.constraintlayout.widget.ConstraintLayout>
