@@ -1,5 +1,7 @@
 package com.makentoshe.androidgithubcitemplate
 
+import android.app.AlertDialog
+import android.app.Dialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.content.Intent
@@ -71,7 +73,7 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         val intent = Intent(this, HelpActivity::class.java)
-        findViewById<TextView>(R.id.help).setOnClickListener {
+        findViewById<TextView>(R.id.textView4).setOnClickListener {
             startActivity(intent)
         }
         val intent1 = Intent(this, AddingfilesActivity::class.java)
@@ -98,11 +100,22 @@ class MainActivity : AppCompatActivity() {
             IDM_SAVE -> "Выбран SNARE"
             else -> return super.onContextItemSelected(item)
         }
+        findViewById<TextView>(R.id.txt)?.text=message
 
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 
         return true
+
     }
+    override fun onCreateDialog(id: Int): Dialog? {
+        val activity = null
+        return activity?.let {
+            // Use the Builder class for convenient dialog construction
+            val builder = AlertDialog.Builder(it)
+            builder.create()
+        } ?: throw IllegalStateException("Activity cannot be null")
+    }
+
     //findNavController(R.id.app_graph).navigate(R.id.action_mainActivity_to_helpActivity)
 
 

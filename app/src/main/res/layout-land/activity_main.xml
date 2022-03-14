@@ -11,9 +11,9 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/scroll"
-        android:layout_width="644dp"
+        android:layout_width="556dp"
         android:layout_height="194dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toEndOf="@+id/track1"
         app:layout_constraintTop_toBottomOf="@+id/file">
@@ -22,16 +22,16 @@
 
     <TextView
         android:id="@+id/file"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="35dp"
+        android:layout_height="27dp"
         android:text="File"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.107"
+        app:layout_constraintHorizontal_bias="0.091"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.038" />
+        app:layout_constraintVertical_bias="0.013" />
 
     <TextView
         android:id="@+id/instruments"
@@ -192,5 +192,56 @@
         android:text="example"
         app:layout_constraintStart_toEndOf="@+id/next"
         app:layout_constraintTop_toTopOf="@+id/next" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="100dp"
+        android:layout_height="210dp"
+        android:layout_marginStart="527dp"
+        android:contentDescription="@string/app_name"
+        android:scaleType="center"
+        android:src="@drawable/soundmenu"
+        app:layout_constraintStart_toEndOf="@+id/file"
+        app:layout_constraintTop_toBottomOf="@+id/file" />
+
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="100dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="68dp"
+        android:hint="start time"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="100dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="116dp"
+        android:hint="length"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+    <EditText
+        android:id="@+id/name3"
+        android:layout_width="100dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="160dp"
+        android:hint="volume"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="73dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="8dp"
+        android:text="kick1"
+        app:layout_constraintEnd_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="@+id/imageView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
