@@ -80,6 +80,10 @@ class MainActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.file).setOnClickListener {
             startActivity(intent1)
             }
+    val intent2 = Intent(this, SettingsActivity::class.java)
+    findViewById<TextView>(R.id.settings).setOnClickListener {
+        startActivity(intent2)
+    }
     }
 
     override fun onCreateContextMenu(
