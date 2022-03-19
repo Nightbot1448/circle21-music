@@ -71,20 +71,29 @@ class MainActivity : AppCompatActivity() {
     }
 // ниже создание переходов между экранами
     override fun onStart() {
-        super.onStart()
-        val intent = Intent(this, HelpActivity::class.java)
-        findViewById<TextView>(R.id.textView4).setOnClickListener {
-            startActivity(intent)
-        }
-        val intent1 = Intent(this, AddingfilesActivity::class.java)
-        findViewById<TextView>(R.id.file).setOnClickListener {
-            startActivity(intent1)
-            }
+    super.onStart()
+    val intent = Intent(this, HelpActivity::class.java)
+    findViewById<TextView>(R.id.textView4).setOnClickListener {
+        startActivity(intent)
+    }
+    val intent1 = Intent(this, AddingfilesActivity::class.java)
+    findViewById<TextView>(R.id.file).setOnClickListener {
+        startActivity(intent1)
+    }
     val intent2 = Intent(this, SettingsActivity::class.java)
     findViewById<TextView>(R.id.settings).setOnClickListener {
         startActivity(intent2)
     }
+
+    val intent3 = Intent(this, InstrumentsActivity::class.java)
+    findViewById<TextView>(R.id.instruments).setOnClickListener {
+        startActivity(intent3)
     }
+    val intent4 = Intent(this, TutorialActivity::class.java)
+    findViewById<TextView>(R.id.tutorial).setOnClickListener {
+        startActivity(intent4)
+    }
+}
 
     override fun onCreateContextMenu(
         menu: ContextMenu?,

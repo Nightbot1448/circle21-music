@@ -56,7 +56,7 @@
         app:layout_constraintTop_toTopOf="@+id/instruments" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/tutorial"
         android:layout_width="69dp"
         android:layout_height="29dp"
         android:layout_marginStart="50dp"
@@ -73,9 +73,9 @@
         android:layout_marginStart="50dp"
         android:text="Help"
         android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView3"
-        app:layout_constraintStart_toEndOf="@+id/textView3"
-        app:layout_constraintTop_toTopOf="@+id/textView3" />
+        app:layout_constraintBottom_toBottomOf="@+id/tutorial"
+        app:layout_constraintStart_toEndOf="@+id/tutorial"
+        app:layout_constraintTop_toTopOf="@+id/tutorial" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/next"
