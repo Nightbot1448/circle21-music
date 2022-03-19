@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 class FaqActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_help)
+        setContentView(R.layout.activity_faq)
     }
     override fun onStart() {
         super.onStart()

@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 class TutorialActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_help)
+        setContentView(R.layout.activity_tutorial)
     }
     override fun onStart() {
         super.onStart()

@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 class TermsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_help)
+        setContentView(R.layout.activity_terms)
     }
     override fun onStart() {
         super.onStart()
