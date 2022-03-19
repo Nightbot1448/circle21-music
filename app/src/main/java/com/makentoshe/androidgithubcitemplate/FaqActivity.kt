@@ -14,7 +14,7 @@ class FaqActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         val intent = Intent(this, MainActivity::class.java)
-        findViewById<TextView>(R.id.back_H).setOnClickListener {
+        findViewById<TextView>(R.id.backfaq).setOnClickListener {
             startActivity(intent)
         }
     }

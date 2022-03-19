@@ -9,12 +9,12 @@ import androidx.appcompat.app.AppCompatActivity
 class AuthorsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_help)
+        setContentView(R.layout.activity_authors)
     }
     override fun onStart() {
         super.onStart()
         val intent = Intent(this, MainActivity::class.java)
-        findViewById<TextView>(R.id.back_H).setOnClickListener {
+        findViewById<TextView>(R.id.backauth).setOnClickListener {
             startActivity(intent)
         }
     }
