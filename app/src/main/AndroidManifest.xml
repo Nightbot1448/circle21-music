@@ -25,6 +25,34 @@
             android:exported="true"
             android:screenOrientation="landscape">
         </activity>
+        <activity android:name=".SettingsActivity"
+            android:exported="true"
+            android:screenOrientation="landscape">
+        </activity>
+        <activity android:name=".AuthorsActivity"
+            android:exported="true"
+            android:screenOrientation="landscape">
+        </activity>
+        <activity android:name=".FaqActivity"
+            android:exported="true"
+            android:screenOrientation="landscape">
+        </activity>
+        <activity android:name=".InstrumentsActivity"
+            android:exported="true"
+            android:screenOrientation="landscape">
+        </activity>
+        <activity android:name=".RecoveryActivity"
+            android:exported="true"
+            android:screenOrientation="landscape">
+        </activity>
+        <activity android:name=".TermsActivity"
+            android:exported="true"
+            android:screenOrientation="landscape">
+        </activity>
+        <activity android:name=".TutorialActivity"
+            android:exported="true"
+            android:screenOrientation="landscape">
+        </activity>
     </application>
 
 </manifest>
