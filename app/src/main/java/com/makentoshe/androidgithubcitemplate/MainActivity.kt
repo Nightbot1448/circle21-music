@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
 
     super.onStart()
     val intent = Intent(this, HelpActivity::class.java)
-    findViewById<TextView>(R.id.textView4).setOnClickListener {
+    findViewById<TextView>(R.id.help).setOnClickListener {
         startActivity(intent)
     }
     val intent1 = Intent(this, AddingfilesActivity::class.java)
@@ -84,7 +84,6 @@ class MainActivity : AppCompatActivity() {
     val intent4 = Intent(this, TutorialActivity::class.java)
     findViewById<TextView>(R.id.tutorial).setOnClickListener {
         startActivity(intent4)
-=======
         super.onStart()
         val intent = Intent(this, HelpActivity::class.java)
         findViewById<TextView>(R.id.help).setOnClickListener {
