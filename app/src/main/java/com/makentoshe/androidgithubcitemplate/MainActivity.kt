@@ -26,17 +26,13 @@ import java.util.*
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
     private var soundPool: SoundPool? = null
-    private var soundId = 1
-    private var soundId2 = 1
-    private var soundId3 = 1
-    private var soundId4 = 1
-    private var menu1 = 1
-    private var menu2 = 2
-    private var menu3 = 3
+    private val tracks: Array<SoundPool> = Array (100) { SoundPool(1, AudioManager.STREAM_MUSIC, 0) }
+    private val countTracks = 0
+    private val countSounds: Array<Int> = Array (100) {0}
+    private val sounds: Array<Array<Array<Float>>> = Array (100) { Array(1000) {i -> arrayOf(i*1.0F, 1.0F, 1.0F, 0.0F, 1.0F) } }
     private var progressBar: ProgressBar? = null
     private var i = 0
     private var txtView: TextView? = null
-    private val handler = Handler()
     private lateinit var textView: TextView
 
     companion object {
@@ -49,12 +45,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
-        supportActionBar?.hide()
-        soundPool = SoundPool(1, AudioManager.STREAM_MUSIC, 0)
-        soundId = soundPool!!.load(baseContext, R.raw.file1, 0)
-        soundId2 = soundPool!!.load(baseContext, R.raw.file1, 0)
-        soundId3 = soundPool!!.load(baseContext, R.raw.file2, 0)
-        soundId4 = soundPool!!.load(baseContext, R.raw.file2, 0)
+        var i = 0
+        tracks[i] = SoundPool(10, AudioManager.STREAM_MUSIC, 0)
+        sounds[i][0][0] = tracks[i]!!.load(baseContext, R.raw.file1, 0) * 1.0F
+        countSounds[i]++
+        sounds[i][1][0] = tracks[i]!!.load(baseContext, R.raw.file1, 0) * 1.0F
+
 
         //var firstsound = findViewById<Button>(R.id.KICK)
 
@@ -114,43 +110,48 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun bytesArrayPart4ToInt(arr : ByteArray, start : Int = 0): Int {
-        return arr[start].toInt()*16*16*16 + arr[start + 1].toInt()*16*16 + arr[start + 2].toInt()*16 + arr[start + 3].toInt()
+        return arr[start].toInt() + arr[start + 1].toInt()*256 + arr[start + 2].toInt()*256*256 + arr[start + 3].toInt()*256*256*256
     }
+
 
     fun getSoundLength (res1: Int) : Int {
         val res: Resources = resources
         val inStream: InputStream = res.openRawResource(res1)
         val baos = ByteArrayOutputStream()
-        val buff = ByteArray(10240)
-        var i = Int.MAX_VALUE
-        while (inStream.read(buff, 0, buff.size).also { i = it } > 0) {
-            baos.write(buff, 0, i)
-        }
+        val buff = ByteArray(100)
+        inStream.read(buff, 0, buff.size)
+        baos.write(buff, 0, buff.size)
         val wavdata = baos.toByteArray()
         baos.close()
         inStream.close()
             if (wavdata.size > 44) {
                 val byteRate= bytesArrayPart4ToInt(wavdata, 28)
-                Log.d(TAG,"MYMSG" + " " + wavdata[28].toString())
                 val waveSize = bytesArrayPart4ToInt(wavdata, 40)
-                return (waveSize * 1000 / byteRate).toInt() // TODO: сделать, чтобы это работало.
+                Log.d(TAG,"MYMSG: " + (waveSize * 1000 / byteRate).toInt().toString())
+                return (waveSize * 1000.0 / byteRate).toInt()
             }
             return 0
     }
-
-    fun playSound(view: View) { // TODO: заменить onClick у KICK с этого на правильный, когда будет исправлена раскладка
-        Toast.makeText(this, "Playing compiled music...", Toast.LENGTH_SHORT).show()
-        //Toast.makeText(this, getSoundLength(R.raw.file1), Toast.LENGTH_SHORT).show()
-        var ratio = 0.5F // по фану, для демонстрации
-        soundPool?.play(soundId, 0.5F, 0.5F, 0, 0, ratio)
-        var soundLen = 4000 // TODO: заменить на подсчет длины звука
-        var countDownTimer = object : CountDownTimer(((soundLen / ratio).toLong()), 1000) {
+    fun playTrack (i: Int, j: Int) {
+        var timer : CountDownTimer = object : CountDownTimer((sounds[i][j][1].toLong()), 1000) {
             override fun onTick(millisUntilFinished: Long) {}
             override fun onFinish() {
-                soundPool?.play(soundId2, 1F, 1F, 0, 0, 1F)
-                Toast.makeText(this@MainActivity, "Completed!", Toast.LENGTH_SHORT).show()
+                tracks[i]?.play(sounds[i][j][0].toInt(), sounds[i][j][2], sounds[i][j][2], 0, sounds[i][j][3].toInt(), sounds[i][j][4])
+
+                if (j < countSounds[i]) {
+                    playTrack(i, j + 1)
+                }
             }
         }.start()
-
+    }
+    fun playSound(view: View) { // TODO: заменить onClick у KICK с этого на правильный, когда будет исправлена раскладка
+        Toast.makeText(this, "Playing compiled music...", Toast.LENGTH_SHORT).show()
+        sounds[0][0][4] = 0.5F // по фану, для демонстрации
+        sounds[0][1][4] = 1.0F
+        sounds[0][0][1] = 0.0F // с начала
+        sounds[0][1][1] = getSoundLength(R.raw.file1) * 1.0F / sounds[0][0][4] // TODO: заменить на подсчет длины звука
+        // TODO: написать алгоритм по одновременному воспроизведению с нескольких дорожек
+        var i = 0;
+        playTrack(i, 0)
     }
 }
