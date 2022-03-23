@@ -143,17 +143,13 @@ class MainActivity : AppCompatActivity() {
     fun getSoundLength (res1: Int) : Int {
         val res: Resources = resources
         val inStream: InputStream = res.openRawResource(res1)
-        val baos = ByteArrayOutputStream()
-        val buff = ByteArray(100)
-        inStream.read(buff, 0, buff.size)
-        baos.write(buff, 0, buff.size)
-        val wavdata = baos.toByteArray()
-        baos.close()
+        val wavdata = ByteArray(45)
+        inStream.read(wavdata, 0, 45)
         inStream.close()
         if (wavdata.size > 44) {
-            val byteRate= bytesArrayPart4ToInt(wavdata, 28)
+            val byteRate = bytesArrayPart4ToInt(wavdata, 28)
             val waveSize = bytesArrayPart4ToInt(wavdata, 40)
-            return (waveSize * 1000.0 / byteRate).toInt()
+            if (byteRate != 0) return (waveSize * 1000.0 / byteRate).toInt()
         }
         return 0
     }
@@ -163,70 +159,66 @@ class MainActivity : AppCompatActivity() {
             override fun onTick(millisUntilFinished: Long) {}
             override fun onFinish() {
                 if (state != "pause") {
-                    tracks[i]?.play(sounds[i][j].id, sounds[i][j].volume, sounds[i][j].volume, 0, sounds[i][j].loop, sounds[i][j].ratio)
-                    Log.d(TAG,"MYMSG: " + i.toString() + " " + j.toString() + " " + sounds[i][0].id.toString())
+                    tracks[i]?.play(sounds[i][j].id,
+                        sounds[i][j].volume,
+                        sounds[i][j].volume,
+                        0,
+                        sounds[i][j].loop,
+                        sounds[i][j].ratio)
+                    Log.d(TAG, "MYMSG: " + i.toString() + " " + j.toString() + " " + sounds[i][0].id.toString())
                 }
-                if (j < countSounds[i]) {
-                    playTrack(i, j + 1)
-                }
+                if (j < countSounds[i]) playTrack(i, j + 1)
+                if (j == countSounds[i] && i == countTracks) state = "ready"
             }
         }.start()
     }
 
-    fun setExample(view: View) { //демонстрация работы как одного трека, так и нескольких (что все работает)
+    fun setExample(view: View) { //демонстрация работы как одного трека, так и нескольких звуков (что все работает)
+        Toast.makeText(this, "Example set", Toast.LENGTH_SHORT).show()
         sounds[0][0].ratio = 0.5F // по фану, для демонстрации
         sounds[0][0].res = R.raw.file1
         countTracks = 1 // к следующей дорожке
-        sounds[1][0].delay = (getSoundLength(R.raw.file1)  / sounds[0][0].ratio).toLong() // задержка перед следующим звуком - длина этого, деленное на ratio
+
+        sounds[1][0].delay = (getSoundLength(sounds[0][0].res)  / sounds[0][0].ratio).toLong() // задержка перед следующим звуком - длина этого, деленное на ratio
         sounds[1][0].res = R.raw.file1
-        countSounds[countTracks] = 1 // к следующему звуку
+        countSounds[1] = 1 // к следующему звуку
         sounds[1][1].res = R.raw.file2
-        sounds[1][1].delay = (getSoundLength(R.raw.file1)  / sounds[1][0].ratio).toLong()
+        sounds[1][1].delay = (getSoundLength(sounds[1][0].res)  / sounds[1][0].ratio).toLong() - 3000 // для демонстрации
+        sounds[1][1].loop = 1
         state = "ready"
     }
 
     fun pause(view: View) {
         if (state == "playing") {
-            for (i in 0..countTracks) {
-                tracks[i].autoPause()
-            }
+            Toast.makeText(this, "Music paused", Toast.LENGTH_SHORT).show()
+            for (i in 0..countTracks) tracks[i].autoPause()
             state = "pause"
         }
     }
 
     fun playSound(view: View) {
         if (state == "ready") {
+            Toast.makeText(this, "Playing compiled music...", Toast.LENGTH_SHORT).show()
 
-            for (i in 0..countTracks) {
+            for (i in 0..countTracks) { // очищение и перезаполнение, если играем еще раз
                 tracks[i].release()
                 tracks[i] = SoundPool(10, AudioManager.STREAM_MUSIC, 0)
             }
 
             for (i in 0..countTracks) {
-                for (j in 0..countSounds[i]) {
-                    sounds[i][j].id = tracks[i]!!.load(baseContext, sounds[i][j].res, 0) // i трек, j звук
-                }
+                for (j in 0..countSounds[i]) sounds[i][j].id = tracks[i]!!.load(baseContext, sounds[i][j].res, 0) // загрузить i трек, j звук
             }
 
-            Toast.makeText(this, "Playing compiled music...", Toast.LENGTH_SHORT).show()
-            state = "playing"
-            val start : Long = currentTimeMillis() + 300
-
-            for (i in 0..countTracks + 1) {
-                if (i <= countTracks) {
-                    playTrack(i, 0, start - currentTimeMillis())
-                }
-                else {
-                    state = "ready"
-                }
+            if (state != "playing") {
+                val start : Long = currentTimeMillis() + 300
+                state = "playing"
+                for (i in 0..countTracks + 1) playTrack(i, 0, start - currentTimeMillis())
             }
-
         }
         else if (state == "pause") {
-            for (i in 0..countTracks) {
-                tracks[i].autoResume()
-            }
+            Toast.makeText(this, "Music unpaused", Toast.LENGTH_SHORT).show()
             state = "playing"
+            for (i in 0..countTracks) tracks[i].autoResume()
         }
     }
 }
