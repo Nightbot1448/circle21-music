@@ -1,4 +1,4 @@
-package com.makentoshe.androidgithubcitemplate
+package com.bigri239.easymusic
 
 import org.junit.Test
 

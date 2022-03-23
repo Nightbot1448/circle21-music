@@ -1,4 +1,4 @@
-package com.makentoshe.androidgithubcitemplate
+package com.bigri239.easymusic
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -18,7 +18,6 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import java.io.ByteArrayOutputStream
 import java.io.InputStream
 import java.lang.System.currentTimeMillis
 import java.util.*
@@ -40,7 +39,6 @@ class MainActivity : AppCompatActivity() {
     private val countSounds: Array<Int> = Array (100) {0}
     private val sounds: Array<Array<SoundInfo>> = Array (100) { Array(1000) {i -> SoundInfo(0, i + 1, 0, 1.0F, 0, 1.0F) } }
     private var progressBar: ProgressBar? = null
-    private var i = 0
     private var txtView: TextView? = null
     private lateinit var textView: TextView
 
@@ -168,7 +166,14 @@ class MainActivity : AppCompatActivity() {
                     Log.d(TAG, "MYMSG: " + i.toString() + " " + j.toString() + " " + sounds[i][0].id.toString())
                 }
                 if (j < countSounds[i]) playTrack(i, j + 1)
-                if (j == countSounds[i] && i == countTracks) state = "ready"
+                if (j == countSounds[i] && i == countTracks) {
+                    var timer1 : CountDownTimer = object : CountDownTimer((getSoundLength(sounds[i][j].res) * (sounds[i][j].loop + 1) / sounds[i][j].ratio).toLong(), 1000) {
+                        override fun onTick(millisUntilFinished: Long) {}
+                        override fun onFinish() {
+                            state = "ready"
+                        }
+                    }.start()
+                }
             }
         }.start()
     }
