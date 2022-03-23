@@ -27,17 +27,18 @@ import java.util.*
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
     data class SoundInfo (
+        var res: Int = 0,
         var id: Int = 0,
         var delay: Long = 0,
         var volume: Float = 0.0F,
         var loop: Int = 0,
         var ratio: Float = 1.0F
     )
-    private var ready : Boolean = false
+    private var state : String = "unready"
     private val tracks: Array<SoundPool> = Array (100) { SoundPool(10, AudioManager.STREAM_MUSIC, 0) }
     private var countTracks = 0
     private val countSounds: Array<Int> = Array (100) {0}
-    private val sounds: Array<Array<SoundInfo>> = Array (100) { Array(1000) {i -> SoundInfo(i, 0, 1.0F, 0, 1.0F) } }
+    private val sounds: Array<Array<SoundInfo>> = Array (100) { Array(1000) {i -> SoundInfo(0, i + 1, 0, 1.0F, 0, 1.0F) } }
     private var progressBar: ProgressBar? = null
     private var i = 0
     private var txtView: TextView? = null
@@ -152,7 +153,6 @@ class MainActivity : AppCompatActivity() {
         if (wavdata.size > 44) {
             val byteRate= bytesArrayPart4ToInt(wavdata, 28)
             val waveSize = bytesArrayPart4ToInt(wavdata, 40)
-            Log.d(TAG,"MYMSG: " + (waveSize * 1000 / byteRate).toInt().toString())
             return (waveSize * 1000.0 / byteRate).toInt()
         }
         return 0
@@ -162,8 +162,10 @@ class MainActivity : AppCompatActivity() {
         var timer : CountDownTimer = object : CountDownTimer(sounds[i][j].delay + delay, 1000) {
             override fun onTick(millisUntilFinished: Long) {}
             override fun onFinish() {
-                tracks[i]?.play(sounds[i][j].id, sounds[i][j].volume, sounds[i][j].volume, 0, sounds[i][j].loop, sounds[i][j].ratio)
-                Log.d(TAG,"MYMSG: " + i.toString() + " " + j.toString() + " " + sounds[i][0].id.toString())
+                if (state != "pause") {
+                    tracks[i]?.play(sounds[i][j].id, sounds[i][j].volume, sounds[i][j].volume, 0, sounds[i][j].loop, sounds[i][j].ratio)
+                    Log.d(TAG,"MYMSG: " + i.toString() + " " + j.toString() + " " + sounds[i][0].id.toString())
+                }
                 if (j < countSounds[i]) {
                     playTrack(i, j + 1)
                 }
@@ -172,26 +174,59 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun setExample(view: View) { //демонстрация работы как одного трека, так и нескольких (что все работает)
-        ready = true
-        sounds[countTracks][countSounds[countTracks]].id = tracks[countTracks]!!.load(baseContext, R.raw.file1, 0) // 0 трек, 0 звук
-        countTracks++ // к следующей дорожке
-        sounds[countTracks][countSounds[countTracks]].id = tracks[countTracks]!!.load(baseContext, R.raw.file1, 0) // 1 дорожка 0 звук
-        countSounds[countTracks]++ // к следующему звуку
-        sounds[countTracks][countSounds[countTracks]].id = tracks[countTracks]!!.load(baseContext, R.raw.file2, 0) // 1 дорожка 1 звук
         sounds[0][0].ratio = 0.5F // по фану, для демонстрации
-        sounds[0][0].delay = 0 // с начала
+        sounds[0][0].res = R.raw.file1
+        countTracks = 1 // к следующей дорожке
         sounds[1][0].delay = (getSoundLength(R.raw.file1)  / sounds[0][0].ratio).toLong() // задержка перед следующим звуком - длина этого, деленное на ratio
-        sounds[1][1].delay = (getSoundLength(R.raw.file1)  / sounds[1][0].ratio).toLong() // а тут чтобы онаслоение вышло
+        sounds[1][0].res = R.raw.file1
+        countSounds[countTracks] = 1 // к следующему звуку
+        sounds[1][1].res = R.raw.file2
+        sounds[1][1].delay = (getSoundLength(R.raw.file1)  / sounds[1][0].ratio).toLong()
+        state = "ready"
+    }
 
+    fun pause(view: View) {
+        if (state == "playing") {
+            for (i in 0..countTracks) {
+                tracks[i].autoPause()
+            }
+            state = "pause"
+        }
     }
 
     fun playSound(view: View) {
-        if (ready) {
-            Toast.makeText(this, "Playing compiled music...", Toast.LENGTH_SHORT).show()
-            val start : Long = currentTimeMillis() + 300
+        if (state == "ready") {
+
             for (i in 0..countTracks) {
-                playTrack(i, 0, start - currentTimeMillis())
+                tracks[i].release()
+                tracks[i] = SoundPool(10, AudioManager.STREAM_MUSIC, 0)
             }
+
+            for (i in 0..countTracks) {
+                for (j in 0..countSounds[i]) {
+                    sounds[i][j].id = tracks[i]!!.load(baseContext, sounds[i][j].res, 0) // i трек, j звук
+                }
+            }
+
+            Toast.makeText(this, "Playing compiled music...", Toast.LENGTH_SHORT).show()
+            state = "playing"
+            val start : Long = currentTimeMillis() + 300
+
+            for (i in 0..countTracks + 1) {
+                if (i <= countTracks) {
+                    playTrack(i, 0, start - currentTimeMillis())
+                }
+                else {
+                    state = "ready"
+                }
+            }
+
+        }
+        else if (state == "pause") {
+            for (i in 0..countTracks) {
+                tracks[i].autoResume()
+            }
+            state = "playing"
         }
     }
 }
