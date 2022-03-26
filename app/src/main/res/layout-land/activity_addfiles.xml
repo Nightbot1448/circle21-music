@@ -25,7 +25,8 @@
         android:layout_height="57dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="20dp"
-        android:text="Offical library"
+        android:text="Official library"
+        android:contentDescription="Official library"
         app:layout_constraintEnd_toEndOf="@+id/from"
         app:layout_constraintTop_toBottomOf="@+id/from" />
 
@@ -35,6 +36,7 @@
         android:layout_height="56dp"
         android:layout_marginStart="10dp"
         android:text="My library"
+        android:contentDescription="My library"
         app:layout_constraintStart_toEndOf="@+id/official"
         app:layout_constraintTop_toTopOf="@+id/official" />
 

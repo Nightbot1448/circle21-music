@@ -15,6 +15,7 @@ class AddingfilesActivity : AppCompatActivity() {
         setContentView(R.layout.activity_addfiles)
         supportActionBar?.hide()
     }
+
     override fun onStart() {
         super.onStart()
         val intent = Intent(this, MainActivity::class.java)
@@ -22,6 +23,7 @@ class AddingfilesActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
     fun openFile(view: View) {
         Toast.makeText(this, "Opening file...", Toast.LENGTH_SHORT).show()
         val path = getFilesDir()
