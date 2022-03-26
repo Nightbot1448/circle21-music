@@ -2,33 +2,26 @@ package com.makentoshe.androidgithubcitemplate
 
 import android.app.AlertDialog
 import android.app.Dialog
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.content.res.Resources
 import android.media.AudioManager
 import android.media.SoundPool
-import android.media.MediaPlayer
+import android.os.*
 import android.util.Log
-import android.view.View
-import android.widget.Toast
-import android.widget.Button
-import android.widget.TextView
-import androidx.fragment.app.FragmentActivity
-import java.io.File
-import java.io.FileOutputStream
-import java.util.concurrent.TimeUnit
-import android.view.ContextMenu.ContextMenuInfo
 import android.view.ContextMenu
-
 import android.view.Menu
 import android.view.MenuItem
-
-
-
-
+import android.view.View
 import android.widget.ProgressBar
-import android.os.Handler
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import java.io.ByteArrayOutputStream
+import java.io.InputStream
+import java.util.*
+
 
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
@@ -44,23 +37,24 @@ class MainActivity : AppCompatActivity() {
     private var i = 0
     private var txtView: TextView? = null
     private val handler = Handler()
+    private lateinit var textView: TextView
+
     companion object {
         const val IDM_OPEN = 101
         const val IDM_SAVE = 102
     }
 
-    private lateinit var textView: TextView
-
     //опишем создание контекстных меню
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
+        supportActionBar?.hide()
         soundPool = SoundPool(1, AudioManager.STREAM_MUSIC, 0)
-        soundId = soundPool!!.load(baseContext, com.makentoshe.androidgithubcitemplate.R.raw.file1, 0)
-        soundId2 = soundPool!!.load(baseContext, com.makentoshe.androidgithubcitemplate.R.raw.file1, 0)
-        soundId3 = soundPool!!.load(baseContext, com.makentoshe.androidgithubcitemplate.R.raw.file2, 0)
-        soundId4 = soundPool!!.load(baseContext, com.makentoshe.androidgithubcitemplate.R.raw.file2, 0)
+        soundId = soundPool!!.load(baseContext, R.raw.file1, 0)
+        soundId2 = soundPool!!.load(baseContext, R.raw.file1, 0)
+        soundId3 = soundPool!!.load(baseContext, R.raw.file2, 0)
+        soundId4 = soundPool!!.load(baseContext, R.raw.file2, 0)
 
         //var firstsound = findViewById<Button>(R.id.KICK)
 
@@ -69,11 +63,12 @@ class MainActivity : AppCompatActivity() {
         //создание контекстного меню
 
     }
+
 // ниже создание переходов между экранами
     override fun onStart() {
     super.onStart()
     val intent = Intent(this, HelpActivity::class.java)
-    findViewById<TextView>(R.id.textView4).setOnClickListener {
+    findViewById<TextView>(R.id.help).setOnClickListener {
         startActivity(intent)
     }
     val intent1 = Intent(this, AddingfilesActivity::class.java)
@@ -83,6 +78,15 @@ class MainActivity : AppCompatActivity() {
     val intent2 = Intent(this, SettingsActivity::class.java)
     findViewById<TextView>(R.id.settings).setOnClickListener {
         startActivity(intent2)
+        super.onStart()
+        val intent = Intent(this, HelpActivity::class.java)
+        findViewById<TextView>(R.id.help).setOnClickListener {
+            startActivity(intent)
+        }
+        val intent1 = Intent(this, AddingfilesActivity::class.java)
+        findViewById<TextView>(R.id.file).setOnClickListener {
+            startActivity(intent1)
+            }
     }
 
     val intent3 = Intent(this, InstrumentsActivity::class.java)
@@ -98,13 +102,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateContextMenu(
         menu: ContextMenu?,
         v: View?,
-        menuInfo: ContextMenu.ContextMenuInfo?
+        menuInfo: ContextMenu.ContextMenuInfo?,
     ) {
         super.onCreateContextMenu(menu, v, menuInfo)
 
         menu?.add(Menu.NONE, IDM_OPEN, Menu.NONE, "KICK")
         menu?.add(Menu.NONE, IDM_SAVE, Menu.NONE, "SNARE")
     }
+
     //сообщение:
     override fun onContextItemSelected(item: MenuItem): Boolean {
 
@@ -120,6 +125,7 @@ class MainActivity : AppCompatActivity() {
         return true
 
     }
+
     override fun onCreateDialog(id: Int): Dialog? {
         val activity = null
         return activity?.let {
@@ -129,16 +135,44 @@ class MainActivity : AppCompatActivity() {
         } ?: throw IllegalStateException("Activity cannot be null")
     }
 
-    //findNavController(R.id.app_graph).navigate(R.id.action_mainActivity_to_helpActivity)
+    fun bytesArrayPart4ToInt(arr : ByteArray, start : Int = 0): Int {
+        return arr[start].toInt()*16*16*16 + arr[start + 1].toInt()*16*16 + arr[start + 2].toInt()*16 + arr[start + 3].toInt()
+    }
 
+    fun getSoundLength (res1: Int) : Int {
+        val res: Resources = resources
+        val inStream: InputStream = res.openRawResource(res1)
+        val baos = ByteArrayOutputStream()
+        val buff = ByteArray(10240)
+        var i = Int.MAX_VALUE
+        while (inStream.read(buff, 0, buff.size).also { i = it } > 0) {
+            baos.write(buff, 0, i)
+        }
+        val wavdata = baos.toByteArray()
+        baos.close()
+        inStream.close()
+            if (wavdata.size > 44) {
+                val byteRate= bytesArrayPart4ToInt(wavdata, 28)
+                Log.d(TAG,"MYMSG" + " " + wavdata[28].toString())
+                val waveSize = bytesArrayPart4ToInt(wavdata, 40)
+                return (waveSize * 1000 / byteRate).toInt() // TODO: сделать, чтобы это работало.
+            }
+            return 0
+    }
 
     fun playSound(view: View) { // TODO: заменить onClick у KICK с этого на правильный, когда будет исправлена раскладка
         Toast.makeText(this, "Playing compiled music...", Toast.LENGTH_SHORT).show()
+        //Toast.makeText(this, getSoundLength(R.raw.file1), Toast.LENGTH_SHORT).show()
         var ratio = 0.5F // по фану, для демонстрации
         soundPool?.play(soundId, 0.5F, 0.5F, 0, 0, ratio)
-        var soundLen : Long = 4 // TODO: заменить на подсчет длины звука
-        TimeUnit.SECONDS.sleep((soundLen / ratio).toLong())
-        soundPool?.play(soundId2, 1F, 1F, 0, 0, 1F)
-        Toast.makeText(this, "Completed!", Toast.LENGTH_SHORT).show()
+        var soundLen = 4000 // TODO: заменить на подсчет длины звука
+        var countDownTimer = object : CountDownTimer(((soundLen / ratio).toLong()), 1000) {
+            override fun onTick(millisUntilFinished: Long) {}
+            override fun onFinish() {
+                soundPool?.play(soundId2, 1F, 1F, 0, 0, 1F)
+                Toast.makeText(this@MainActivity, "Completed!", Toast.LENGTH_SHORT).show()
+            }
+        }.start()
+
     }
 }

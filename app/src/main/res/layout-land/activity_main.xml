@@ -67,7 +67,7 @@
         app:layout_constraintTop_toTopOf="@+id/settings" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/help"
         android:layout_width="56dp"
         android:layout_height="28dp"
         android:layout_marginStart="50dp"
