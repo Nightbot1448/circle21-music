@@ -30,6 +30,7 @@
         android:clickable="true"
         android:contentDescription="Enter How Much Cookies You Want"
         android:tint="#F4F0F0"
+        app:borderWidth="0dp"
         app:layout_constraintStart_toEndOf="@+id/write"
         app:layout_constraintTop_toBottomOf="@+id/authors"
         app:rippleColor="@color/colorAccent"

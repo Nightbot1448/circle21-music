@@ -163,6 +163,7 @@
         android:clickable="true"
         android:contentDescription="Find a file"
         android:onClick="openFile"
+        app:borderWidth="0dp"
         app:layout_constraintStart_toEndOf="@+id/find"
         app:layout_constraintTop_toBottomOf="@+id/my"
         app:srcCompat="@android:drawable/ic_menu_search" />

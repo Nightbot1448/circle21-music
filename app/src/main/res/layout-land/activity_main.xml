@@ -91,6 +91,7 @@
         android:backgroundTint="#D98B25"
         android:clickable="true"
         android:contentDescription="Enter How Much Cookies You Want"
+        app:borderWidth="0dp"
         app:layout_constraintStart_toEndOf="@+id/play"
         app:layout_constraintTop_toTopOf="@+id/play"
         app:srcCompat="@android:drawable/ic_media_ff" />
@@ -104,6 +105,7 @@
         android:backgroundTint="#D98B25"
         android:clickable="true"
         android:contentDescription="Enter How Much Cookies You Want"
+        app:borderWidth="0dp"
         app:layout_constraintEnd_toStartOf="@+id/play"
         app:layout_constraintTop_toTopOf="@+id/play"
         app:srcCompat="@android:drawable/ic_media_rew" />
@@ -119,6 +121,7 @@
         android:clickable="true"
         android:contentDescription="Enter How Much Cookies You Want"
         android:onClick="playSound"
+        app:borderWidth="0dp"
         app:layout_constraintStart_toEndOf="@+id/stop"
         app:layout_constraintTop_toTopOf="@+id/stop"
         app:srcCompat="@android:drawable/ic_media_play" />
@@ -131,6 +134,7 @@
         android:backgroundTint="#D98B25"
         android:clickable="true"
         android:contentDescription="Enter How Much Cookies You Want"
+        app:borderWidth="0dp"
         app:layout_constraintEnd_toStartOf="@+id/stop"
         app:layout_constraintTop_toTopOf="@+id/stop"
         app:rippleColor="@color/colorAccent"
@@ -146,6 +150,7 @@
         android:clickable="true"
         android:contentDescription="Enter How Much Cookies You Want"
         android:onClick="pause"
+        app:borderWidth="0dp"
         app:layout_constraintStart_toEndOf="@+id/file"
         app:layout_constraintTop_toBottomOf="@+id/add"
         app:srcCompat="@android:drawable/alert_dark_frame"
