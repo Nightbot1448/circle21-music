@@ -21,6 +21,11 @@ import androidx.appcompat.app.AppCompatActivity
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
 import java.util.*
+import android.os.Bundle
+import android.os.SystemClock
+import android.widget.Chronometer
+import kotlinx.android.synthetic.main.activity_main.*
+
 
 
 @Suppress("DEPRECATION")
@@ -43,6 +48,8 @@ class MainActivity : AppCompatActivity() {
         const val IDM_OPEN = 101
         const val IDM_SAVE = 102
     }
+    private lateinit var chronometer: Chronometer
+
 
     //опишем создание контекстных меню
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,7 +69,24 @@ class MainActivity : AppCompatActivity() {
         registerForContextMenu(textView)
         //создание контекстного меню
 
-    }
+//        chronometer = findViewById(R.id.chronometer)
+//        chronometer.setOnChronometerTickListener {
+//            val elapsedMillis: Long = (SystemClock.elapsedRealtime() - chronometer.base)
+//
+//        }
+//        play.setOnClickListener {
+//            chronometer.base = SystemClock.elapsedRealtime()
+//            chronometer.start()
+//        }
+//
+//        stop.setOnClickListener {
+//            chronometer.stop()
+//        }
+//
+//        record.setOnClickListener {
+//            chronometer.base = SystemClock.elapsedRealtime()
+//        }
+   }
 
 // ниже создание переходов между экранами
     override fun onStart() {

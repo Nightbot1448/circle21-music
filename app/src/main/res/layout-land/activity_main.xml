@@ -85,11 +85,12 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/next"
-        android:contentDescription="Enter How Much Cookies You Want"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
+        android:backgroundTint="#D98B25"
         android:clickable="true"
+        android:contentDescription="Enter How Much Cookies You Want"
         app:layout_constraintStart_toEndOf="@+id/play"
         app:layout_constraintTop_toTopOf="@+id/play"
         app:srcCompat="@android:drawable/ic_media_ff" />
@@ -100,8 +101,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
         android:layout_marginEnd="20dp"
-        android:contentDescription="Enter How Much Cookies You Want"
+        android:backgroundTint="#D98B25"
         android:clickable="true"
+        android:contentDescription="Enter How Much Cookies You Want"
         app:layout_constraintEnd_toStartOf="@+id/play"
         app:layout_constraintTop_toTopOf="@+id/play"
         app:srcCompat="@android:drawable/ic_media_rew" />
@@ -113,6 +115,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="170dp"
+        android:backgroundTint="#D98B25"
         android:clickable="true"
         android:contentDescription="Enter How Much Cookies You Want"
         android:onClick="playSound"
@@ -125,6 +128,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="25dp"
+        android:backgroundTint="#D98B25"
         android:clickable="true"
         android:contentDescription="Enter How Much Cookies You Want"
         app:layout_constraintEnd_toStartOf="@+id/stop"
@@ -138,6 +142,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
         android:layout_marginTop="140dp"
+        android:backgroundTint="#D98B25"
         android:clickable="true"
         android:contentDescription="Enter How Much Cookies You Want"
         android:onClick="pause"
@@ -215,7 +220,7 @@
         android:layout_marginTop="16dp"
         android:contentDescription="@string/app_name"
         android:scaleType="center"
-        android:src="@drawable/soundmenu"
+        android:src="@drawable/soundmenunew"
         app:layout_constraintStart_toEndOf="@+id/file"
         app:layout_constraintTop_toBottomOf="@+id/file" />
 
@@ -253,8 +258,8 @@
         android:id="@+id/textView"
         android:layout_width="73dp"
         android:layout_height="20dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="4dp"
         android:text="kick1"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="@+id/imageView" />
