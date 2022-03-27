@@ -17,5 +17,9 @@ class SettingsActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.backsettings).setOnClickListener {
             startActivity(intent)
         }
+        val intent14 = Intent(this, RecoveryActivity::class.java)
+        findViewById<TextView>(R.id.account).setOnClickListener {
+            startActivity(intent14)
+        }
     }
 }

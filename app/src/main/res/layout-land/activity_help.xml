@@ -20,41 +20,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/send"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:backgroundTint="#D98B25"
-        android:backgroundTintMode="add"
-        android:clickable="true"
-        android:contentDescription="Enter How Much Cookies You Want"
-        android:tint="#F4F0F0"
-        app:borderWidth="0dp"
-        app:layout_constraintStart_toEndOf="@+id/write"
-        app:layout_constraintTop_toBottomOf="@+id/authors"
-        app:rippleColor="@color/colorAccent"
-        app:srcCompat="@android:drawable/ic_menu_send" />
-
-    <TextView
-        android:id="@+id/write"
-        android:layout_width="208dp"
-        android:layout_height="34dp"
-        android:layout_marginStart="68dp"
-        android:layout_marginTop="12dp"
-        android:text="write to developers "
-        android:textColor="@color/colorAccent"
-        android:textSize="20dp"
-        app:layout_constraintStart_toStartOf="@+id/authors"
-        app:layout_constraintTop_toBottomOf="@+id/authors" />
-
     <Button
         android:id="@+id/frequently"
-        android:layout_width="483dp"
-        android:layout_height="49dp"
+        android:layout_width="500dp"
+        android:layout_height="70dp"
         android:layout_marginStart="120dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="128dp"
+        android:backgroundTint="#D98B25"
         android:text="frequently asked Questions "
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -62,33 +35,25 @@
 
     <Button
         android:id="@+id/terms"
-        android:layout_width="482dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="55dp"
+        android:layout_width="500dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="80dp"
+        android:backgroundTint="#D98B25"
         android:text="Terms of use "
         app:layout_constraintEnd_toEndOf="@+id/frequently"
         app:layout_constraintStart_toStartOf="@+id/frequently"
         app:layout_constraintTop_toTopOf="@+id/frequently" />
 
     <Button
-        android:id="@+id/account"
-        android:layout_width="483dp"
-        android:layout_height="49dp"
-        android:layout_marginTop="55dp"
-        android:text="account recovery "
+        android:id="@+id/authors"
+        android:layout_width="500dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="#D98B25"
+        android:text="authors "
         app:layout_constraintEnd_toEndOf="@+id/terms"
         app:layout_constraintStart_toStartOf="@+id/terms"
-        app:layout_constraintTop_toTopOf="@+id/terms" />
-
-    <Button
-        android:id="@+id/authors"
-        android:layout_width="482dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="55dp"
-        android:text="authors "
-        app:layout_constraintEnd_toEndOf="@+id/account"
-        app:layout_constraintStart_toStartOf="@+id/account"
-        app:layout_constraintTop_toTopOf="@+id/account" />
+        app:layout_constraintTop_toBottomOf="@+id/terms" />
 
     <TextView
         android:id="@+id/back_H"

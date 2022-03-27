@@ -26,4 +26,12 @@
         android:text="BACK"
         app:layout_constraintEnd_toStartOf="@+id/settings"
         app:layout_constraintTop_toTopOf="@+id/settings" />
+
+    <TextView
+        android:id="@+id/account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="acc"
+        app:layout_constraintStart_toStartOf="@+id/backsettings"
+        app:layout_constraintTop_toBottomOf="@+id/backsettings" />
 </androidx.constraintlayout.widget.ConstraintLayout>
