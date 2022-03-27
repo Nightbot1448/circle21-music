@@ -20,6 +20,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import java.io.File
 import java.io.FileOutputStream
+import java.io.IOException
 import java.io.InputStream
 import java.lang.System.currentTimeMillis
 import java.util.*
@@ -230,21 +231,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun openProject(view: View) {
-        Toast.makeText(this, "Opening project...", Toast.LENGTH_SHORT).show()
-        val path = getFilesDir()
-        val file = File(path, "projectTest.emproj") // TODO: добавить что-то вроде выбора имени проекта?? Или мб сразу выбор файла??
-        val content : String = file.readText()
-        val tracks_content = content.split("\n").toTypedArray()
-        countTracks = tracks_content.size - 1
-        for (i in tracks_content.indices) {
-            val sounds_content = tracks_content[i].split(";").toTypedArray()
-            countSounds[i] = sounds_content.size - 1
-            for (j in sounds_content.indices) {
-                val params = sounds_content[j].split(" ").toTypedArray()
-                sounds[i][j] = SoundInfo(params[0].toInt(), params[1].toInt(), params[2].toLong(), params[3].toFloat(), params[4].toInt(), params[5].toFloat())
+        try {
+            Toast.makeText(this, "Opening project...", Toast.LENGTH_SHORT).show()
+            val path = getFilesDir()
+            val file = File(path, "projectTest.emproj") // TODO: добавить что-то вроде выбора имени проекта?? Или мб сразу выбор файла??
+            val content : String = file.readText()
+            val tracks_content = content.split("\n").toTypedArray()
+            countTracks = tracks_content.size - 1
+            for (i in tracks_content.indices) {
+                val sounds_content = tracks_content[i].split(";").toTypedArray()
+                countSounds[i] = sounds_content.size - 1
+                for (j in sounds_content.indices) {
+                    val params = sounds_content[j].split(" ").toTypedArray()
+                    sounds[i][j] = SoundInfo(params[0].toInt(), params[1].toInt(), params[2].toLong(), params[3].toFloat(), params[4].toInt(), params[5].toFloat())
+                }
             }
+            state = "ready"
         }
-        state = "ready"
+        catch (e: IOException) {
+            Toast.makeText(this, "No such file!", Toast.LENGTH_SHORT).show()
+        }
     }
 
     fun saveProject(view: View) {
