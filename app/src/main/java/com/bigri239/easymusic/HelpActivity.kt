@@ -30,9 +30,6 @@ class HelpActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.terms).setOnClickListener {
             startActivity(intent13)
         }
-        val intent14 = Intent(this, RecoveryActivity::class.java)
-        findViewById<TextView>(R.id.account).setOnClickListener {
-            startActivity(intent14)
-        }
+
     }
 }

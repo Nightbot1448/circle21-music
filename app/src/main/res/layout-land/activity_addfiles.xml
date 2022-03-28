@@ -4,6 +4,7 @@
     tools:ignore="MissingDefaultResource"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/colorPrimaryDark"
     android:layout_height="match_parent">
 
     <TextView
@@ -14,6 +15,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="250dp"
         android:text="Adding files"
+        android:textColor="@color/colorAccent"
         android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,6 +49,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="150dp"
         android:text="FROM"
+        android:textColor="@color/colorAccent"
         android:textSize="15dp"
         app:layout_constraintEnd_toStartOf="@+id/file"
         app:layout_constraintTop_toBottomOf="@+id/file" />
@@ -58,6 +61,7 @@
         android:layout_marginStart="60dp"
         android:layout_marginTop="8dp"
         android:text="TO"
+        android:textColor="@color/colorAccent"
         android:textSize="15dp"
         app:layout_constraintStart_toEndOf="@+id/file"
         app:layout_constraintTop_toBottomOf="@+id/file" />
@@ -69,6 +73,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="3dp"
         android:text="Kicks"
+        android:textColor="@color/colorAccent"
         android:textSize="15dp"
         app:layout_constraintEnd_toStartOf="@+id/to"
         app:layout_constraintTop_toBottomOf="@+id/to" />
@@ -79,6 +84,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="Snares"
+        android:textColor="@color/colorAccent"
         android:textSize="15dp"
         app:layout_constraintStart_toStartOf="@+id/ex1b"
         app:layout_constraintTop_toBottomOf="@+id/ex1b" />
@@ -89,6 +95,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="Hihats"
+        android:textColor="@color/colorAccent"
         android:textSize="15dp"
         app:layout_constraintStart_toStartOf="@+id/ex2b"
         app:layout_constraintTop_toBottomOf="@+id/ex2b" />
@@ -99,6 +106,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="New"
+        android:textColor="@color/colorAccent"
         android:textSize="15dp"
         app:layout_constraintStart_toStartOf="@+id/ex3b"
         app:layout_constraintTop_toBottomOf="@+id/ex3b" />
@@ -109,6 +117,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
         android:text="Kick 1"
+        android:textColor="@color/colorAccent"
         android:textSize="15dp"
         app:layout_constraintStart_toStartOf="@+id/from"
         app:layout_constraintTop_toBottomOf="@+id/from" />
@@ -119,6 +128,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="Kick 2"
+        android:textColor="@color/colorAccent"
         android:textSize="15dp"
         app:layout_constraintStart_toStartOf="@+id/ex1a"
         app:layout_constraintTop_toBottomOf="@+id/ex1a" />
@@ -129,6 +139,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="Kick 3"
+        android:textColor="@color/colorAccent"
         android:textSize="15dp"
         app:layout_constraintStart_toStartOf="@+id/ex2a"
         app:layout_constraintTop_toBottomOf="@+id/ex2a" />
@@ -139,6 +150,7 @@
         android:layout_height="24dp"
         android:layout_marginTop="16dp"
         android:text="find something"
+        android:textColor="@color/colorAccent"
         android:textSize="15dp"
         app:layout_constraintStart_toStartOf="@+id/ex1a"
         app:layout_constraintTop_toBottomOf="@+id/ex3a" />
@@ -149,9 +161,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="110dp"
-        android:onClick="openFile"
+        android:backgroundTint="#CC6600"
         android:clickable="true"
         android:contentDescription="Find a file"
+        android:onClick="openFile"
+        app:borderWidth="0dp"
         app:layout_constraintStart_toEndOf="@+id/find"
         app:layout_constraintTop_toBottomOf="@+id/my"
         app:srcCompat="@android:drawable/ic_menu_search" />
@@ -162,6 +176,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="250dp"
         android:text="BACK"
+        android:textColor="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="@+id/file"
         app:layout_constraintEnd_toStartOf="@+id/file"
         app:layout_constraintTop_toTopOf="@+id/file" />
