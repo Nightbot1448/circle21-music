@@ -80,7 +80,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/tutorial"
         app:layout_constraintStart_toEndOf="@+id/tutorial"
         app:layout_constraintTop_toTopOf="@+id/tutorial" />
-
+    <!-- TODO: добавить кнопки для saveProject() и openProject()!!!-->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/next"
         android:layout_width="wrap_content"
@@ -88,12 +88,16 @@
         android:layout_marginStart="20dp"
         android:backgroundTint="#D98B25"
         android:clickable="true"
+
         android:contentDescription="Enter How Much Cookies You Want"
         app:borderWidth="0dp"
+
+        android:onClick="openProject"
+
         app:layout_constraintStart_toEndOf="@+id/play"
         app:layout_constraintTop_toTopOf="@+id/play"
         app:srcCompat="@android:drawable/ic_media_ff" />
-
+    <!-- TODO: добавить кнопки для saveProject() и openProject()!!!-->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/back"
         android:layout_width="wrap_content"
@@ -102,13 +106,17 @@
         android:layout_marginEnd="20dp"
         android:backgroundTint="#D98B25"
         android:clickable="true"
+
         android:contentDescription="Enter How Much Cookies You Want"
         app:borderWidth="0dp"
+
+        android:onClick="saveProject"
+
         app:layout_constraintEnd_toStartOf="@+id/play"
         app:layout_constraintTop_toTopOf="@+id/play"
         app:srcCompat="@android:drawable/ic_media_rew" />
 
-    <!-- TODO: Артем, добавь, пожалуйста, на ВСЕ кнопки такой onClick (и замени id) на совпадающий с текстом кнопки или соответствующий ее предназначению -->
+    <!-- TODO: Артем, добавь, пожалуйста, на ВСЕ кнопки onClick по содержанию -->
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/play"

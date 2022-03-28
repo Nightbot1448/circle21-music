@@ -18,6 +18,9 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 import java.io.InputStream
 import java.lang.System.currentTimeMillis
 import java.util.*
@@ -217,13 +220,60 @@ class MainActivity : AppCompatActivity() {
             if (state != "playing") {
                 val start : Long = currentTimeMillis() + 300
                 state = "playing"
-                for (i in 0..countTracks + 1) playTrack(i, 0, start - currentTimeMillis())
+                for (i in 0..countTracks) playTrack(i, 0, start - currentTimeMillis())
             }
         }
         else if (state == "pause") {
             Toast.makeText(this, "Music unpaused", Toast.LENGTH_SHORT).show()
             state = "playing"
             for (i in 0..countTracks) tracks[i].autoResume()
+        }
+    }
+
+    fun openProject(view: View) {
+        try {
+            Toast.makeText(this, "Opening project...", Toast.LENGTH_SHORT).show()
+            val path = getFilesDir()
+            val file = File(path, "projectTest.emproj") // TODO: добавить что-то вроде выбора имени проекта?? Или мб сразу выбор файла??
+            val content : String = file.readText()
+            val tracks_content = content.split("\n").toTypedArray()
+            countTracks = tracks_content.size - 1
+            for (i in tracks_content.indices) {
+                val sounds_content = tracks_content[i].split(";").toTypedArray()
+                countSounds[i] = sounds_content.size - 1
+                for (j in sounds_content.indices) {
+                    val params = sounds_content[j].split(" ").toTypedArray()
+                    sounds[i][j] = SoundInfo(params[0].toInt(), params[1].toInt(), params[2].toLong(), params[3].toFloat(), params[4].toInt(), params[5].toFloat())
+                }
+            }
+            state = "ready"
+        }
+        catch (e: IOException) {
+            Toast.makeText(this, "No such file!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun saveProject(view: View) {
+        if (state != "unready") {
+            Toast.makeText(this, "Saving project...", Toast.LENGTH_SHORT).show()
+            val path = getFilesDir()
+            val file = File(path, "projectTest.emproj")
+            var content = ""
+            for (i in 0..countTracks) {
+                for (j in 0..countSounds[i]) {
+                    content += sounds[i][j].res.toString() + " "
+                    content += sounds[i][j].id.toString() + " "
+                    content += sounds[i][j].delay.toString() + " "
+                    content += sounds[i][j].volume.toString() + " "
+                    content += sounds[i][j].loop.toString() + " "
+                    content += sounds[i][j].ratio.toString()
+                    if (j != countSounds[i]) content += ";"
+                }
+                if (i != countTracks) content += "\n"
+            }
+            FileOutputStream(file).use {
+                it.write(content.toByteArray())
+            }
         }
     }
 }
