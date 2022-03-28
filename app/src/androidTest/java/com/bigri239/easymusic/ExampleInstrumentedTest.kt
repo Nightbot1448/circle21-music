@@ -1,4 +1,4 @@
-package com.makentoshe.androidgithubcitemplate
+package com.bigri239.easymusic
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.makentoshe.androidgithubcitemplate", appContext.packageName)
+        assertEquals("com.bigri239.easymusic", appContext.packageName)
     }
 }
