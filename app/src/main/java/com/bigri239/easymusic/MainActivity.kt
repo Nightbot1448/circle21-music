@@ -134,6 +134,7 @@ class MainActivity : AppCompatActivity() {
 
 }
 
+
     // ниже создание переходов между экранами
     override fun onStart() {
 
@@ -178,7 +179,7 @@ class MainActivity : AppCompatActivity() {
         menu?.add(Menu.NONE, IDM2, Menu.NONE, "Track2")
         menu?.add(Menu.NONE, IDM3, Menu.NONE, "Track3")
     }
-
+    private var tracknomber = 1
     //сообщение:
     override fun onContextItemSelected(item: MenuItem): Boolean {
 
@@ -189,9 +190,17 @@ class MainActivity : AppCompatActivity() {
             else -> return super.onContextItemSelected(item)
         }
         findViewById<TextView>(R.id.txt)?.text=message
-
+        if (message == "Track2"){
+            tracknomber = 2
+        }
+        if (message == "Track3"){
+            tracknomber = 3
+        }
+        else{
+            tracknomber = 1
+        }
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-
+        findViewById<TextView>(R.id.textView)?.text= tracknomber.toString()
         return true
 
     }
