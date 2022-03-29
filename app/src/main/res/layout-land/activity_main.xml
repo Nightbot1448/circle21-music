@@ -10,22 +10,37 @@
 
     <!-- Это временно!!!-->
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/scroll1"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="511dp"
         android:layout_height="215dp"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="16dp"
+        android:background="#FF9933"
         app:layout_constraintStart_toEndOf="@+id/file"
-        app:layout_constraintTop_toBottomOf="@+id/file" />
+        app:layout_constraintTop_toBottomOf="@+id/file"
+        tools:context=".MainActivity"
+        tools:ignore="MissingConstraints">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+
+            app:layout_constraintHorizontal_bias="1.0"
+
+            app:layout_constraintVertical_bias="1.0" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="150dp"
         android:layout_height="214dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="2dp"
-        app:layout_constraintEnd_toStartOf="@+id/scroll1"
+        android:layout_marginTop="42dp"
+        android:layout_marginEnd="100dp"
+        app:layout_constraintEnd_toStartOf="@+id/floatingActionButton3"
         app:layout_constraintTop_toTopOf="@+id/file" />
 
     <TextView
@@ -112,7 +127,7 @@
         android:id="@+id/stop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="230dp"
+        android:layout_marginTop="240dp"
         android:layout_marginEnd="20dp"
         android:backgroundTint="#D98B25"
         android:clickable="true"

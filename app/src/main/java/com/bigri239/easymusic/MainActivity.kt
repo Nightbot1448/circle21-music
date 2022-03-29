@@ -26,6 +26,9 @@ import java.io.IOException
 import java.io.InputStream
 import java.lang.System.currentTimeMillis
 import java.util.*
+import android.os.Bundle
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 @Suppress("DEPRECATION")
