@@ -26,6 +26,9 @@ import java.io.IOException
 import java.io.InputStream
 import java.lang.System.currentTimeMillis
 import java.util.*
+import android.os.Bundle
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 @Suppress("DEPRECATION")
@@ -96,19 +99,19 @@ class MainActivity : AppCompatActivity() {
             "Type1"
         )
 
-        // initialize grid layout manager
-        GridLayoutManager(
-            this, // context
-            2, // span count
-            RecyclerView.VERTICAL, // orientation
-            false // reverse layout
-        ).apply {
-            // specify the layout manager for recycler view
-            findViewById<RecyclerView>(R.id.scroll1).layoutManager = this
-        }
-
-        // finally, data bind the recycler view with adapter
-        findViewById<RecyclerView>(R.id.scroll1).adapter = RecyclerViewAdapter(stripes)
+//        // initialize grid layout manager
+//        GridLayoutManager(
+//            this, // context
+//            2, // span count
+//            RecyclerView.VERTICAL, // orientation
+//            false // reverse layout
+//        ).apply {
+//            // specify the layout manager for recycler view
+//            findViewById<RecyclerView>(R.id.scroll1).layoutManager = this
+//        }
+//
+//        // finally, data bind the recycler view with adapter
+//        findViewById<RecyclerView>(R.id.scroll1).adapter = RecyclerViewAdapter(stripes)
 
 
 
@@ -138,21 +141,13 @@ class MainActivity : AppCompatActivity() {
         val intent4 = Intent(this, TutorialActivity::class.java)
         findViewById<TextView>(R.id.tutorial).setOnClickListener {
             startActivity(intent4)
-            super.onStart()
-            val intent = Intent(this, HelpActivity::class.java)
-            findViewById<TextView>(R.id.help).setOnClickListener {
-                startActivity(intent)
-            }
-            val intent1 = Intent(this, AddingfilesActivity::class.java)
-            findViewById<TextView>(R.id.file).setOnClickListener {
-                startActivity(intent1)
-            }
+        }
             val intent14 = Intent(this, RecoveryActivity::class.java)
             findViewById<TextView>(R.id.account).setOnClickListener {
                 startActivity(intent14)
             }
 
-        }
+
     }
 
     override fun onCreateContextMenu(
@@ -171,9 +166,9 @@ class MainActivity : AppCompatActivity() {
     override fun onContextItemSelected(item: MenuItem): Boolean {
 
         val message: CharSequence = when (item.itemId) {
-            IDM1 -> "Выбран Track1"
-            IDM2 -> "Выбран Track2"
-            IDM3 -> "Выбран Track3"
+            IDM1 -> "Track1"
+            IDM2 -> "Track2"
+            IDM3 -> "Track3"
             else -> return super.onContextItemSelected(item)
         }
         findViewById<TextView>(R.id.txt)?.text=message

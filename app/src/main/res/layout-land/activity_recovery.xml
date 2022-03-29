@@ -12,7 +12,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="23dp"
-        android:text="Account recovery"
+        android:text="Account "
+        android:textColor="@color/colorAccent"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,6 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="230dp"
         android:text="BACK"
+        android:textColor="@color/colorAccent"
         app:layout_constraintEnd_toStartOf="@+id/recoveryact"
         app:layout_constraintTop_toTopOf="@+id/recoveryact" />
 </androidx.constraintlayout.widget.ConstraintLayout>
