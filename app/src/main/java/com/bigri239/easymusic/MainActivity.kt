@@ -64,12 +64,12 @@ class MainActivity : AppCompatActivity() {
         registerForContextMenu(textView)
         //создание контекстного меню
         val animals = mutableListOf(
-            "Aardvark", "Albatross", "Alligator",
-            "Alpaca", "Ant", "Anteater",
-            "Antelope", "Ape", "Armadillo",
-            "Donkey", "Baboon", "Badger",
-            "Barracuda", "Bear","Beaver",
-            "Bee", "Rabbit"
+            "Kick", "Type1", "Snare",
+            "Type1", "Hihat", "Type1",
+            "Loop", "Type1", "Bass",
+            "Type1", "808", "Type1",
+            "+", "Type1","+",
+            "Type1"
         )
 
         // initialize grid layout manager
@@ -80,13 +80,38 @@ class MainActivity : AppCompatActivity() {
             false // reverse layout
         ).apply {
             // specify the layout manager for recycler view
-            findViewById<RecyclerView>(R.id.scroll).layoutManager = this
+            findViewById<RecyclerView>(R.id.recyclerView).layoutManager = this
         }
 
         // finally, data bind the recycler view with adapter
-        findViewById<RecyclerView>(R.id.scroll).adapter = RecyclerViewAdapter(animals)
+        findViewById<RecyclerView>(R.id.recyclerView).adapter = RecyclerViewAdapter(animals)
 
-    }
+        val stripes = mutableListOf(
+            "Kick", "Type1", "Snare",
+            "Type1", "Hihat", "Type1",
+            "Loop", "Type1", "Bass",
+            "Type1", "808", "Type1",
+            "+", "Type1","+",
+            "Type1"
+        )
+
+        // initialize grid layout manager
+        GridLayoutManager(
+            this, // context
+            2, // span count
+            RecyclerView.VERTICAL, // orientation
+            false // reverse layout
+        ).apply {
+            // specify the layout manager for recycler view
+            findViewById<RecyclerView>(R.id.scroll1).layoutManager = this
+        }
+
+        // finally, data bind the recycler view with adapter
+        findViewById<RecyclerView>(R.id.scroll1).adapter = RecyclerViewAdapter(stripes)
+
+
+
+}
 
     // ниже создание переходов между экранами
     override fun onStart() {
@@ -120,6 +145,10 @@ class MainActivity : AppCompatActivity() {
             val intent1 = Intent(this, AddingfilesActivity::class.java)
             findViewById<TextView>(R.id.file).setOnClickListener {
                 startActivity(intent1)
+            }
+            val intent14 = Intent(this, RecoveryActivity::class.java)
+            findViewById<TextView>(R.id.account).setOnClickListener {
+                startActivity(intent14)
             }
 
         }
