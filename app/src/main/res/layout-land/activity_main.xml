@@ -11,13 +11,22 @@
     <!-- Это временно!!!-->
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/scroll"
+        android:id="@+id/scroll1"
         android:layout_width="511dp"
         android:layout_height="215dp"
-        android:layout_marginStart="55dp"
+        android:layout_marginStart="56dp"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toEndOf="@+id/file"
         app:layout_constraintTop_toBottomOf="@+id/file" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="150dp"
+        android:layout_height="214dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="2dp"
+        app:layout_constraintEnd_toStartOf="@+id/scroll1"
+        app:layout_constraintTop_toTopOf="@+id/file" />
 
     <TextView
         android:id="@+id/file"
@@ -37,7 +46,7 @@
         android:id="@+id/instruments"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="40dp"
         android:text="Instruments"
         android:textColor="@color/colorAccent"
         android:textSize="20dp"
@@ -49,7 +58,7 @@
         android:id="@+id/settings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="40dp"
         android:text="Settings"
         android:textColor="@color/colorAccent"
         android:textSize="20dp"
@@ -61,7 +70,7 @@
         android:id="@+id/tutorial"
         android:layout_width="69dp"
         android:layout_height="29dp"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="140dp"
         android:text="Tutorial"
         android:textColor="@color/colorAccent"
         android:textSize="20dp"
@@ -73,7 +82,7 @@
         android:id="@+id/help"
         android:layout_width="56dp"
         android:layout_height="28dp"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="40dp"
         android:text="Help"
         android:textColor="@color/colorAccent"
         android:textSize="20dp"
@@ -81,40 +90,7 @@
         app:layout_constraintStart_toEndOf="@+id/tutorial"
         app:layout_constraintTop_toTopOf="@+id/tutorial" />
     <!-- TODO: добавить кнопки для saveProject() и openProject()!!!-->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:backgroundTint="#D98B25"
-        android:clickable="true"
-
-        android:contentDescription="Enter How Much Cookies You Want"
-        app:borderWidth="0dp"
-
-        android:onClick="openProject"
-
-        app:layout_constraintStart_toEndOf="@+id/play"
-        app:layout_constraintTop_toTopOf="@+id/play"
-        app:srcCompat="@android:drawable/ic_media_ff" />
     <!-- TODO: добавить кнопки для saveProject() и openProject()!!!-->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="20dp"
-        android:backgroundTint="#D98B25"
-        android:clickable="true"
-
-        android:contentDescription="Enter How Much Cookies You Want"
-        app:borderWidth="0dp"
-
-        android:onClick="saveProject"
-
-        app:layout_constraintEnd_toStartOf="@+id/play"
-        app:layout_constraintTop_toTopOf="@+id/play"
-        app:srcCompat="@android:drawable/ic_media_rew" />
 
     <!-- TODO: Артем, добавь, пожалуйста, на ВСЕ кнопки onClick по содержанию -->
 
@@ -122,42 +98,28 @@
         android:id="@+id/play"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="170dp"
+        android:layout_marginEnd="24dp"
         android:backgroundTint="#D98B25"
         android:clickable="true"
         android:contentDescription="Enter How Much Cookies You Want"
         android:onClick="playSound"
         app:borderWidth="0dp"
-        app:layout_constraintStart_toEndOf="@+id/stop"
+        app:layout_constraintEnd_toStartOf="@+id/help"
         app:layout_constraintTop_toTopOf="@+id/stop"
         app:srcCompat="@android:drawable/ic_media_play" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/record"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="25dp"
-        android:backgroundTint="#D98B25"
-        android:clickable="true"
-        android:contentDescription="Enter How Much Cookies You Want"
-        app:borderWidth="0dp"
-        app:layout_constraintEnd_toStartOf="@+id/stop"
-        app:layout_constraintTop_toTopOf="@+id/stop"
-        app:rippleColor="@color/colorAccent"
-        app:srcCompat="@android:drawable/radiobutton_on_background" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/stop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="90dp"
         android:layout_marginTop="230dp"
+        android:layout_marginEnd="20dp"
         android:backgroundTint="#D98B25"
         android:clickable="true"
         android:contentDescription="Enter How Much Cookies You Want"
         android:onClick="pause"
         app:borderWidth="0dp"
-        app:layout_constraintStart_toEndOf="@+id/file"
+        app:layout_constraintEnd_toStartOf="@+id/floatingActionButton2"
         app:layout_constraintTop_toBottomOf="@+id/file"
         app:srcCompat="@android:drawable/alert_dark_frame"
         tools:ignore="MissingConstraints" />
@@ -166,27 +128,27 @@
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="100dp"
         android:text="00:09:13"
         android:textColor="@color/colorAccent"
         android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/record"
-        app:layout_constraintEnd_toStartOf="@+id/record"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/floatingActionButton3"
+        app:layout_constraintEnd_toStartOf="@+id/floatingActionButton3"
+        app:layout_constraintTop_toTopOf="@+id/floatingActionButton3" />
 
     <TextView
         android:id="@+id/txt"
-        android:layout_width="62dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="64dp"
+        android:layout_height="34dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="12dp"
         android:clickable="true"
         android:onClick="setExample"
-        android:text="example"
-        app:layout_constraintStart_toEndOf="@+id/next"
-        app:layout_constraintTop_toTopOf="@+id/next" />
+        android:text="Track 1"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/help"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -240,15 +202,43 @@
         app:layout_constraintEnd_toEndOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="@+id/imageView" />
 
-    <TextView
-        android:id="@+id/textView2"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="70dp"
-        android:text="Track1"
+        android:layout_marginEnd="20dp"
+        android:backgroundTint="#D98B25"
+        android:clickable="true"
+        app:borderWidth="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/play"
+        app:layout_constraintEnd_toStartOf="@+id/play"
+        app:layout_constraintTop_toTopOf="@+id/play"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@android:drawable/ic_media_pause" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="70dp"
+        android:backgroundTint="#D98B25"
+        android:clickable="true"
+        app:borderWidth="0dp"
+        app:layout_constraintEnd_toStartOf="@+id/stop"
+        app:layout_constraintTop_toTopOf="@+id/stop"
+        app:srcCompat="@android:drawable/ic_menu_upload" />
+
+    <TextView
+        android:id="@+id/account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="Account"
         android:textColor="@color/colorAccent"
-        app:layout_constraintBottom_toBottomOf="@+id/help"
-        app:layout_constraintStart_toEndOf="@+id/help"
-        app:layout_constraintTop_toTopOf="@+id/help" />
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/settings"
+        app:layout_constraintStart_toEndOf="@+id/settings"
+        app:layout_constraintTop_toTopOf="@+id/settings"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

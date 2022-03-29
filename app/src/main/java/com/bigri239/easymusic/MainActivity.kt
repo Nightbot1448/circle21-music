@@ -18,6 +18,8 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -46,8 +48,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var textView: TextView
 
     companion object {
-        const val IDM_OPEN = 101
-        const val IDM_SAVE = 102
+        const val IDM1 = 101
+        const val IDM2 = 102
+        const val IDM3 = 103
     }
 
     //опишем создание контекстных меню
@@ -61,8 +64,55 @@ class MainActivity : AppCompatActivity() {
         textView = findViewById(R.id.txt)
         registerForContextMenu(textView)
         //создание контекстного меню
+        val animals = mutableListOf(
+            "Kick", "Type1", "Snare",
+            "Type1", "Hihat", "Type1",
+            "Loop", "Type1", "Bass",
+            "Type1", "808", "Type1",
+            "+", "Type1","+",
+            "Type1"
+        )
 
-    }
+        // initialize grid layout manager
+        GridLayoutManager(
+            this, // context
+            2, // span count
+            RecyclerView.VERTICAL, // orientation
+            false // reverse layout
+        ).apply {
+            // specify the layout manager for recycler view
+            findViewById<RecyclerView>(R.id.recyclerView).layoutManager = this
+        }
+
+        // finally, data bind the recycler view with adapter
+        findViewById<RecyclerView>(R.id.recyclerView).adapter = RecyclerViewAdapter(animals)
+
+        val stripes = mutableListOf(
+            "Kick", "Type1", "Snare",
+            "Type1", "Hihat", "Type1",
+            "Loop", "Type1", "Bass",
+            "Type1", "808", "Type1",
+            "+", "Type1","+",
+            "Type1"
+        )
+
+        // initialize grid layout manager
+        GridLayoutManager(
+            this, // context
+            2, // span count
+            RecyclerView.VERTICAL, // orientation
+            false // reverse layout
+        ).apply {
+            // specify the layout manager for recycler view
+            findViewById<RecyclerView>(R.id.scroll1).layoutManager = this
+        }
+
+        // finally, data bind the recycler view with adapter
+        findViewById<RecyclerView>(R.id.scroll1).adapter = RecyclerViewAdapter(stripes)
+
+
+
+}
 
     // ниже создание переходов между экранами
     override fun onStart() {
@@ -97,6 +147,10 @@ class MainActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.file).setOnClickListener {
                 startActivity(intent1)
             }
+            val intent14 = Intent(this, RecoveryActivity::class.java)
+            findViewById<TextView>(R.id.account).setOnClickListener {
+                startActivity(intent14)
+            }
 
         }
     }
@@ -108,16 +162,18 @@ class MainActivity : AppCompatActivity() {
     ) {
         super.onCreateContextMenu(menu, v, menuInfo)
 
-        menu?.add(Menu.NONE, IDM_OPEN, Menu.NONE, "KICK")
-        menu?.add(Menu.NONE, IDM_SAVE, Menu.NONE, "SNARE")
+        menu?.add(Menu.NONE, IDM1, Menu.NONE, "Track1")
+        menu?.add(Menu.NONE, IDM2, Menu.NONE, "Track2")
+        menu?.add(Menu.NONE, IDM3, Menu.NONE, "Track3")
     }
 
     //сообщение:
     override fun onContextItemSelected(item: MenuItem): Boolean {
 
         val message: CharSequence = when (item.itemId) {
-            IDM_OPEN -> "Выбран KICK"
-            IDM_SAVE -> "Выбран SNARE"
+            IDM1 -> "Выбран Track1"
+            IDM2 -> "Выбран Track2"
+            IDM3 -> "Выбран Track3"
             else -> return super.onContextItemSelected(item)
         }
         findViewById<TextView>(R.id.txt)?.text=message
