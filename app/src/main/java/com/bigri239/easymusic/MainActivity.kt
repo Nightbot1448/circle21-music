@@ -96,19 +96,19 @@ class MainActivity : AppCompatActivity() {
             "Type1"
         )
 
-        // initialize grid layout manager
-        GridLayoutManager(
-            this, // context
-            2, // span count
-            RecyclerView.VERTICAL, // orientation
-            false // reverse layout
-        ).apply {
-            // specify the layout manager for recycler view
-            findViewById<RecyclerView>(R.id.scroll1).layoutManager = this
-        }
-
-        // finally, data bind the recycler view with adapter
-        findViewById<RecyclerView>(R.id.scroll1).adapter = RecyclerViewAdapter(stripes)
+//        // initialize grid layout manager
+//        GridLayoutManager(
+//            this, // context
+//            2, // span count
+//            RecyclerView.VERTICAL, // orientation
+//            false // reverse layout
+//        ).apply {
+//            // specify the layout manager for recycler view
+//            findViewById<RecyclerView>(R.id.scroll1).layoutManager = this
+//        }
+//
+//        // finally, data bind the recycler view with adapter
+//        findViewById<RecyclerView>(R.id.scroll1).adapter = RecyclerViewAdapter(stripes)
 
 
 
@@ -171,9 +171,9 @@ class MainActivity : AppCompatActivity() {
     override fun onContextItemSelected(item: MenuItem): Boolean {
 
         val message: CharSequence = when (item.itemId) {
-            IDM1 -> "Выбран Track1"
-            IDM2 -> "Выбран Track2"
-            IDM3 -> "Выбран Track3"
+            IDM1 -> "Track1"
+            IDM2 -> "Track2"
+            IDM3 -> "Track3"
             else -> return super.onContextItemSelected(item)
         }
         findViewById<TextView>(R.id.txt)?.text=message

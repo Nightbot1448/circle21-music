@@ -148,7 +148,8 @@
         android:textColor="@color/colorAccent"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/help"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="TouchTargetSizeCheck" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -214,7 +215,8 @@
         app:layout_constraintEnd_toStartOf="@+id/play"
         app:layout_constraintTop_toTopOf="@+id/play"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@android:drawable/ic_media_pause" />
+        app:srcCompat="@android:drawable/ic_media_pause"
+        tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton3"
@@ -226,7 +228,8 @@
         app:borderWidth="0dp"
         app:layout_constraintEnd_toStartOf="@+id/stop"
         app:layout_constraintTop_toTopOf="@+id/stop"
-        app:srcCompat="@android:drawable/ic_menu_upload" />
+        app:srcCompat="@android:drawable/ic_menu_upload"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
         android:id="@+id/account"
