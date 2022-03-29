@@ -48,8 +48,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var textView: TextView
 
     companion object {
-        const val IDM_OPEN = 101
-        const val IDM_SAVE = 102
+        const val IDM1 = 101
+        const val IDM2 = 102
+        const val IDM3 = 103
     }
 
     //опишем создание контекстных меню
@@ -161,16 +162,18 @@ class MainActivity : AppCompatActivity() {
     ) {
         super.onCreateContextMenu(menu, v, menuInfo)
 
-        menu?.add(Menu.NONE, IDM_OPEN, Menu.NONE, "KICK")
-        menu?.add(Menu.NONE, IDM_SAVE, Menu.NONE, "SNARE")
+        menu?.add(Menu.NONE, IDM1, Menu.NONE, "Track1")
+        menu?.add(Menu.NONE, IDM2, Menu.NONE, "Track2")
+        menu?.add(Menu.NONE, IDM3, Menu.NONE, "Track3")
     }
 
     //сообщение:
     override fun onContextItemSelected(item: MenuItem): Boolean {
 
         val message: CharSequence = when (item.itemId) {
-            IDM_OPEN -> "Выбран KICK"
-            IDM_SAVE -> "Выбран SNARE"
+            IDM1 -> "Выбран Track1"
+            IDM2 -> "Выбран Track2"
+            IDM3 -> "Выбран Track3"
             else -> return super.onContextItemSelected(item)
         }
         findViewById<TextView>(R.id.txt)?.text=message
