@@ -141,21 +141,13 @@ class MainActivity : AppCompatActivity() {
         val intent4 = Intent(this, TutorialActivity::class.java)
         findViewById<TextView>(R.id.tutorial).setOnClickListener {
             startActivity(intent4)
-            super.onStart()
-            val intent = Intent(this, HelpActivity::class.java)
-            findViewById<TextView>(R.id.help).setOnClickListener {
-                startActivity(intent)
-            }
-            val intent1 = Intent(this, AddingfilesActivity::class.java)
-            findViewById<TextView>(R.id.file).setOnClickListener {
-                startActivity(intent1)
-            }
+        }
             val intent14 = Intent(this, RecoveryActivity::class.java)
             findViewById<TextView>(R.id.account).setOnClickListener {
                 startActivity(intent14)
             }
 
-        }
+
     }
 
     override fun onCreateContextMenu(
