@@ -18,6 +18,8 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -61,6 +63,28 @@ class MainActivity : AppCompatActivity() {
         textView = findViewById(R.id.txt)
         registerForContextMenu(textView)
         //создание контекстного меню
+        val animals = mutableListOf(
+            "Aardvark", "Albatross", "Alligator",
+            "Alpaca", "Ant", "Anteater",
+            "Antelope", "Ape", "Armadillo",
+            "Donkey", "Baboon", "Badger",
+            "Barracuda", "Bear","Beaver",
+            "Bee", "Rabbit"
+        )
+
+        // initialize grid layout manager
+        GridLayoutManager(
+            this, // context
+            2, // span count
+            RecyclerView.VERTICAL, // orientation
+            false // reverse layout
+        ).apply {
+            // specify the layout manager for recycler view
+            findViewById<RecyclerView>(R.id.scroll).layoutManager = this
+        }
+
+        // finally, data bind the recycler view with adapter
+        findViewById<RecyclerView>(R.id.scroll).adapter = RecyclerViewAdapter(animals)
 
     }
 
