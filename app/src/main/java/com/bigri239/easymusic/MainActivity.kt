@@ -30,6 +30,9 @@ import android.os.Bundle
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 
+import android.widget.LinearLayout.HORIZONTAL
+import androidx.recyclerview.widget.LinearLayoutManager
+
 
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
@@ -50,6 +53,9 @@ class MainActivity : AppCompatActivity() {
     private var txtView: TextView? = null
     private lateinit var textView: TextView
 
+    private var mAdapter: RecyclerAdapter? = null
+    private var mRecyclerView: RecyclerView? = null
+
     companion object {
         const val IDM1 = 101
         const val IDM2 = 102
@@ -63,6 +69,17 @@ class MainActivity : AppCompatActivity() {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
 
         //var firstsound = findViewById<Button>(R.id.KICK)
+
+        mRecyclerView = findViewById(R.id.recyclerViewhor)
+        mRecyclerView?.layoutManager = LinearLayoutManager(
+            this,
+            LinearLayoutManager.HORIZONTAL, false)
+        val dataset = arrayOfNulls<String>(50)
+        for (i in dataset.indices) {
+            dataset[i] = "item$i"
+        }
+        mAdapter = RecyclerAdapter(dataset, this)
+        mRecyclerView?.adapter = mAdapter
 
         textView = findViewById(R.id.txt)
         registerForContextMenu(textView)

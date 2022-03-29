@@ -10,14 +10,13 @@
 
     <!-- Это временно!!!-->
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="511dp"
         android:layout_height="215dp"
         android:layout_marginStart="55dp"
         android:layout_marginTop="16dp"
-        android:background="#FF9933"
+        android:background="#444444"
         app:layout_constraintStart_toEndOf="@+id/file"
         app:layout_constraintTop_toBottomOf="@+id/file"
         tools:context=".MainActivity"
@@ -31,6 +30,14 @@
             app:layout_constraintHorizontal_bias="1.0"
 
             app:layout_constraintVertical_bias="1.0" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewhor"
+            android:layout_width="512dp"
+            android:layout_height="211dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/recyclerView1"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
