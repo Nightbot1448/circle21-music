@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity() {
         var ratio: Float = 1.0F
     )
     private var state : String = "unready"
+    private var played = 0
     private var projectName = "project1"
     private val tracks: Array<SoundPool> = Array (100) { SoundPool(10, AudioManager.STREAM_MUSIC, 0) }
     private var countTracks = 0
@@ -260,28 +261,29 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun playTrack (i: Int, j: Int, delay : Long = 0) {
+        val started = played
         var timer : CountDownTimer = object : CountDownTimer(sounds[i][j].delay + delay, 1000) {
             override fun onTick(millisUntilFinished: Long) {}
-            override fun onFinish() {
-                if (state != "pause") {
-                    tracks[i]?.play(sounds[i][j].id,
-                        sounds[i][j].volume,
-                        sounds[i][j].volume,
-                        0,
-                        sounds[i][j].loop,
-                        sounds[i][j].ratio)
-                    Log.d(TAG, "MYMSG: " + i.toString() + " " + j.toString() + " " + sounds[i][0].id.toString())
+                override fun onFinish() {
+                    if (state != "pause" && started == played) {
+                        tracks[i]?.play(sounds[i][j].id,
+                            sounds[i][j].volume,
+                            sounds[i][j].volume,
+                            0,
+                            sounds[i][j].loop,
+                            sounds[i][j].ratio)
+                        Log.d(TAG, "MYMSG: " + i.toString() + " " + j.toString() + " " + sounds[i][0].id.toString())
+                    }
+                    if (j < countSounds[i] && started == played) playTrack(i, j + 1)
+                    if (j == countSounds[i] && i == countTracks) {
+                        var timer1 : CountDownTimer = object : CountDownTimer((getSoundLength(sounds[i][j].res) * (sounds[i][j].loop + 1) / sounds[i][j].ratio).toLong(), 1000) {
+                            override fun onTick(millisUntilFinished: Long) {}
+                            override fun onFinish() {
+                                state = "ready"
+                            }
+                        }.start()
+                    }
                 }
-                if (j < countSounds[i]) playTrack(i, j + 1)
-                if (j == countSounds[i] && i == countTracks) {
-                    var timer1 : CountDownTimer = object : CountDownTimer((getSoundLength(sounds[i][j].res) * (sounds[i][j].loop + 1) / sounds[i][j].ratio).toLong(), 1000) {
-                        override fun onTick(millisUntilFinished: Long) {}
-                        override fun onFinish() {
-                            state = "ready"
-                        }
-                    }.start()
-                }
-            }
         }.start()
     }
 
@@ -310,6 +312,7 @@ class MainActivity : AppCompatActivity() {
 
     fun playSound(view: View) {
         if (state == "ready") {
+            played += 1
             Toast.makeText(this, "Playing compiled music...", Toast.LENGTH_SHORT).show()
 
             for (i in 0..countTracks) { // очищение и перезаполнение, если играем еще раз
@@ -385,6 +388,16 @@ class MainActivity : AppCompatActivity() {
         if (state != "unready") {
             Toast.makeText(this, "Saving music...", Toast.LENGTH_SHORT).show()
             Toast.makeText(this, "Oops! Not ready yet! :(", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun resetPlaying (view: View) {
+        if (state == "playing") {
+            for (i in 0..countTracks) { // очищение и перезаполнение, если играем еще раз
+                tracks[i].release()
+                tracks[i] = SoundPool(10, AudioManager.STREAM_MUSIC, 0)
+                state = "ready"
+            }
         }
     }
 }
