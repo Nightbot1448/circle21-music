@@ -25,6 +25,16 @@ class RecyclerViewAdapter(private val animals: MutableList<String>)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         // display the current animal
         holder.animal.text = animals[position]
+        holder.itemView.setOnClickListener { onClick(holder, holder.adapterPosition) }
+        holder.itemView.setOnLongClickListener { onLongClick(holder, holder.adapterPosition); true }
+    }
+
+    private fun onLongClick(holder: RecyclerView.ViewHolder, adapterPosition: Int) {
+
+    }
+
+    private fun onClick(holder: RecyclerViewAdapter.ViewHolder, adapterPosition: Int) {
+
     }
 
 
@@ -48,4 +58,5 @@ class RecyclerViewAdapter(private val animals: MutableList<String>)
     override fun getItemViewType(position: Int): Int {
         return position
     }
+
 }
