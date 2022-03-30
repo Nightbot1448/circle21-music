@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity() {
         var ratio: Float = 1.0F
     )
     private var state : String = "unready"
+    private var projectName = "project1"
     private val tracks: Array<SoundPool> = Array (100) { SoundPool(10, AudioManager.STREAM_MUSIC, 0) }
     private var countTracks = 0
     private val countSounds: Array<Int> = Array (100) {0}
@@ -175,32 +176,31 @@ class MainActivity : AppCompatActivity() {
     ) {
         super.onCreateContextMenu(menu, v, menuInfo)
 
-        menu?.add(Menu.NONE, IDM1, Menu.NONE, "Track1")
-        menu?.add(Menu.NONE, IDM2, Menu.NONE, "Track2")
-        menu?.add(Menu.NONE, IDM3, Menu.NONE, "Track3")
+        menu?.add(Menu.NONE, IDM1, Menu.NONE, "project1")
+        menu?.add(Menu.NONE, IDM2, Menu.NONE, "project2")
+        menu?.add(Menu.NONE, IDM3, Menu.NONE, "project3")
     }
-    private var tracknomber = 1
+    private var tracknumber = 1
     //сообщение:
     override fun onContextItemSelected(item: MenuItem): Boolean {
 
-        val message: CharSequence = when (item.itemId) {
-            IDM1 -> "Track1"
-            IDM2 -> "Track2"
-            IDM3 -> "Track3"
+        val message: CharSequence = when (item.itemId) { // TODO: написать добавление элемента в меню
+            IDM1 -> "project1"
+            IDM2 -> "project2"
+            IDM3 -> "project3"
             else -> return super.onContextItemSelected(item)
         }
-        findViewById<TextView>(R.id.txt)?.text=message
-        if (message == "Track2"){
-            tracknomber = 2
+        findViewById<TextView>(R.id.txt)?.text = message
+        projectName = message as String
+        if (message == "project2"){
+            tracknumber = 2
         }
-        if (message == "Track3"){
-            tracknomber = 3
+        if (message == "project3"){
+            tracknumber = 3
         }
-        else{
-            tracknomber = 1
-        }
+
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-        findViewById<TextView>(R.id.textView)?.text= tracknomber.toString()
+        findViewById<TextView>(R.id.textView)?.text= tracknumber.toString()
         return true
 
     }
@@ -311,7 +311,7 @@ class MainActivity : AppCompatActivity() {
         try {
             Toast.makeText(this, "Opening project...", Toast.LENGTH_SHORT).show()
             val path = getFilesDir()
-            val file = File(path, "projectTest.emproj") // TODO: добавить что-то вроде выбора имени проекта?? Или мб сразу выбор файла??
+            val file = File(path, projectName + ".emproj")
             val content : String = file.readText()
             val tracks_content = content.split("\n").toTypedArray()
             countTracks = tracks_content.size - 1
@@ -334,7 +334,7 @@ class MainActivity : AppCompatActivity() {
         if (state != "unready") {
             Toast.makeText(this, "Saving project...", Toast.LENGTH_SHORT).show()
             val path = getFilesDir()
-            val file = File(path, "projectTest.emproj")
+            val file = File(path, projectName + ".emproj")
             var content = ""
             for (i in 0..countTracks) {
                 for (j in 0..countSounds[i]) {
@@ -351,6 +351,13 @@ class MainActivity : AppCompatActivity() {
             FileOutputStream(file).use {
                 it.write(content.toByteArray())
             }
+        }
+    }
+
+    fun saveMusic(view: View) {
+        if (state != "unready") {
+            Toast.makeText(this, "Saving music...", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Oops! Not ready yet! :(", Toast.LENGTH_SHORT).show()
         }
     }
 }
