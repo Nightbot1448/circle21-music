@@ -95,25 +95,25 @@ class MainActivity : AppCompatActivity() {
                 .setOnMenuItemClickListener { item ->
                     when (item.itemId) {
                         R.id.menu1 -> {
-                            Toast.makeText(
-                                applicationContext,
-                                "Вы выбрали PopupMenu 1",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            Toast.makeText(applicationContext, "You chose project1", Toast.LENGTH_SHORT).show()
+                            projectName = "project1"
+                            true
+                        }
+                        R.id.menu2 -> {
+                            Toast.makeText(applicationContext, "You chose project2", Toast.LENGTH_SHORT).show()
+                            projectName = "project2"
+                            true
+                        }
+                        R.id.menu3 -> {
+                            Toast.makeText(applicationContext, "You chose project3", Toast.LENGTH_SHORT).show()
+                            projectName = "project1"
                             true
                         }
                         else -> false
                     }
                 }
-            popupMenu.setOnDismissListener {
-                Toast.makeText(
-                    applicationContext, "onDismiss",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+            popupMenu.setOnDismissListener {}
             popupMenu.show()
-
-
 
             mRecyclerView = findViewById(R.id.recyclerViewhor)
             mRecyclerView?.layoutManager = LinearLayoutManager(
@@ -330,15 +330,18 @@ class MainActivity : AppCompatActivity() {
 
     fun setExample(view: View) { //демонстрация работы как одного трека, так и нескольких звуков (что все работает)
         Toast.makeText(this, "Example set", Toast.LENGTH_SHORT).show()
+        val name00 = "file1"
+        val name10 = "file1"
+        val name11 = "file2"
         sounds[0][0].ratio = 0.5F // по фану, для демонстрации
         sounds[0][0].res = R.raw.file1
         countTracks = 1 // к следующей дорожке
 
-        sounds[1][0].delay = (getSoundLength(sounds[0][0].res)  / sounds[0][0].ratio).toLong() // задержка перед следующим звуком - длина этого, деленное на ratio
         sounds[1][0].res = R.raw.file1
+        sounds[1][0].delay = (getSoundLength( getResources().getIdentifier(name00, "raw", getPackageName()) /*sounds[0][0].res*/)  / sounds[0][0].ratio).toLong() // задержка перед следующим звуком - длина этого, деленное на ratio
         countSounds[1] = 1 // к следующему звуку
         sounds[1][1].res = R.raw.file2
-        sounds[1][1].delay = (getSoundLength(sounds[1][0].res)  / sounds[1][0].ratio).toLong() - 3000 // для демонстрации
+        sounds[1][1].delay = (getSoundLength( getResources().getIdentifier(name10, "raw", getPackageName()) /*sounds[0][0].res*/)  / sounds[1][0].ratio).toLong() - 3000 // для демонстрации
         sounds[1][1].loop = 1
         state = "ready"
     }
@@ -433,8 +436,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun resetPlaying (view: View) {
-        if (state == "playing") {
+        if (state == "playing" || state == "ready") {
             for (i in 0..countTracks) { // очищение и перезаполнение, если играем еще раз
+                Toast.makeText(this, "Playing halted", Toast.LENGTH_SHORT).show()
+                tracks[i].autoPause()
                 tracks[i].release()
                 tracks[i] = SoundPool(10, AudioManager.STREAM_MUSIC, 0)
                 state = "ready"
