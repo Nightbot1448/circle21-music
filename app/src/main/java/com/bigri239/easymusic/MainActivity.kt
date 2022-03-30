@@ -187,9 +187,9 @@ class MainActivity : AppCompatActivity() {
 
         super.onCreateContextMenu(menu, v, menuInfo)
 
-        menu?.add(Menu.NONE, MENU1, Menu.NONE, "kick")
-        menu?.add(Menu.NONE, MENU2, Menu.NONE, "snare")
-        menu?.add(Menu.NONE, MENU3, Menu.NONE, "hihat")
+//        menu?.add(Menu.NONE, MENU1, Menu.NONE, "kick")
+//        menu?.add(Menu.NONE, MENU2, Menu.NONE, "snare")
+//        menu?.add(Menu.NONE, MENU3, Menu.NONE, "hihat")
 
     }
     private var tracknumber = 1
