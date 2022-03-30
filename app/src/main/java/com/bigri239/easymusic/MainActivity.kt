@@ -39,7 +39,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
     data class SoundInfo (
-        var res: Int = 0,
+        var res: String = "",
         var id: Int = 0,
         var delay: Long = 0,
         var volume: Float = 0.0F,
@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
     private val tracks: Array<SoundPool> = Array (100) { SoundPool(10, AudioManager.STREAM_MUSIC, 0) }
     private var countTracks = 0
     private val countSounds: Array<Int> = Array (100) {0}
-    private val sounds: Array<Array<SoundInfo>> = Array (100) { Array(1000) {i -> SoundInfo(0, i + 1, 0, 1.0F, 0, 1.0F) } }
+    private val sounds: Array<Array<SoundInfo>> = Array (100) { Array(1000) {i -> SoundInfo("", i + 1, 0, 1.0F, 0, 1.0F) } }
     private var progressBar: ProgressBar? = null
     private var txtView: TextView? = null
     private lateinit var textView: TextView
@@ -317,7 +317,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     if (j < countSounds[i] && started == played) playTrack(i, j + 1)
                     if (j == countSounds[i] && i == countTracks) {
-                        var timer1 : CountDownTimer = object : CountDownTimer((getSoundLength(sounds[i][j].res) * (sounds[i][j].loop + 1) / sounds[i][j].ratio).toLong(), 1000) {
+                        var timer1 : CountDownTimer = object : CountDownTimer((getSoundLength(getResources().getIdentifier(sounds[i][j].res, "raw", getPackageName())) * (sounds[i][j].loop + 1) / sounds[i][j].ratio).toLong(), 1000) {
                             override fun onTick(millisUntilFinished: Long) {}
                             override fun onFinish() {
                                 state = "ready"
@@ -330,18 +330,15 @@ class MainActivity : AppCompatActivity() {
 
     fun setExample(view: View) { //демонстрация работы как одного трека, так и нескольких звуков (что все работает)
         Toast.makeText(this, "Example set", Toast.LENGTH_SHORT).show()
-        val name00 = "file1"
-        val name10 = "file1"
-        val name11 = "file2"
         sounds[0][0].ratio = 0.5F // по фану, для демонстрации
-        sounds[0][0].res = R.raw.file1
+        sounds[0][0].res = "file1"
         countTracks = 1 // к следующей дорожке
 
-        sounds[1][0].res = R.raw.file1
-        sounds[1][0].delay = (getSoundLength( getResources().getIdentifier(name00, "raw", getPackageName()) /*sounds[0][0].res*/)  / sounds[0][0].ratio).toLong() // задержка перед следующим звуком - длина этого, деленное на ratio
+        sounds[1][0].res = "file1"
+        sounds[1][0].delay = (getSoundLength(getResources().getIdentifier(sounds[0][0].res, "raw", getPackageName()))  / sounds[0][0].ratio).toLong() // задержка перед следующим звуком - длина этого, деленное на ratio
         countSounds[1] = 1 // к следующему звуку
-        sounds[1][1].res = R.raw.file2
-        sounds[1][1].delay = (getSoundLength( getResources().getIdentifier(name10, "raw", getPackageName()) /*sounds[0][0].res*/)  / sounds[1][0].ratio).toLong() - 3000 // для демонстрации
+        sounds[1][1].res = "file2"
+        sounds[1][1].delay = (getSoundLength(getResources().getIdentifier(sounds[1][0].res, "raw", getPackageName()))  / sounds[1][0].ratio).toLong() - 3000 // для демонстрации
         sounds[1][1].loop = 1
         state = "ready"
     }
@@ -365,7 +362,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             for (i in 0..countTracks) {
-                for (j in 0..countSounds[i]) sounds[i][j].id = tracks[i]!!.load(baseContext, sounds[i][j].res, 0) // загрузить i трек, j звук
+                for (j in 0..countSounds[i]) sounds[i][j].id = tracks[i]!!.load(baseContext, getResources().getIdentifier(sounds[i][j].res, "raw", getPackageName()), 0) // загрузить i трек, j звук
             }
 
             if (state != "playing") {
@@ -394,7 +391,7 @@ class MainActivity : AppCompatActivity() {
                 countSounds[i] = sounds_content.size - 1
                 for (j in sounds_content.indices) {
                     val params = sounds_content[j].split(" ").toTypedArray()
-                    sounds[i][j] = SoundInfo(params[0].toInt(), params[1].toInt(), params[2].toLong(), params[3].toFloat(), params[4].toInt(), params[5].toFloat())
+                    sounds[i][j] = SoundInfo(params[0], params[1].toInt(), params[2].toLong(), params[3].toFloat(), params[4].toInt(), params[5].toFloat())
                 }
             }
             state = "ready"
