@@ -61,6 +61,9 @@ class MainActivity : AppCompatActivity() {
         const val IDM1 = 101
         const val IDM2 = 102
         const val IDM3 = 103
+        const val MENU1 = 11
+        const val MENU2 = 12
+        const val MENU3 = 13
     }
 
     //опишем создание контекстных меню
@@ -84,6 +87,8 @@ class MainActivity : AppCompatActivity() {
 
         textView = findViewById(R.id.txt)
         registerForContextMenu(textView)
+
+
         //создание контекстного меню
         val animals = mutableListOf(
             "Kick", "Type1", "Snare",
@@ -179,6 +184,13 @@ class MainActivity : AppCompatActivity() {
         menu?.add(Menu.NONE, IDM1, Menu.NONE, "project1")
         menu?.add(Menu.NONE, IDM2, Menu.NONE, "project2")
         menu?.add(Menu.NONE, IDM3, Menu.NONE, "project3")
+
+        super.onCreateContextMenu(menu, v, menuInfo)
+
+        menu?.add(Menu.NONE, MENU1, Menu.NONE, "kick")
+        menu?.add(Menu.NONE, MENU2, Menu.NONE, "snare")
+        menu?.add(Menu.NONE, MENU3, Menu.NONE, "hihat")
+
     }
     private var tracknumber = 1
     //сообщение:
@@ -190,7 +202,20 @@ class MainActivity : AppCompatActivity() {
             IDM3 -> "project3"
             else -> return super.onContextItemSelected(item)
         }
-        findViewById<TextView>(R.id.txt)?.text = message
+//        switch (item.getItemId()) {
+//            case IDM1 :
+//
+//            break;
+//            case IDM2 :
+//
+//            break;
+//            case MENU_COLOR_BLUE :
+//
+//            break;
+//        }
+
+
+            findViewById<TextView>(R.id.txt)?.text = message
         projectName = message as String
         if (message == "project2"){
             tracknumber = 2
@@ -198,6 +223,8 @@ class MainActivity : AppCompatActivity() {
         if (message == "project3"){
             tracknumber = 3
         }
+
+
 
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         findViewById<TextView>(R.id.textView)?.text= tracknumber.toString()
