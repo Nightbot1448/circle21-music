@@ -27,10 +27,12 @@ import java.io.InputStream
 import java.lang.System.currentTimeMillis
 import java.util.*
 import android.os.Bundle
+import android.widget.Button
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 
 import android.widget.LinearLayout.HORIZONTAL
+import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.LinearLayoutManager
 
 
@@ -75,53 +77,92 @@ class MainActivity : AppCompatActivity() {
 
         //var firstsound = findViewById<Button>(R.id.KICK)
 
-        mRecyclerView = findViewById(R.id.recyclerViewhor)
-        mRecyclerView?.layoutManager = LinearLayoutManager(
-            this,
-            LinearLayoutManager.HORIZONTAL, false)
-        val dataset = arrayOfNulls<String>(50)
-        for (i in dataset.indices) {
-            dataset[i] = "item$i"
-        }
-        mAdapter = RecyclerAdapter(dataset, this)
-        mRecyclerView?.adapter = mAdapter
+//        val button = findViewById<Button>(R.id.button)
+        val textView = findViewById<TextView>(R.id.txt)
+//        val imageView = findViewById<ImageView>(R.id.imageView)
+//        button.setOnClickListener(viewClickListener)
+        textView.setOnClickListener(viewClickListener)
+//        imageView.setOnClickListener(viewClickListener)
+    }
 
-        textView = findViewById(R.id.txt)
-        registerForContextMenu(textView)
+        var viewClickListener =
+            View.OnClickListener { v -> showPopupMenu(v) }
+
+        private fun showPopupMenu(v: View) {
+            val popupMenu = PopupMenu(this, v)
+            popupMenu.inflate(R.menu.popupmenu)
+            popupMenu
+                .setOnMenuItemClickListener { item ->
+                    when (item.itemId) {
+                        R.id.menu1 -> {
+                            Toast.makeText(
+                                applicationContext,
+                                "Вы выбрали PopupMenu 1",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            true
+                        }
+                        else -> false
+                    }
+                }
+            popupMenu.setOnDismissListener {
+                Toast.makeText(
+                    applicationContext, "onDismiss",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            popupMenu.show()
 
 
-        //создание контекстного меню
-        val animals = mutableListOf(
-            "Kick", "Type1", "Snare",
-            "Type1", "Hihat", "Type1",
-            "Loop", "Type1", "Bass",
-            "Type1", "808", "Type1",
-            "+", "Type1","+",
-            "Type1"
-        )
 
-        // initialize grid layout manager
-        GridLayoutManager(
-            this, // context
-            2, // span count
-            RecyclerView.VERTICAL, // orientation
-            false // reverse layout
-        ).apply {
-            // specify the layout manager for recycler view
-            findViewById<RecyclerView>(R.id.recyclerView).layoutManager = this
-        }
+            mRecyclerView = findViewById(R.id.recyclerViewhor)
+            mRecyclerView?.layoutManager = LinearLayoutManager(
+                this,
+                LinearLayoutManager.HORIZONTAL, false
+            )
+            val dataset = arrayOfNulls<String>(50)
+            for (i in dataset.indices) {
+                dataset[i] = "item$i"
+            }
+            mAdapter = RecyclerAdapter(dataset, this)
+            mRecyclerView?.adapter = mAdapter
 
-        // finally, data bind the recycler view with adapter
-        findViewById<RecyclerView>(R.id.recyclerView).adapter = RecyclerViewAdapter(animals)
+//        textView = findViewById(R.id.txt)
+//        registerForContextMenu(textView)
 
-        val stripes = mutableListOf(
-            "Kick", "Type1", "Snare",
-            "Type1", "Hihat", "Type1",
-            "Loop", "Type1", "Bass",
-            "Type1", "808", "Type1",
-            "+", "Type1","+",
-            "Type1"
-        )
+
+            //создание контекстного меню
+            val animals = mutableListOf(
+                "Kick", "Type1", "Snare",
+                "Type1", "Hihat", "Type1",
+                "Loop", "Type1", "Bass",
+                "Type1", "808", "Type1",
+                "+", "Type1", "+",
+                "Type1"
+            )
+
+            // initialize grid layout manager
+            GridLayoutManager(
+                this, // context
+                2, // span count
+                RecyclerView.VERTICAL, // orientation
+                false // reverse layout
+            ).apply {
+                // specify the layout manager for recycler view
+                findViewById<RecyclerView>(R.id.recyclerView).layoutManager = this
+            }
+
+            // finally, data bind the recycler view with adapter
+            findViewById<RecyclerView>(R.id.recyclerView).adapter = RecyclerViewAdapter(animals)
+
+            val stripes = mutableListOf(
+                "Kick", "Type1", "Snare",
+                "Type1", "Hihat", "Type1",
+                "Loop", "Type1", "Bass",
+                "Type1", "808", "Type1",
+                "+", "Type1", "+",
+                "Type1"
+            )
 
 //        // initialize grid layout manager
 //        GridLayoutManager(
@@ -139,7 +180,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-}
+    }
 
 
     // ниже создание переходов между экранами
@@ -175,63 +216,63 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    override fun onCreateContextMenu(
-        menu: ContextMenu?,
-        v: View?,
-        menuInfo: ContextMenu.ContextMenuInfo?,
-    ) {
-        super.onCreateContextMenu(menu, v, menuInfo)
-
-        menu?.add(Menu.NONE, IDM1, Menu.NONE, "project1")
-        menu?.add(Menu.NONE, IDM2, Menu.NONE, "project2")
-        menu?.add(Menu.NONE, IDM3, Menu.NONE, "project3")
-
-        super.onCreateContextMenu(menu, v, menuInfo)
-
-//        menu?.add(Menu.NONE, MENU1, Menu.NONE, "kick")
-//        menu?.add(Menu.NONE, MENU2, Menu.NONE, "snare")
-//        menu?.add(Menu.NONE, MENU3, Menu.NONE, "hihat")
-
-    }
-    private var tracknumber = 1
-    //сообщение:
-    override fun onContextItemSelected(item: MenuItem): Boolean {
-
-        val message: CharSequence = when (item.itemId) { // TODO: написать добавление элемента в меню
-            IDM1 -> "project1"
-            IDM2 -> "project2"
-            IDM3 -> "project3"
-            else -> return super.onContextItemSelected(item)
-        }
-//        switch (item.getItemId()) {
-//            case IDM1 :
+//    override fun onCreateContextMenu(
+//        menu: ContextMenu?,
+//        v: View?,
+//        menuInfo: ContextMenu.ContextMenuInfo?,
+//    ) {
+//        super.onCreateContextMenu(menu, v, menuInfo)
 //
-//            break;
-//            case IDM2 :
+//        menu?.add(Menu.NONE, IDM1, Menu.NONE, "project1")
+//        menu?.add(Menu.NONE, IDM2, Menu.NONE, "project2")
+//        menu?.add(Menu.NONE, IDM3, Menu.NONE, "project3")
 //
-//            break;
-//            case MENU_COLOR_BLUE :
+//        super.onCreateContextMenu(menu, v, menuInfo)
 //
-//            break;
+////        menu?.add(Menu.NONE, MENU1, Menu.NONE, "kick")
+////        menu?.add(Menu.NONE, MENU2, Menu.NONE, "snare")
+////        menu?.add(Menu.NONE, MENU3, Menu.NONE, "hihat")
+//
+//    }
+//    private var tracknumber = 1
+//    //сообщение:
+//    override fun onContextItemSelected(item: MenuItem): Boolean {
+//
+//        val message: CharSequence = when (item.itemId) { // TODO: написать добавление элемента в меню
+//            IDM1 -> "project1"
+//            IDM2 -> "project2"
+//            IDM3 -> "project3"
+//            else -> return super.onContextItemSelected(item)
 //        }
-
-
-            findViewById<TextView>(R.id.txt)?.text = message
-        projectName = message as String
-        if (message == "project2"){
-            tracknumber = 2
-        }
-        if (message == "project3"){
-            tracknumber = 3
-        }
-
-
-
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-        findViewById<TextView>(R.id.textView)?.text= tracknumber.toString()
-        return true
-
-    }
+////        switch (item.getItemId()) {
+////            case IDM1 :
+////
+////            break;
+////            case IDM2 :
+////
+////            break;
+////            case MENU_COLOR_BLUE :
+////
+////            break;
+////        }
+//
+//
+//            findViewById<TextView>(R.id.txt)?.text = message
+//        projectName = message as String
+//        if (message == "project2"){
+//            tracknumber = 2
+//        }
+//        if (message == "project3"){
+//            tracknumber = 3
+//        }
+//
+//
+//
+//        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+//        findViewById<TextView>(R.id.textView)?.text= tracknumber.toString()
+//        return true
+//
+//    }
 
     override fun onCreateDialog(id: Int): Dialog? {
         val activity = null
