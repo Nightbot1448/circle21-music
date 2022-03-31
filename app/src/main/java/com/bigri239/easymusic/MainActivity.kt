@@ -24,7 +24,7 @@ import java.io.IOException
 import java.io.InputStream
 import java.lang.System.currentTimeMillis
 import android.os.Bundle
-
+import kotlinx.android.synthetic.main.activity_main.*
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.LinearLayoutManager
 
@@ -78,27 +78,10 @@ class MainActivity : AppCompatActivity() {
         View.OnClickListener { v -> showPopupMenu(v) }
 
     fun project_select_popup_menu_click_listener(menuItem: MenuItem) {
-        when (menuItem.itemId) {
-            R.id.menu1 -> {
-                Toast.makeText(applicationContext, "You chose project1", Toast.LENGTH_SHORT)
-                    .show()
-                projectName = "project1"
-                true
-            }
-            R.id.menu2 -> {
-                Toast.makeText(applicationContext, "You chose project2", Toast.LENGTH_SHORT)
-                    .show()
-                projectName = "project2"
-                true
-            }
-            R.id.menu3 -> {
-                Toast.makeText(applicationContext, "You chose project3", Toast.LENGTH_SHORT)
-                    .show()
-                projectName = "project1"
-                true
-            }
-            else -> false
-        }
+        val itemTitle = menuItem.title
+        Toast.makeText(applicationContext, "You chose " + itemTitle, Toast.LENGTH_SHORT).show()
+        projectName = itemTitle as String
+        txt.text = projectName
     }
     private fun showPopupMenu(v: View) {
         create_select_project_popup_menu(v)
