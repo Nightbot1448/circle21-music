@@ -4,16 +4,6 @@
         <item
             android:id="@+id/menu1"
             android:icon="@mipmap/ic_launcher"
-            android:title="project1"
-            android:text="project1"/>
-        <item
-            android:id="@+id/menu2"
-            android:title="project2"
-            android:text="project1"/>
-        <item
-            android:id="@+id/menu3"
-            android:title="project3"
-            android:text="project1">
-        </item>
+            android:title="New project"/>
     </group>
 </menu>
