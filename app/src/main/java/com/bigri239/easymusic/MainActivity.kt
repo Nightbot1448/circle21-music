@@ -16,17 +16,16 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
 import java.lang.System.currentTimeMillis
-import android.os.Bundle
-import kotlinx.android.synthetic.main.activity_main.*
-import androidx.appcompat.widget.PopupMenu
-import androidx.recyclerview.widget.LinearLayoutManager
 
 
 @Suppress("DEPRECATION")
@@ -37,35 +36,23 @@ class MainActivity : AppCompatActivity() {
         var delay: Long = 0,
         var volume: Float = 0.0F,
         var loop: Int = 0,
-        var ratio: Float = 1.0F
+        var ratio: Float = 1.0F,
     )
 
     private var state: String = "unready"
     private var played = 0
     private var projectName = "project1"
+    private val projects = mutableListOf<String>()
     private val tracks: Array<SoundPool> =
         Array(100) { SoundPool(10, AudioManager.STREAM_MUSIC, 0) }
     private var countTracks = 0
     private val countSounds: Array<Int> = Array(100) { 0 }
     private val sounds: Array<Array<SoundInfo>> =
         Array(100) { Array(1000) { i -> SoundInfo("", i + 1, 0, 1.0F, 0, 1.0F) } }
-    private var progressBar: ProgressBar? = null
-    private var txtView: TextView? = null
-    private lateinit var textView: TextView
-
+    var viewClickListener = View.OnClickListener { v -> showPopupMenu(v) }
     private var mAdapter: RecyclerAdapter? = null
     private var mRecyclerView: RecyclerView? = null
 
-    companion object {
-        const val IDM1 = 101
-        const val IDM2 = 102
-        const val IDM3 = 103
-        const val MENU1 = 11
-        const val MENU2 = 12
-        const val MENU3 = 13
-    }
-
-    //опишем создание контекстных меню
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -74,13 +61,14 @@ class MainActivity : AppCompatActivity() {
         textView.setOnClickListener(viewClickListener)
     }
 
-    var viewClickListener =
-        View.OnClickListener { v -> showPopupMenu(v) }
-
     fun project_select_popup_menu_click_listener(menuItem: MenuItem) {
         val itemTitle = menuItem.title
-        Toast.makeText(applicationContext, "You chose " + itemTitle, Toast.LENGTH_SHORT).show()
-        projectName = itemTitle as String
+        if (itemTitle as String == "New project") {
+            projects.add("project" + (projects.size + 1).toString())
+            projectName = "project" + projects.size.toString()
+        }
+        else projectName = itemTitle as String
+        Toast.makeText(applicationContext, "You chose " + projectName, Toast.LENGTH_SHORT).show()
         txt.text = projectName
     }
     private fun showPopupMenu(v: View) {
@@ -118,9 +106,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun create_select_project_popup_menu(v: View) {
         val popupMenu = PopupMenu(this, v)
+        for (i in projects.indices) popupMenu.menu.add(projects[i])
         popupMenu.inflate(R.menu.popupmenu)
-        popupMenu
-            .setOnMenuItemClickListener { it -> project_select_popup_menu_click_listener(it); true }
+        popupMenu.setOnMenuItemClickListener { it -> project_select_popup_menu_click_listener(it); true }
         popupMenu.setOnDismissListener {}
         popupMenu.show()
     }
@@ -142,7 +130,7 @@ class MainActivity : AppCompatActivity() {
 
     // ниже создание переходов между экранами
     override fun onStart() {
-
+        projects.add("project1")
         super.onStart()
         val intent = Intent(this, HelpActivity::class.java)
         findViewById<TextView>(R.id.help).setOnClickListener {
@@ -169,8 +157,6 @@ class MainActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.account).setOnClickListener {
             startActivity(intent14)
         }
-
-
     }
 
 //    override fun onCreateContextMenu(
@@ -305,22 +291,12 @@ class MainActivity : AppCompatActivity() {
         countTracks = 1 // к следующей дорожке
 
         sounds[1][0].res = "file1"
-        sounds[1][0].delay = (getSoundLength(
-            getResources().getIdentifier(
-                sounds[0][0].res,
-                "raw",
-                getPackageName()
-            )
-        ) / sounds[0][0].ratio).toLong() // задержка перед следующим звуком - длина этого, деленное на ratio
+        sounds[1][0].delay = (getSoundLength(getResources().getIdentifier(sounds[0][0].res, "raw", getPackageName())) /
+                sounds[0][0].ratio).toLong() // задержка перед следующим звуком - длина этого, деленное на ratio
         countSounds[1] = 1 // к следующему звуку
         sounds[1][1].res = "file2"
-        sounds[1][1].delay = (getSoundLength(
-            getResources().getIdentifier(
-                sounds[1][0].res,
-                "raw",
-                getPackageName()
-            )
-        ) / sounds[1][0].ratio).toLong() - 3000 // для демонстрации
+        sounds[1][1].delay = (getSoundLength(getResources().getIdentifier(sounds[1][0].res, "raw", getPackageName())) /
+                sounds[1][0].ratio).toLong() - 3000 // для демонстрации
         sounds[1][1].loop = 1
         state = "ready"
     }
