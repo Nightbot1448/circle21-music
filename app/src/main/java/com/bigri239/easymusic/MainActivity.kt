@@ -107,14 +107,7 @@ class MainActivity : AppCompatActivity() {
         // finally, data bind the recycler view with adapter
         findViewById<RecyclerView>(R.id.recyclerView).adapter = RecyclerViewAdapter(animals)
 
-        val stripes = mutableListOf(
-            "Kick", "Type1", "Snare",
-            "Type1", "Hihat", "Type1",
-            "Loop", "Type1", "Bass",
-            "Type1", "808", "Type1",
-            "+", "Type1","+",
-            "Type1"
-        )
+
 
 //        // initialize grid layout manager
 //        GridLayoutManager(

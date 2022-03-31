@@ -1,5 +1,6 @@
 package com.bigri239.easymusic
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +26,10 @@ class RecyclerViewAdapter(private val animals: MutableList<String>)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         // display the current animal
         holder.animal.text = animals[position]
+        holder.animal.setOnClickListener {
+Log.d("debug", holder.animal.text.toString())
+
+        }
     }
 
 
