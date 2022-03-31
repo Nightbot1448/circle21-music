@@ -10,11 +10,11 @@ import android.media.AudioManager
 import android.media.SoundPool
 import android.os.*
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.Toast
+import android.view.Window
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.GridLayoutManager
@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         var ratio: Float = 1.0F,
     )
 
+    private var newProject = ""
     private var state: String = "unready"
     private var played = 0
     private var projectName = "project1"
@@ -61,15 +62,32 @@ class MainActivity : AppCompatActivity() {
         textView.setOnClickListener(viewClickListener)
     }
 
+    fun showDialog() {
+        val dialog = Dialog(this, R.style.ThemeOverlay_Material3_Dialog)
+        dialog.window?.requestFeature(Window.FEATURE_NO_TITLE) // if you have blue line on top of your dialog, you need use this code
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.dialog_new_project)
+        dialog.findViewById<Button>(R.id.create).setOnClickListener {
+            newProject = dialog.findViewById<EditText>(R.id.newname).text.toString()
+            projectName = newProject
+            projects.add(projectName)
+            Toast.makeText(applicationContext, "You chose " + projectName, Toast.LENGTH_SHORT).show()
+            dialog.dismiss()
+            txt.text = projectName
+        }
+        dialog.show()
+    }
+
     fun project_select_popup_menu_click_listener(menuItem: MenuItem) {
         val itemTitle = menuItem.title
         if (itemTitle as String == "New project") {
-            projects.add("project" + (projects.size + 1).toString())
-            projectName = "project" + projects.size.toString()
+            showDialog()
         }
-        else projectName = itemTitle as String
-        Toast.makeText(applicationContext, "You chose " + projectName, Toast.LENGTH_SHORT).show()
-        txt.text = projectName
+        else {
+            projectName = itemTitle as String
+            Toast.makeText(applicationContext, "You chose " + projectName, Toast.LENGTH_SHORT).show()
+            txt.text = projectName
+        }
     }
     private fun showPopupMenu(v: View) {
         create_select_project_popup_menu(v)
