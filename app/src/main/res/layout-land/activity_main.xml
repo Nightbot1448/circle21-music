@@ -151,8 +151,6 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="170dp"
         android:text="00:09:13"
-        android:clickable="true"
-        android:onClick="setExample"
         android:textColor="@color/colorAccent"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="@+id/floatingActionButton3"
@@ -166,7 +164,7 @@
         android:layout_marginStart="4dp"
         android:layout_marginTop="12dp"
         android:clickable="true"
-        android:text="project1"
+        android:text="projectDefault"
         android:textColor="@color/colorAccent"
         android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@+id/help"
@@ -248,7 +246,7 @@
         android:layout_marginEnd="70dp"
         android:backgroundTint="#D98B25"
         android:clickable="true"
-        android:onClick="saveProject"
+        android:onClick="saveProjectUI"
         app:borderWidth="0dp"
         app:layout_constraintEnd_toStartOf="@+id/stop"
         app:layout_constraintTop_toTopOf="@+id/stop"
@@ -269,21 +267,6 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:backgroundTint="#D98B25"
-        android:clickable="true"
-        app:borderWidth="0dp"
-        android:onClick="openProject"
-        app:layout_constraintBottom_toBottomOf="@+id/floatingActionButton3"
-        app:layout_constraintEnd_toStartOf="@+id/floatingActionButton3"
-        app:layout_constraintTop_toTopOf="@+id/floatingActionButton3"
-        app:srcCompat="@android:drawable/ic_input_add"
-        tools:ignore="SpeakableTextPresentCheck" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -292,9 +275,9 @@
         android:clickable="true"
         android:onClick="saveMusic"
         app:borderWidth="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/floatingActionButton"
-        app:layout_constraintEnd_toStartOf="@+id/floatingActionButton"
-        app:layout_constraintTop_toTopOf="@+id/floatingActionButton"
+        app:layout_constraintBottom_toBottomOf="@+id/floatingActionButton3"
+        app:layout_constraintEnd_toStartOf="@+id/floatingActionButton3"
+        app:layout_constraintTop_toTopOf="@+id/floatingActionButton3"
         app:srcCompat="@android:drawable/ic_menu_more"
         tools:ignore="SpeakableTextPresentCheck" />
 
