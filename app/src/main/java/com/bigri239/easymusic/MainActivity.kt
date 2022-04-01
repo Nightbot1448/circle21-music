@@ -10,7 +10,6 @@ import android.media.AudioManager
 import android.media.SoundPool
 import android.os.*
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.Window
@@ -50,18 +49,20 @@ class MainActivity : AppCompatActivity() {
     private val countSounds: Array<Int> = Array(100) { 0 }
     private val sounds: Array<Array<SoundInfo>> =
         Array(100) { Array(1000) { i -> SoundInfo("", i + 1, 0, 1.0F, 0, 1.0F) } }
-    var viewClickListener = View.OnClickListener { v -> showPopupMenu(v) }
+    private var viewClickListener = View.OnClickListener { v -> create_select_project_popup_menu(v) }
     private var mAdapter: RecyclerAdapter? = null
     private var mRecyclerView: RecyclerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         val textView = findViewById<TextView>(R.id.txt)
         textView.setOnClickListener(viewClickListener)
+        create_horizontal_list()
+        create_sounds_list()
         try {
-            val path = getFilesDir()
+            val path = filesDir
             val file = File(path, "projects.conf")
             val content: String = file.readText()
             projects.addAll(content.split("\n").toTypedArray())
@@ -69,7 +70,7 @@ class MainActivity : AppCompatActivity() {
         }
         catch (e: IOException) {
             projects.add("projectDefault")
-            val path = getFilesDir()
+            val path = filesDir
             val file = File(path, "projects.conf")
             var content = ""
             for (i in projects.indices) {
@@ -84,43 +85,49 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun showProjectDialog() {
+    private fun showProjectDialog() {
         val dialog = Dialog(this, R.style.ThemeOverlay_Material3_Dialog)
         dialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(false)
         dialog.setContentView(R.layout.dialog_new_project)
         dialog.findViewById<Button>(R.id.create).setOnClickListener {
             newProject = dialog.findViewById<EditText>(R.id.newname).text.toString()
+            saveProject()
             projectName = newProject
             projects.add(projectName)
             txt.text = projectName
-            val path = getFilesDir()
+            Toast.makeText(applicationContext, "You created $projectName", Toast.LENGTH_SHORT).show()
+            val path = filesDir
             val file = File(path, "projects.conf")
-            var content = file.readText() + "\n" + projectName
+            val content = file.readText() + "\n" + projectName
             FileOutputStream(file).use {
                 it.write(content.toByteArray())
             }
+
+            /*for (i in 0..countTracks) { // очистка данных по звукам
+                tracks[i].release()
+                tracks[i] = SoundPool(10, AudioManager.STREAM_MUSIC, 0)
+                for (j in 0..countSounds[i]) {
+                    sounds[i][j] = SoundInfo("", i + 1, 0, 1.0F, 0, 1.0F)
+                }
+            }*/
+
             dialog.dismiss()
         }
         dialog.show()
     }
 
-    fun project_select_popup_menu_click_listener(menuItem: MenuItem) {
-        val itemTitle = menuItem.title
-        if (itemTitle as String == "New project") {
+    private fun project_select_popup_menu_click_listener(menuItem: MenuItem) {
+        val itemTitle = menuItem.title.toString()
+        if (itemTitle == "New project") {
             showProjectDialog()
         }
-        else {
-            projectName = itemTitle as String
-            Toast.makeText(applicationContext, "You chose " + projectName, Toast.LENGTH_SHORT).show()
+        else { // TODO: после написания рабочего recycler, надо вставить его обновление в конец и в диалог
+            saveProject()
+            projectName = itemTitle
             txt.text = projectName
             openProject()
         }
-    }
-    private fun showPopupMenu(v: View) {
-        create_select_project_popup_menu(v)
-        create_horizontal_list()
-        create_sounds_list()
     }
 
     private fun create_sounds_list() {
@@ -133,9 +140,9 @@ class MainActivity : AppCompatActivity() {
             "Type1"
         )
         val on_sound_click =  { position: Int, text_item: TextView ->
-            sound_list[position] = "changed";
-            text_item.text = sound_list[position];
-            Log.d("debug", sound_list[position]);
+            sound_list[position] = "changed"
+            text_item.text = sound_list[position]
+            Log.d("MYMSG vert_recyc: ", sound_list[position])
             Unit
         }
         GridLayoutManager(
@@ -145,9 +152,9 @@ class MainActivity : AppCompatActivity() {
             false // reverse layout
         ).apply {
             // specify the layout manager for recycler view
-            findViewById<RecyclerView>(R.id.recyclerView).layoutManager = this
+            recyclerView.layoutManager = this
         }
-        findViewById<RecyclerView>(R.id.recyclerView).adapter = RecyclerViewAdapter(sound_list, on_sound_click)
+        recyclerView.adapter = RecyclerViewAdapter(sound_list, on_sound_click)
     }
 
     private fun create_select_project_popup_menu(v: View) {
@@ -155,7 +162,6 @@ class MainActivity : AppCompatActivity() {
         for (i in projects.indices) popupMenu.menu.add(projects[i])
         popupMenu.inflate(R.menu.popupmenu)
         popupMenu.setOnMenuItemClickListener { it -> project_select_popup_menu_click_listener(it); true }
-        popupMenu.setOnDismissListener {}
         popupMenu.show()
     }
 
@@ -173,7 +179,6 @@ class MainActivity : AppCompatActivity() {
         mRecyclerView?.adapter = mAdapter
     }
 
-
     // ниже создание переходов между экранами
     override fun onStart() {
         super.onStart()
@@ -189,7 +194,6 @@ class MainActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.settings).setOnClickListener {
             startActivity(intent2)
         }
-
         val intent3 = Intent(this, InstrumentsActivity::class.java)
         findViewById<TextView>(R.id.instruments).setOnClickListener {
             startActivity(intent3)
@@ -204,74 +208,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-//    override fun onCreateContextMenu(
-//        menu: ContextMenu?,
-//        v: View?,
-//        menuInfo: ContextMenu.ContextMenuInfo?,
-//    ) {
-//        super.onCreateContextMenu(menu, v, menuInfo)
-//
-//        menu?.add(Menu.NONE, IDM1, Menu.NONE, "project1")
-//        menu?.add(Menu.NONE, IDM2, Menu.NONE, "project2")
-//        menu?.add(Menu.NONE, IDM3, Menu.NONE, "project3")
-//
-//        super.onCreateContextMenu(menu, v, menuInfo)
-//
-////        menu?.add(Menu.NONE, MENU1, Menu.NONE, "kick")
-////        menu?.add(Menu.NONE, MENU2, Menu.NONE, "snare")
-////        menu?.add(Menu.NONE, MENU3, Menu.NONE, "hihat")
-//
-//    }
-//    private var tracknumber = 1
-//    //сообщение:
-//    override fun onContextItemSelected(item: MenuItem): Boolean {
-//
-//        val message: CharSequence = when (item.itemId) { // TODO: написать добавление элемента в меню
-//            IDM1 -> "project1"
-//            IDM2 -> "project2"
-//            IDM3 -> "project3"
-//            else -> return super.onContextItemSelected(item)
-//        }
-////        switch (item.getItemId()) {
-////            case IDM1 :
-////
-////            break;
-////            case IDM2 :
-////
-////            break;
-////            case MENU_COLOR_BLUE :
-////
-////            break;
-////        }
-//
-//
-//            findViewById<TextView>(R.id.txt)?.text = message
-//        projectName = message as String
-//        if (message == "project2"){
-//            tracknumber = 2
-//        }
-//        if (message == "project3"){
-//            tracknumber = 3
-//        }
-//
-//
-//
-//        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-//        findViewById<TextView>(R.id.textView)?.text= tracknumber.toString()
-//        return true
-//
-//    }
-
-    override fun onCreateDialog(id: Int): Dialog? {
+    override fun onCreateDialog(id: Int): Dialog {
         val activity = null
         return activity?.let {
-            // Use the Builder class for convenient dialog construction
-            val builder = AlertDialog.Builder(it)
-            builder.create()
+            AlertDialog.Builder(it).create()
         } ?: throw IllegalStateException("Activity cannot be null")
     }
 
-    fun bytesArrayPart4ToInt(arr: ByteArray, start: Int = 0): Int {
+    private fun bytesArrayPart4ToInt(arr: ByteArray, start: Int = 0): Int {
         return arr[start].toInt() + arr[start + 1].toInt() * 256 + arr[start + 2].toInt() * 256 * 256 + arr[start + 3].toInt() * 256 * 256 * 256
     }
 
@@ -291,34 +235,20 @@ class MainActivity : AppCompatActivity() {
 
     fun playTrack(i: Int, j: Int, delay: Long = 0) {
         val started = played
-        var timer: CountDownTimer = object : CountDownTimer(sounds[i][j].delay + delay, 1000) {
+        object : CountDownTimer(sounds[i][j].delay + delay, 1000) {
             override fun onTick(millisUntilFinished: Long) {}
             override fun onFinish() {
+                val sound = sounds[i][j]
                 if (state != "pause" && started == played) {
-                    tracks[i]?.play(
-                        sounds[i][j].id,
-                        sounds[i][j].volume,
-                        sounds[i][j].volume,
-                        0,
-                        sounds[i][j].loop,
-                        sounds[i][j].ratio
-                    )
-                    Log.d(
-                        TAG,
-                        "MYMSG: " + i.toString() + " " + j.toString() + " " + sounds[i][0].id.toString()
-                    )
+                    tracks[i].play(sound.id, sound.volume, sound.volume, 0, sound.loop, sound.ratio)
+                    Log.d(TAG, "MYMSG play: $i $j " + sounds[i][0].id.toString())
                 }
                 if (j < countSounds[i] && started == played) playTrack(i, j + 1)
                 if (j == countSounds[i] && i == countTracks) {
-                    var timer1: CountDownTimer = object : CountDownTimer(
+                    object : CountDownTimer(
                         (getSoundLength(
-                            getResources().getIdentifier(
-                                sounds[i][j].res,
-                                "raw",
-                                getPackageName()
-                            )
-                        ) * (sounds[i][j].loop + 1) / sounds[i][j].ratio).toLong(), 1000
-                    ) {
+                            resources.getIdentifier(sound.res, "raw", packageName)
+                        ) * (sound.loop + 1) / sound.ratio).toLong(), 1000) {
                         override fun onTick(millisUntilFinished: Long) {}
                         override fun onFinish() {
                             state = "ready"
@@ -329,17 +259,17 @@ class MainActivity : AppCompatActivity() {
         }.start()
     }
 
-    fun setExample() { //демонстрация работы как одного трека, так и нескольких звуков (что все работает)
+    private fun setExample() { //демонстрация работы как одного трека, так и нескольких звуков (что все работает)
         sounds[0][0].ratio = 0.5F // по фану, для демонстрации
         sounds[0][0].res = "file1"
         countTracks = 1 // к следующей дорожке
 
         sounds[1][0].res = "file1"
-        sounds[1][0].delay = (getSoundLength(getResources().getIdentifier(sounds[0][0].res, "raw", getPackageName())) /
+        sounds[1][0].delay = (getSoundLength(resources.getIdentifier(sounds[0][0].res, "raw", packageName)) /
                 sounds[0][0].ratio).toLong() // задержка перед следующим звуком - длина этого, деленное на ratio
         countSounds[1] = 1 // к следующему звуку
         sounds[1][1].res = "file2"
-        sounds[1][1].delay = (getSoundLength(getResources().getIdentifier(sounds[1][0].res, "raw", getPackageName())) /
+        sounds[1][1].delay = (getSoundLength(resources.getIdentifier(sounds[1][0].res, "raw", packageName)) /
                 sounds[1][0].ratio).toLong() - 3000 // для демонстрации
         sounds[1][1].loop = 1
         state = "ready"
@@ -357,6 +287,7 @@ class MainActivity : AppCompatActivity() {
         if (state == "ready") {
             played += 1
             Toast.makeText(this, "Playing compiled music...", Toast.LENGTH_SHORT).show()
+            saveProject()
 
             for (i in 0..countTracks) { // очищение и перезаполнение, если играем еще раз
                 tracks[i].release()
@@ -364,9 +295,9 @@ class MainActivity : AppCompatActivity() {
             }
 
             for (i in 0..countTracks) {
-                for (j in 0..countSounds[i]) sounds[i][j].id = tracks[i]!!.load(
+                for (j in 0..countSounds[i]) sounds[i][j].id = tracks[i].load(
                     baseContext,
-                    getResources().getIdentifier(sounds[i][j].res, "raw", getPackageName()),
+                    resources.getIdentifier(sounds[i][j].res, "raw", packageName),
                     0
                 ) // загрузить i трек, j звук
             }
@@ -383,19 +314,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun openProject() {
+    private fun openProject() {
         try {
-            Toast.makeText(this, "Opening project...", Toast.LENGTH_SHORT).show()
-            val path = getFilesDir()
-            val file = File(path, projectName + ".emproj")
+            Toast.makeText(this, "Opening project $projectName...", Toast.LENGTH_SHORT).show()
+            val path = filesDir
+            val file = File(path, "$projectName.emproj")
             val content: String = file.readText()
-            val tracks_content = content.split("\n").toTypedArray()
-            countTracks = tracks_content.size - 1
-            for (i in tracks_content.indices) {
-                val sounds_content = tracks_content[i].split(";").toTypedArray()
-                countSounds[i] = sounds_content.size - 1
-                for (j in sounds_content.indices) {
-                    val params = sounds_content[j].split(" ").toTypedArray()
+            val tracksContent = content.split("\n").toTypedArray()
+            countTracks = tracksContent.size - 1
+            for (i in tracksContent.indices) {
+                val soundsContent = tracksContent[i].split(";").toTypedArray()
+                countSounds[i] = soundsContent.size - 1
+                for (j in soundsContent.indices) {
+                    val params = soundsContent[j].split(" ").toTypedArray()
                     sounds[i][j] = SoundInfo(
                         params[0],
                         params[1].toInt(),
@@ -412,14 +343,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun saveProject() {
+    private fun saveProject() {
         if (state != "unready") {
-            val path = getFilesDir()
-            val file = File(path, projectName + ".emproj")
+            val path = filesDir
+            val file = File(path, "$projectName.emproj")
             var content = ""
             for (i in 0..countTracks) {
                 for (j in 0..countSounds[i]) {
-                    content += sounds[i][j].res.toString() + " "
+                    content += sounds[i][j].res + " "
                     content += sounds[i][j].id.toString() + " "
                     content += sounds[i][j].delay.toString() + " "
                     content += sounds[i][j].volume.toString() + " "
