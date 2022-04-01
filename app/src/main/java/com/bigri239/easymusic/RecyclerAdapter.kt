@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 
-class RecyclerViewAdapter(private val animals: MutableList<String>)
+class RecyclerViewAdapter(private val sound_list: MutableList<String>, val onSoundClick: (Int, TextView) -> Unit)
     : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
 
 
@@ -25,17 +25,32 @@ class RecyclerViewAdapter(private val animals: MutableList<String>)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         // display the current animal
+
+        holder.animal.text = sound_list[position]
+        holder.animal.setOnClickListener { onSoundClick.invoke(position, holder.animal) }
+        holder.itemView.setOnClickListener { onClick(holder, holder.adapterPosition) }
+        holder.itemView.setOnLongClickListener { onLongClick(holder, holder.adapterPosition); true }
+    }
+
+    private fun onLongClick(holder: RecyclerView.ViewHolder, adapterPosition: Int) {
+
+    }
+
+    private fun onClick(holder: RecyclerViewAdapter.ViewHolder, adapterPosition: Int) {
+
+=======
         holder.animal.text = animals[position]
         holder.animal.setOnClickListener {
 Log.d("debug", holder.animal.text.toString())
 
         }
+
     }
 
 
     override fun getItemCount(): Int {
         // number of items in the data set held by the adapter
-        return animals.size
+        return sound_list.size
     }
 
 
@@ -53,4 +68,5 @@ Log.d("debug", holder.animal.text.toString())
     override fun getItemViewType(position: Int): Int {
         return position
     }
+
 }
