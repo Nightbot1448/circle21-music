@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
     private var newProject = ""
     private var state: String = "unready"
     private var played = 0
-    private var projectName = "project1"
+    private var projectName = "projectDefault"
     private val projects = mutableListOf<String>()
     private val tracks: Array<SoundPool> =
         Array(100) { SoundPool(10, AudioManager.STREAM_MUSIC, 0) }
@@ -60,20 +60,47 @@ class MainActivity : AppCompatActivity() {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
         val textView = findViewById<TextView>(R.id.txt)
         textView.setOnClickListener(viewClickListener)
+        try {
+            val path = getFilesDir()
+            val file = File(path, "projects.conf")
+            val content: String = file.readText()
+            projects.addAll(content.split("\n").toTypedArray())
+            openProject()
+        }
+        catch (e: IOException) {
+            projects.add("projectDefault")
+            val path = getFilesDir()
+            val file = File(path, "projects.conf")
+            var content = ""
+            for (i in projects.indices) {
+                content += projects[i]
+                if (i != projects.size - 1) content += "\n"
+            }
+            FileOutputStream(file).use {
+                it.write(content.toByteArray())
+            }
+            setExample()
+            saveProject()
+        }
     }
 
-    fun showDialog() {
+    fun showProjectDialog() {
         val dialog = Dialog(this, R.style.ThemeOverlay_Material3_Dialog)
-        dialog.window?.requestFeature(Window.FEATURE_NO_TITLE) // if you have blue line on top of your dialog, you need use this code
+        dialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(false)
         dialog.setContentView(R.layout.dialog_new_project)
         dialog.findViewById<Button>(R.id.create).setOnClickListener {
             newProject = dialog.findViewById<EditText>(R.id.newname).text.toString()
             projectName = newProject
             projects.add(projectName)
-            Toast.makeText(applicationContext, "You chose " + projectName, Toast.LENGTH_SHORT).show()
-            dialog.dismiss()
             txt.text = projectName
+            val path = getFilesDir()
+            val file = File(path, "projects.conf")
+            var content = file.readText() + "\n" + projectName
+            FileOutputStream(file).use {
+                it.write(content.toByteArray())
+            }
+            dialog.dismiss()
         }
         dialog.show()
     }
@@ -81,12 +108,13 @@ class MainActivity : AppCompatActivity() {
     fun project_select_popup_menu_click_listener(menuItem: MenuItem) {
         val itemTitle = menuItem.title
         if (itemTitle as String == "New project") {
-            showDialog()
+            showProjectDialog()
         }
         else {
             projectName = itemTitle as String
             Toast.makeText(applicationContext, "You chose " + projectName, Toast.LENGTH_SHORT).show()
             txt.text = projectName
+            openProject()
         }
     }
     private fun showPopupMenu(v: View) {
@@ -148,7 +176,6 @@ class MainActivity : AppCompatActivity() {
 
     // ниже создание переходов между экранами
     override fun onStart() {
-        projects.add("project1")
         super.onStart()
         val intent = Intent(this, HelpActivity::class.java)
         findViewById<TextView>(R.id.help).setOnClickListener {
@@ -302,8 +329,7 @@ class MainActivity : AppCompatActivity() {
         }.start()
     }
 
-    fun setExample(view: View) { //демонстрация работы как одного трека, так и нескольких звуков (что все работает)
-        Toast.makeText(this, "Example set", Toast.LENGTH_SHORT).show()
+    fun setExample() { //демонстрация работы как одного трека, так и нескольких звуков (что все работает)
         sounds[0][0].ratio = 0.5F // по фану, для демонстрации
         sounds[0][0].res = "file1"
         countTracks = 1 // к следующей дорожке
@@ -357,7 +383,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun openProject(view: View) {
+    fun openProject() {
         try {
             Toast.makeText(this, "Opening project...", Toast.LENGTH_SHORT).show()
             val path = getFilesDir()
@@ -386,9 +412,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun saveProject(view: View) {
+    fun saveProject() {
         if (state != "unready") {
-            Toast.makeText(this, "Saving project...", Toast.LENGTH_SHORT).show()
             val path = getFilesDir()
             val file = File(path, projectName + ".emproj")
             var content = ""
@@ -408,6 +433,11 @@ class MainActivity : AppCompatActivity() {
                 it.write(content.toByteArray())
             }
         }
+    }
+
+    fun saveProjectUI (view: View) {
+        saveProject()
+        if (state != "unready") Toast.makeText(this, "Saving project...", Toast.LENGTH_SHORT).show()
     }
 
     fun saveMusic(view: View) {
