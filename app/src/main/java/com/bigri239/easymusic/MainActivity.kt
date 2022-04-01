@@ -5,7 +5,6 @@ import android.app.Dialog
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.content.pm.ActivityInfo
-import android.content.res.Resources
 import android.media.AudioManager
 import android.media.SoundPool
 import android.os.*
@@ -85,6 +84,42 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // ниже создание переходов между экранами
+    override fun onStart() {
+        super.onStart()
+        val intent = Intent(this, HelpActivity::class.java)
+        findViewById<TextView>(R.id.help).setOnClickListener {
+            startActivity(intent)
+        }
+        val intent1 = Intent(this, AddingfilesActivity::class.java)
+        findViewById<TextView>(R.id.file).setOnClickListener {
+            startActivity(intent1)
+        }
+        val intent2 = Intent(this, SettingsActivity::class.java)
+        findViewById<TextView>(R.id.settings).setOnClickListener {
+            startActivity(intent2)
+        }
+        val intent3 = Intent(this, InstrumentsActivity::class.java)
+        findViewById<TextView>(R.id.instruments).setOnClickListener {
+            startActivity(intent3)
+        }
+        val intent4 = Intent(this, TutorialActivity::class.java)
+        findViewById<TextView>(R.id.tutorial).setOnClickListener {
+            startActivity(intent4)
+        }
+        val intent14 = Intent(this, RecoveryActivity::class.java)
+        findViewById<TextView>(R.id.account).setOnClickListener {
+            startActivity(intent14)
+        }
+    }
+
+    override fun onCreateDialog(id: Int): Dialog {
+        val activity = null
+        return activity?.let {
+            AlertDialog.Builder(it).create()
+        } ?: throw IllegalStateException("Activity cannot be null")
+    }
+
     private fun showProjectDialog() {
         val dialog = Dialog(this, R.style.ThemeOverlay_Material3_Dialog)
         dialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
@@ -161,10 +196,9 @@ class MainActivity : AppCompatActivity() {
         val popupMenu = PopupMenu(this, v)
         for (i in projects.indices) popupMenu.menu.add(projects[i])
         popupMenu.inflate(R.menu.popupmenu)
-        popupMenu.setOnMenuItemClickListener { it -> project_select_popup_menu_click_listener(it); true }
+        popupMenu.setOnMenuItemClickListener { project_select_popup_menu_click_listener(it); true }
         popupMenu.show()
     }
-
 
     private fun create_horizontal_list() {
         mRecyclerView = findViewById(R.id.recyclerViewhor)
@@ -180,161 +214,13 @@ class MainActivity : AppCompatActivity() {
         mRecyclerView?.adapter = mAdapter
     }
 
-
-
-//        // initialize grid layout manager
-//        GridLayoutManager(
-//            this, // context
-//            2, // span count
-//            RecyclerView.VERTICAL, // orientation
-//            false // reverse layout
-//        ).apply {
-//            // specify the layout manager for recycler view
-//            findViewById<RecyclerView>(R.id.scroll1).layoutManager = this
-//        }
-//
-//        // finally, data bind the recycler view with adapter
-//        findViewById<RecyclerView>(R.id.scroll1).adapter = RecyclerViewAdapter(stripes)
-
-
-
-}
-
-
-
-    // ниже создание переходов между экранами
-    override fun onStart() {
-        super.onStart()
-        val intent = Intent(this, HelpActivity::class.java)
-        findViewById<TextView>(R.id.help).setOnClickListener {
-            startActivity(intent)
-        }
-        val intent1 = Intent(this, AddingfilesActivity::class.java)
-        findViewById<TextView>(R.id.file).setOnClickListener {
-            startActivity(intent1)
-        }
-        val intent2 = Intent(this, SettingsActivity::class.java)
-        findViewById<TextView>(R.id.settings).setOnClickListener {
-            startActivity(intent2)
-        }
-        val intent3 = Intent(this, InstrumentsActivity::class.java)
-        findViewById<TextView>(R.id.instruments).setOnClickListener {
-            startActivity(intent3)
-        }
-        val intent4 = Intent(this, TutorialActivity::class.java)
-        findViewById<TextView>(R.id.tutorial).setOnClickListener {
-            startActivity(intent4)
-        }
-        val intent14 = Intent(this, RecoveryActivity::class.java)
-        findViewById<TextView>(R.id.account).setOnClickListener {
-            startActivity(intent14)
-        }
-    }
-
-    override fun onCreateDialog(id: Int): Dialog {
-        val activity = null
-        return activity?.let {
-            AlertDialog.Builder(it).create()
-        } ?: throw IllegalStateException("Activity cannot be null")
+    private fun isRawResource (name : String): Boolean {
+        val resourcesArray : Array<String> = arrayOf("file1", "file2", "memories1", "yf___vinnyx__crash_")
+        return resourcesArray.contains(name)
     }
 
     private fun bytesArrayPart4ToInt(arr: ByteArray, start: Int = 0): Int {
         return arr[start].toInt() + arr[start + 1].toInt() * 256 + arr[start + 2].toInt() * 256 * 256 + arr[start + 3].toInt() * 256 * 256 * 256
-    }
-
-    fun getSoundLength(res1: Int): Int {
-        val res: Resources = resources
-        val inStream: InputStream = res.openRawResource(res1)
-        val wavdata = ByteArray(45)
-        inStream.read(wavdata, 0, 45)
-        inStream.close()
-        if (wavdata.size > 44) {
-            val byteRate = bytesArrayPart4ToInt(wavdata, 28)
-            val waveSize = bytesArrayPart4ToInt(wavdata, 40)
-            if (byteRate != 0) return (waveSize * 1000.0 / byteRate).toInt()
-        }
-        return 0
-    }
-
-    fun playTrack(i: Int, j: Int, delay: Long = 0) {
-        val started = played
-        object : CountDownTimer(sounds[i][j].delay + delay, 1000) {
-            override fun onTick(millisUntilFinished: Long) {}
-            override fun onFinish() {
-                val sound = sounds[i][j]
-                if (state != "pause" && started == played) {
-                    tracks[i].play(sound.id, sound.volume, sound.volume, 0, sound.loop, sound.ratio)
-                    Log.d(TAG, "MYMSG play: $i $j " + sounds[i][0].id.toString())
-                }
-                if (j < countSounds[i] && started == played) playTrack(i, j + 1)
-                if (j == countSounds[i] && i == countTracks) {
-                    object : CountDownTimer(
-                        (getSoundLength(
-                            resources.getIdentifier(sound.res, "raw", packageName)
-                        ) * (sound.loop + 1) / sound.ratio).toLong(), 1000) {
-                        override fun onTick(millisUntilFinished: Long) {}
-                        override fun onFinish() {
-                            state = "ready"
-                        }
-                    }.start()
-                }
-            }
-        }.start()
-    }
-
-    private fun setExample() { //демонстрация работы как одного трека, так и нескольких звуков (что все работает)
-        sounds[0][0].ratio = 0.5F // по фану, для демонстрации
-        sounds[0][0].res = "file1"
-        countTracks = 1 // к следующей дорожке
-
-        sounds[1][0].res = "file1"
-        sounds[1][0].delay = (getSoundLength(resources.getIdentifier(sounds[0][0].res, "raw", packageName)) /
-                sounds[0][0].ratio).toLong() // задержка перед следующим звуком - длина этого, деленное на ratio
-        countSounds[1] = 1 // к следующему звуку
-        sounds[1][1].res = "file2"
-        sounds[1][1].delay = (getSoundLength(resources.getIdentifier(sounds[1][0].res, "raw", packageName)) /
-                sounds[1][0].ratio).toLong() - 3000 // для демонстрации
-        sounds[1][1].loop = 1
-        state = "ready"
-    }
-
-    fun pause(view: View) {
-        if (state == "playing") {
-            Toast.makeText(this, "Music paused", Toast.LENGTH_SHORT).show()
-            for (i in 0..countTracks) tracks[i].autoPause()
-            state = "pause"
-        }
-    }
-
-    fun playSound(view: View) {
-        if (state == "ready") {
-            played += 1
-            Toast.makeText(this, "Playing compiled music...", Toast.LENGTH_SHORT).show()
-            saveProject()
-
-            for (i in 0..countTracks) { // очищение и перезаполнение, если играем еще раз
-                tracks[i].release()
-                tracks[i] = SoundPool(10, AudioManager.STREAM_MUSIC, 0)
-            }
-
-            for (i in 0..countTracks) {
-                for (j in 0..countSounds[i]) sounds[i][j].id = tracks[i].load(
-                    baseContext,
-                    resources.getIdentifier(sounds[i][j].res, "raw", packageName),
-                    0
-                ) // загрузить i трек, j звук
-            }
-
-            if (state != "playing") {
-                val start: Long = currentTimeMillis() + 300
-                state = "playing"
-                for (i in 0..countTracks) playTrack(i, 0, start - currentTimeMillis())
-            }
-        } else if (state == "pause") {
-            Toast.makeText(this, "Music unpaused", Toast.LENGTH_SHORT).show()
-            state = "playing"
-            for (i in 0..countTracks) tracks[i].autoResume()
-        }
     }
 
     private fun openProject() {
@@ -389,6 +275,102 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun setExample() { //демонстрация работы как одного трека, так и нескольких звуков (что все работает)
+        sounds[0][0].ratio = 0.5F // по фану, для демонстрации
+        sounds[0][0].res = "file1"
+        countTracks = 1 // к следующей дорожке
+
+        sounds[1][0].res = "file1"
+        sounds[1][0].delay = (getSoundLength(sounds[0][0].res) / sounds[0][0].ratio).toLong() // задержка перед следующим звуком - длина этого, деленное на ratio
+        countSounds[1] = 1 // к следующему звуку
+        sounds[1][1].res = "file2"
+        sounds[1][1].delay = (getSoundLength(sounds[1][0].res) / sounds[1][0].ratio).toLong() - 3000 // для демонстрации
+        sounds[1][1].loop = 1
+
+        state = "ready"
+    }
+
+    fun getSoundLength(name: String): Long {
+        val inStream: InputStream = if (isRawResource(name)) resources.openRawResource(resources.getIdentifier(name, "raw", packageName))
+        else File("$name.wav").inputStream()
+        val wavdata = ByteArray(45)
+        inStream.read(wavdata, 0, 45)
+        inStream.close()
+        if (wavdata.size > 44) {
+            val byteRate = bytesArrayPart4ToInt(wavdata, 28)
+            val waveSize = bytesArrayPart4ToInt(wavdata, 40)
+            if (byteRate != 0) return (waveSize * 1000.0 / byteRate).toLong()
+        }
+        return 0
+    }
+
+    fun playTrack(i: Int, j: Int, delay: Long = 0) {
+        val started = played
+        object : CountDownTimer(sounds[i][j].delay + delay, 1000) {
+            override fun onTick(millisUntilFinished: Long) {}
+            override fun onFinish() {
+                val sound = sounds[i][j]
+                if (state != "pause" && started == played) {
+                    tracks[i].play(sound.id, sound.volume, sound.volume, 0, sound.loop, sound.ratio)
+                    Log.d(TAG, "MYMSG play: $i $j " + sounds[i][0].id.toString())
+                }
+                if (j < countSounds[i] && started == played) playTrack(i, j + 1)
+                if (j == countSounds[i] && i == countTracks && state != "pause" && started == played) {
+                    object : CountDownTimer(
+                        (getSoundLength(sound.res) * (sound.loop + 1) / sound.ratio).toLong(), 1000) {
+                        override fun onTick(millisUntilFinished: Long) {}
+                        override fun onFinish() {
+                            state = "ready"
+                        }
+                    }.start()
+                }
+            }
+        }.start()
+    }
+
+    fun pause(view: View) {
+        if (state == "playing") {
+            Toast.makeText(this, "Music paused", Toast.LENGTH_SHORT).show()
+            for (i in 0..countTracks) tracks[i].autoPause()
+            state = "pause"
+        }
+    }
+
+    fun playSound(view: View) {
+        if (state == "ready") {
+            played += 1
+            Toast.makeText(this, "Playing compiled music...", Toast.LENGTH_SHORT).show()
+            saveProject()
+
+            for (i in 0..countTracks) { // очищение и перезаполнение, если играем еще раз
+                tracks[i].release()
+                tracks[i] = SoundPool(10, AudioManager.STREAM_MUSIC, 0)
+            }
+
+            for (i in 0..countTracks) {
+                for (j in 0..countSounds[i]) {
+                    val res = sounds[i][j].res
+                    if (isRawResource(res)) sounds[i][j].id = tracks[i].load(
+                        baseContext,
+                        resources.getIdentifier(res, "raw", packageName),
+                        0
+                    ) // загрузить i трек, j звук, если это ресурс
+                    else sounds[i][j].id = tracks[i].load("$filesDir/$res.wav",0) // загрузить i трек, j звук, если это пользовательский звук
+                }
+            }
+
+            if (state != "playing") {
+                val start: Long = currentTimeMillis() + 300
+                state = "playing"
+                for (i in 0..countTracks) playTrack(i, 0, start - currentTimeMillis())
+            }
+        } else if (state == "pause") {
+            Toast.makeText(this, "Music unpaused", Toast.LENGTH_SHORT).show()
+            state = "playing"
+            for (i in 0..countTracks) tracks[i].autoResume()
+        }
+    }
+
     fun saveProjectUI (view: View) {
         saveProject()
         if (state != "unready") Toast.makeText(this, "Saving project...", Toast.LENGTH_SHORT).show()
@@ -402,14 +384,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun resetPlaying(view: View) {
-        if (state == "playing" || state == "ready") {
-            for (i in 0..countTracks) { // очищение и перезаполнение, если играем еще раз
-                Toast.makeText(this, "Playing halted", Toast.LENGTH_SHORT).show()
-                tracks[i].autoPause()
-                tracks[i].release()
-                tracks[i] = SoundPool(10, AudioManager.STREAM_MUSIC, 0)
-                state = "ready"
-            }
+        for (i in 0..countTracks) { // очищение и перезаполнение, если играем еще раз
+            Toast.makeText(this, "Playing halted", Toast.LENGTH_SHORT).show()
+            tracks[i].autoPause()
+            tracks[i].release()
+            tracks[i] = SoundPool(10, AudioManager.STREAM_MUSIC, 0)
+            state = "ready"
         }
     }
 }
