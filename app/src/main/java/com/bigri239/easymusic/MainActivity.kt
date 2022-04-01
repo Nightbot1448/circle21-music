@@ -165,6 +165,7 @@ class MainActivity : AppCompatActivity() {
         popupMenu.show()
     }
 
+
     private fun create_horizontal_list() {
         mRecyclerView = findViewById(R.id.recyclerViewhor)
         mRecyclerView?.layoutManager = LinearLayoutManager(
@@ -178,6 +179,28 @@ class MainActivity : AppCompatActivity() {
         mAdapter = RecyclerAdapter(dataset, this)
         mRecyclerView?.adapter = mAdapter
     }
+
+
+
+//        // initialize grid layout manager
+//        GridLayoutManager(
+//            this, // context
+//            2, // span count
+//            RecyclerView.VERTICAL, // orientation
+//            false // reverse layout
+//        ).apply {
+//            // specify the layout manager for recycler view
+//            findViewById<RecyclerView>(R.id.scroll1).layoutManager = this
+//        }
+//
+//        // finally, data bind the recycler view with adapter
+//        findViewById<RecyclerView>(R.id.scroll1).adapter = RecyclerViewAdapter(stripes)
+
+
+
+}
+
+
 
     // ниже создание переходов между экранами
     override fun onStart() {
