@@ -38,8 +38,8 @@ class RecyclerViewAdapter(private val sound_list: MutableList<String>, val onSou
 
     private fun onClick(holder: RecyclerViewAdapter.ViewHolder, adapterPosition: Int) {
 
-=======
-        holder.animal.text = animals[position]
+
+//        holder.animal.text = animals[position]
         holder.animal.setOnClickListener {
 Log.d("debug", holder.animal.text.toString())
 
