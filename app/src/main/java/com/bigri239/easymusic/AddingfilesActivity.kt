@@ -36,7 +36,7 @@ class AddingfilesActivity : AppCompatActivity() {
         val byteBuffer = ByteArrayOutputStream()
         val bufferSize = 1024
         val buffer = ByteArray(bufferSize)
-        var len = 0
+        var len: Int
         while (inputStream.read(buffer).also { len = it } != -1) {
             byteBuffer.write(buffer, 0, len)
         }
@@ -63,7 +63,7 @@ class AddingfilesActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 777) {
-            val input: InputStream? = data!!.data?.let { getContentResolver().openInputStream(it) }
+            val input: InputStream? = data!!.data?.let { contentResolver.openInputStream(it) }
             val wavdata = input?.let { readBytes(it) }
             if (wavdata != null) {
                 showCopyingDialog(wavdata)

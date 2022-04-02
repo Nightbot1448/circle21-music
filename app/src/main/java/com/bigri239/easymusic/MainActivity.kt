@@ -1,20 +1,32 @@
 package com.bigri239.easymusic
 
+import android.Manifest
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.content.pm.PackageManager
 import android.media.AudioManager
+import android.media.MediaRecorder
 import android.media.SoundPool
-import android.os.*
+import android.os.Build
+import android.os.Bundle
+import android.os.CountDownTimer
+import android.os.Environment
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.Window
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -51,6 +63,15 @@ class MainActivity : AppCompatActivity() {
     private var viewClickListener = View.OnClickListener { v -> create_select_project_popup_menu(v) }
     private var mAdapter: RecyclerAdapter? = null
     private var mRecyclerView: RecyclerView? = null
+    /*private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                saveMusic()
+            } else {
+                Toast.makeText(this, "Oops! You did not give permission to write files! :(", Toast.LENGTH_LONG).show()
+            }
+        }*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -290,9 +311,17 @@ class MainActivity : AppCompatActivity() {
         state = "ready"
     }
 
-    fun getSoundLength(name: String): Long {
+    private fun commonMusicFile(fileName: String): File {
+        val dir: File = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC), fileName)
+        }
+        else File(Environment.getExternalStorageDirectory(), fileName)
+        return dir
+    }
+
+    private fun getSoundLength(name: String): Long {
         val inStream: InputStream = if (isRawResource(name)) resources.openRawResource(resources.getIdentifier(name, "raw", packageName))
-        else File("$name.wav").inputStream()
+        else File(filesDir,"$name.wav").inputStream()
         val wavdata = ByteArray(45)
         inStream.read(wavdata, 0, 45)
         inStream.close()
@@ -304,7 +333,7 @@ class MainActivity : AppCompatActivity() {
         return 0
     }
 
-    fun playTrack(i: Int, j: Int, delay: Long = 0) {
+    private fun playTrack(i: Int, j: Int, delay: Long = 0) {
         val started = played
         object : CountDownTimer(sounds[i][j].delay + delay, 1000) {
             override fun onTick(millisUntilFinished: Long) {}
@@ -327,6 +356,21 @@ class MainActivity : AppCompatActivity() {
             }
         }.start()
     }
+
+    /*private fun saveMusic() {
+        val file = commonMusicFile("$projectName.wav")
+        val recorder = MediaRecorder();
+        recorder.setAudioSource(MediaRecorder.AudioSource.);
+        recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        recorder.setOutputFile(file.absolutePath);
+        recorder.prepare();
+        recorder.start();
+
+        recorder.stop();
+        recorder.reset();
+        recorder.release();
+    }*/
 
     fun pause(view: View) {
         if (state == "playing") {
@@ -376,16 +420,23 @@ class MainActivity : AppCompatActivity() {
         if (state != "unready") Toast.makeText(this, "Saving project...", Toast.LENGTH_SHORT).show()
     }
 
-    fun saveMusic(view: View) {
+    /*@RequiresApi(Build.VERSION_CODES.R)
+    fun saveMusicUI(view: View) {
         if (state != "unready") {
             Toast.makeText(this, "Saving music...", Toast.LENGTH_SHORT).show()
-            Toast.makeText(this, "Oops! Not ready yet! :(", Toast.LENGTH_SHORT).show()
+            when (PackageManager.PERMISSION_GRANTED) {
+                ContextCompat.checkSelfPermission(
+                    baseContext,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) -> saveMusic()
+                else -> requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            }
         }
-    }
+    }*/
 
     fun resetPlaying(view: View) {
+        Toast.makeText(this, "Playing halted", Toast.LENGTH_SHORT).show()
         for (i in 0..countTracks) { // очищение и перезаполнение, если играем еще раз
-            Toast.makeText(this, "Playing halted", Toast.LENGTH_SHORT).show()
             tracks[i].autoPause()
             tracks[i].release()
             tracks[i] = SoundPool(10, AudioManager.STREAM_MUSIC, 0)
