@@ -33,6 +33,6 @@
             android:layout_marginEnd="20dp"
             android:textSize="15sp"
             android:contentDescription="Name a sound"
-            android:text="Copy sound" />
+            android:text="Add sound" />
     </LinearLayout>
 </FrameLayout>
