@@ -9,27 +9,27 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="match_parent"
+        android:layout_width="400dp"
         android:layout_height="0dp"
 
-        android:layout_marginBottom="51dp"
+        android:layout_marginStart="150dp"
+        android:layout_marginTop="48dp"
         android:contentDescription="@string/app_name"
         android:scaleType="center"
         android:src="@drawable/phon"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/backrec" />
+        app:layout_constraintStart_toStartOf="@+id/backsu"
+        app:layout_constraintTop_toTopOf="@+id/backsu" />
 
     <EditText
         android:id="@+id/password"
         android:layout_width="351dp"
         android:layout_height="56dp"
-        android:layout_marginStart="208dp"
+        android:layout_marginStart="140dp"
         android:layout_marginTop="80dp"
         android:hint="email"
         android:inputType="textEmailAddress"
         android:textColor="@color/colorPrimaryDark"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintStart_toEndOf="@+id/backsu"
         app:layout_constraintTop_toBottomOf="@+id/backsu" />
 
     <EditText
@@ -47,14 +47,11 @@
         android:id="@+id/backsu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="88dp"
-        android:layout_marginTop="23dp"
-        android:layout_marginEnd="84dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
         android:text="BACK"
         android:textColor="@color/colorAccent"
-        app:layout_constraintBottom_toTopOf="@+id/imageView"
-        app:layout_constraintEnd_toStartOf="@+id/password"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button

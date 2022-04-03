@@ -34,23 +34,12 @@
         android:id="@+id/signin"
         android:layout_width="77dp"
         android:layout_height="26dp"
-        android:layout_marginStart="80dp"
+        android:layout_marginStart="230dp"
         android:text="sign in "
         android:textColor="@color/colorAccent"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/backrec"
         app:layout_constraintStart_toEndOf="@+id/recoveryact" />
-
-    <TextView
-        android:id="@+id/signup"
-        android:layout_width="77dp"
-        android:layout_height="26dp"
-        android:layout_marginStart="60dp"
-        android:text="sign up"
-        android:textColor="@color/colorAccent"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/signin"
-        app:layout_constraintStart_toEndOf="@+id/signin" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
