@@ -44,7 +44,7 @@ class SecondsListAdapter : RecyclerView.Adapter<SecondsListAdapter.SecondsListVi
             }
         }
         // TODO check
-        for (i in 299-soundSeconds.size..299) {
+        for (i in 0..20-soundSeconds.size) {
             soundSeconds.add(SoundSecond())
         }
         notifyDataSetChanged()
@@ -61,7 +61,7 @@ class SecondsListAdapter : RecyclerView.Adapter<SecondsListAdapter.SecondsListVi
     }
 
     private fun eraseSounds() {
-        for (i in 0..299) {
+        for (i in 0..19) {
             soundSeconds.add(SoundSecond())
         }
     }

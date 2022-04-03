@@ -81,10 +81,13 @@ class MainActivity : AppCompatActivity() {
 
         recyclerViewhor1 = findViewById(R.id.recyclerViewhor1)
         recyclerViewhor1.adapter = SecondsListAdapter()
+        (recyclerViewhor1.adapter as SecondsListAdapter).notifyDataSetChanged()
         recyclerViewhor2 = findViewById(R.id.recyclerViewhor2)
         recyclerViewhor2.adapter = SecondsListAdapter()
+        (recyclerViewhor1.adapter as SecondsListAdapter).notifyDataSetChanged()
         recyclerViewhor3 = findViewById(R.id.recyclerViewhor3)
         recyclerViewhor3.adapter = SecondsListAdapter()
+        (recyclerViewhor1.adapter as SecondsListAdapter).notifyDataSetChanged()
 
         btnAdd1 = findViewById(R.id.btnAdd1)
         btnAdd1.setOnClickListener { (recyclerViewhor1.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType.SOUND1)) }
