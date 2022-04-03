@@ -203,32 +203,32 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-//    private fun create_sounds_list() {
-//        val sound_list = mutableListOf(
-//            "Kick", "Type1", "Snare",
-//            "Type1", "Hihat", "Type1",
-//            "Loop", "Type1", "Bass",
-//            "Type1", "808", "Type1",
-//            "+", "Type1", "+",
-//            "Type1"
-//        )
-//        val on_sound_click =  { position: Int, text_item: TextView ->
-//            sound_list[position] = "changed"
-//            text_item.text = sound_list[position]
-//            Log.d("MYMSG vert_recyc: ", sound_list[position])
-//            Unit
-//        }
-//        GridLayoutManager(
-//            this, // context
-//            2, // span count
-//            RecyclerView.VERTICAL, // orientation
-//            false // reverse layout
-//        ).apply {
-//            // specify the layout manager for recycler view
-//            recyclerView.layoutManager = this
-//        }
-//        recyclerView.adapter = RecyclerViewAdapter(sound_list, on_sound_click)
-//    }
+    /*private fun create_sounds_list() {
+        val sound_list = mutableListOf(
+            "Kick", "Type1", "Snare",
+            "Type1", "Hihat", "Type1",
+            "Loop", "Type1", "Bass",
+            "Type1", "808", "Type1",
+            "+", "Type1", "+",
+            "Type1"
+        )
+        val on_sound_click =  { position: Int, text_item: TextView ->
+            sound_list[position] = "changed"
+            text_item.text = sound_list[position]
+            Log.d("MYMSG vert_recyc: ", sound_list[position])
+            Unit
+        }
+        GridLayoutManager(
+            this, // context
+            2, // span count
+            RecyclerView.VERTICAL, // orientation
+            false // reverse layout
+        ).apply {
+            // specify the layout manager for recycler view
+            recyclerView.layoutManager = this
+        }
+        recyclerView.adapter = RecyclerViewAdapter(sound_list, on_sound_click)
+    }*/
 
     private fun create_select_project_popup_menu(v: View) {
         val popupMenu = PopupMenu(this, v)
@@ -328,13 +328,13 @@ class MainActivity : AppCompatActivity() {
         state = "ready"
     }
 
-    private fun commonMusicFile(fileName: String): File {
+    /*private fun commonMusicFile(fileName: String): File {
         val dir: File = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC), fileName)
         }
         else File(Environment.getExternalStorageDirectory(), fileName)
         return dir
-    }
+    }*/
 
     private fun getSoundLength(name: String): Long {
         val inStream: InputStream = if (isRawResource(name)) resources.openRawResource(resources.getIdentifier(name, "raw", packageName))
