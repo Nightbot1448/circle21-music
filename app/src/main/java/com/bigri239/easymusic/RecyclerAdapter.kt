@@ -45,6 +45,13 @@ Log.d("debug", holder.animal.text.toString())
 
         }
 
+
+//        holder.animal.text = animals[position]
+        holder.animal.setOnClickListener {
+            Log.d("debug", holder.animal.text.toString())
+
+        }
+
     }
 
 
