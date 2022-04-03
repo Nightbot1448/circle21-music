@@ -3,5 +3,12 @@
     <color name="colorPrimary">#d98b25</color>
     <color name="colorPrimaryDark">#333333</color>
     <color name="colorAccent">#d98b25</color>
+
+    <color name="white">#fff</color>
+    <color name="yellow">#ff0</color>
+    <color name="cyan">#0ff</color>
+    <color name="blue">#00f</color>
+    <color name="pink">#f0f</color>
+    <color name="red">#f00</color>
 </resources>
 <!--  CC6600  262F34-->

@@ -1,14 +1,11 @@
 package com.bigri239.easymusic
 
-import android.Manifest
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.content.pm.ActivityInfo
-import android.content.pm.PackageManager
 import android.media.AudioManager
-import android.media.MediaRecorder
 import android.media.SoundPool
 import android.os.Build
 import android.os.Bundle
@@ -22,14 +19,12 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bigri239.easymusic.recyclers.SecondsListAdapter
+import com.bigri239.easymusic.recyclers.Sound
+import com.bigri239.easymusic.recyclers.SoundType
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 import java.io.FileOutputStream
@@ -63,6 +58,12 @@ class MainActivity : AppCompatActivity() {
     private var viewClickListener = View.OnClickListener { v -> create_select_project_popup_menu(v) }
     private var mAdapter: RecyclerAdapter? = null
     private var mRecyclerView: RecyclerView? = null
+    private lateinit var recyclerViewhor1: RecyclerView
+    private lateinit var recyclerViewhor2: RecyclerView
+    private lateinit var recyclerViewhor3: RecyclerView
+    private lateinit var btnAdd1: Button
+    private lateinit var btnAdd2: Button
+    private lateinit var btnAdd3: Button
     /*private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
@@ -77,9 +78,25 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+
+        recyclerViewhor1 = findViewById(R.id.recyclerViewhor1)
+        recyclerViewhor1.adapter = SecondsListAdapter()
+        (recyclerViewhor1.adapter as SecondsListAdapter).notifyDataSetChanged()
+        recyclerViewhor2 = findViewById(R.id.recyclerViewhor2)
+        recyclerViewhor2.adapter = SecondsListAdapter()
+        (recyclerViewhor1.adapter as SecondsListAdapter).notifyDataSetChanged()
+        recyclerViewhor3 = findViewById(R.id.recyclerViewhor3)
+        recyclerViewhor3.adapter = SecondsListAdapter()
+        (recyclerViewhor1.adapter as SecondsListAdapter).notifyDataSetChanged()
+
+        btnAdd1 = findViewById(R.id.btnAdd1)
+        btnAdd1.setOnClickListener { (recyclerViewhor1.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType.SOUND1)) }
+        btnAdd2 = findViewById(R.id.btnAdd2)
+        btnAdd3 = findViewById(R.id.btnAdd3)
+
         val textView = findViewById<TextView>(R.id.txt)
         textView.setOnClickListener(viewClickListener)
-        create_horizontal_list()
+        // create_horizontal_list()
 //        create_sounds_list()
         try {
             val path = filesDir
@@ -221,7 +238,7 @@ class MainActivity : AppCompatActivity() {
         popupMenu.show()
     }
 
-    private fun create_horizontal_list() {
+    /*private fun create_horizontal_list() {
         mRecyclerView = findViewById(R.id.recyclerViewhor)
         mRecyclerView?.layoutManager = LinearLayoutManager(
             this,
@@ -233,7 +250,7 @@ class MainActivity : AppCompatActivity() {
         }
         mAdapter = RecyclerAdapter(dataset, this)
         mRecyclerView?.adapter = mAdapter
-    }
+    }*/
 
     private fun isRawResource (name : String): Boolean {
         val resourcesArray : Array<String> = arrayOf("file1", "file2", "memories1", "yf___vinnyx__crash_")
