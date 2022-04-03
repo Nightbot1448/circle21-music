@@ -1,6 +1,7 @@
 package com.bigri239.easymusic.recyclers
 
 import androidx.annotation.ColorRes
+import com.bigri239.easymusic.R
 
 data class Sound(
     val shift: Int,
@@ -11,6 +12,6 @@ data class Sound(
 enum class SoundType { SOUND1, SOUND2, SOUND3, SOUND4, SOUND5 }
 
 data class SoundSecond(
-    @ColorRes val color: Int,
-    val sound: Sound
+    @ColorRes val color: Int = R.color.white,
+    val sound: Sound? = null
 )
