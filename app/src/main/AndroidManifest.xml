@@ -55,6 +55,14 @@
             android:exported="true"
             android:screenOrientation="landscape">
         </activity>
+        <activity android:name="com.bigri239.easymusic.SigninActivity"
+            android:exported="true"
+            android:screenOrientation="landscape">
+        </activity>
+        <activity android:name="com.bigri239.easymusic.SignupActivity"
+            android:exported="true"
+            android:screenOrientation="landscape">
+        </activity>
     </application>
 
 </manifest>
