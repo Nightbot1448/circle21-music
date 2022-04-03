@@ -63,6 +63,7 @@ class MainActivity : AppCompatActivity() {
     private var viewClickListener = View.OnClickListener { v -> create_select_project_popup_menu(v) }
     private var mAdapter: RecyclerAdapter? = null
     private var mRecyclerView: RecyclerView? = null
+    private var recyclerViewhor1: RecyclerView? = null
     /*private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
@@ -77,9 +78,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        recyclerViewhor1 = findViewById(R.id.recyclerViewhor1)
         val textView = findViewById<TextView>(R.id.txt)
         textView.setOnClickListener(viewClickListener)
-        create_horizontal_list()
+        // create_horizontal_list()
 //        create_sounds_list()
         try {
             val path = filesDir
@@ -221,7 +223,7 @@ class MainActivity : AppCompatActivity() {
         popupMenu.show()
     }
 
-    private fun create_horizontal_list() {
+    /*private fun create_horizontal_list() {
         mRecyclerView = findViewById(R.id.recyclerViewhor)
         mRecyclerView?.layoutManager = LinearLayoutManager(
             this,
@@ -233,7 +235,7 @@ class MainActivity : AppCompatActivity() {
         }
         mAdapter = RecyclerAdapter(dataset, this)
         mRecyclerView?.adapter = mAdapter
-    }
+    }*/
 
     private fun isRawResource (name : String): Boolean {
         val resourcesArray : Array<String> = arrayOf("file1", "file2", "memories1", "yf___vinnyx__crash_")

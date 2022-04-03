@@ -30,21 +30,87 @@
         tools:context=".MainActivity"
         tools:ignore="MissingConstraints">
 
-        <androidx.recyclerview.widget.RecyclerView
+        <!--<androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView1"
             android:layout_width="0dp"
             android:layout_height="0dp"
 
             app:layout_constraintHorizontal_bias="1.0"
 
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="1.0" />-->
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewhor"
-            android:layout_width="584dp"
-            android:layout_height="19dp"
-            app:layout_constraintStart_toEndOf="@+id/recyclerView1"
+            android:id="@+id/recyclerViewhor1"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewhor2"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewhor1" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewhor3"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewhor2" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewhor4"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewhor3" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewhor5"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewhor4" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewhor6"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewhor5" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewhor7"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewhor6" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewhor8"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewhor7" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewhor9"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewhor8" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
