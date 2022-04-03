@@ -17,5 +17,13 @@ class RecoveryActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.backrec).setOnClickListener {
             startActivity(intent)
         }
+        val intents1 = Intent(this, SigninActivity::class.java)
+        findViewById<TextView>(R.id.signin).setOnClickListener {
+            startActivity(intents1)
+        }
+        val intents2 = Intent(this, SignupActivity::class.java)
+        findViewById<TextView>(R.id.signup).setOnClickListener {
+            startActivity(intents2)
+        }
     }
 }
