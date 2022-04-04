@@ -26,7 +26,7 @@ class AddingfilesActivity : AppCompatActivity() {
         "clapforeign",
         "crashalect",
         "crashbloods",
-        "crashvinyx",
+        "crashvinnyx",
         "fxfreeze",
         "fxgunnes",
         "hihatcheque",
