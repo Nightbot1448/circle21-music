@@ -510,7 +510,7 @@
         android:layout_width="84dp"
         android:layout_height="37dp"
         android:layout_marginStart="8dp"
-        android:hint="Length"
+        android:hint="Indent"
         android:textSize="14sp"
         android:inputType="number"
         app:layout_constraintStart_toEndOf="@+id/btnAdd1"
@@ -532,7 +532,7 @@
         android:id="@+id/edittextmain3"
         android:layout_width="84dp"
         android:layout_height="37dp"
-        android:hint="Indent"
+        android:hint="Volume"
         android:textSize="14sp"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="@+id/edittextmain1"
@@ -542,21 +542,11 @@
         android:id="@+id/edittextmain4"
         android:layout_width="84dp"
         android:layout_height="37dp"
-        android:hint="Volume"
-        android:textSize="14sp"
+        android:hint="Ratio"
         android:inputType="number"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/edittextmain3"
         app:layout_constraintTop_toBottomOf="@+id/edittextmain3" />
-
-    <EditText
-        android:id="@+id/edittextmain5"
-        android:layout_width="84dp"
-        android:layout_height="37dp"
-        android:hint="Color"
-        android:textSize="14sp"
-        android:inputType="textCapWords"
-        app:layout_constraintStart_toStartOf="@+id/edittextmain4"
-        app:layout_constraintTop_toBottomOf="@+id/edittextmain4" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
