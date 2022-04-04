@@ -6,12 +6,18 @@ import android.content.ContentValues.TAG
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.media.AudioManager
+import android.media.MediaMetadataRetriever
 import android.media.SoundPool
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
-import android.view.*
-import android.widget.*
+import android.view.MenuItem
+import android.view.View
+import android.view.Window
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
@@ -328,17 +334,20 @@ open class MainActivity : AppCompatActivity(){
     }
 
     private fun getSoundLength(name: String): Long {
-        val inStream: InputStream = if (isRawResource(name)) resources.openRawResource(resources.getIdentifier(name, "raw", packageName))
-        else File(filesDir,"$name.wav").inputStream()
-        val wavdata = ByteArray(45)
-        inStream.read(wavdata, 0, 45)
-        inStream.close()
-        if (wavdata.size > 44) {
+        return if (isRawResource(name)) {
+            val inStream: InputStream = resources.openRawResource(resources.getIdentifier(name, "raw", packageName))
+            val wavdata = ByteArray(45)
+            inStream.read(wavdata, 0, 45)
+            inStream.close()
             val byteRate = bytesArrayPart4ToInt(wavdata, 28)
             val waveSize = bytesArrayPart4ToInt(wavdata, 40)
-            if (byteRate != 0) return (waveSize * 1000.0 / byteRate).toLong()
+            if (byteRate != 0) (waveSize * 1000.0 / byteRate).toLong()
+            else 0
+        } else {
+            val metaRetriever = MediaMetadataRetriever()
+            metaRetriever.setDataSource(File(filesDir, "$name.wav").absolutePath)
+            metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)!!.toLong()
         }
-        return 0
     }
 
     private fun playTrack(i: Int, j: Int, delay: Long = 0) {
