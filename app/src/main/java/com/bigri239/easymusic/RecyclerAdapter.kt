@@ -25,7 +25,6 @@ class RecyclerViewAdapter(private val sound_list: MutableList<String>, val onSou
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         // display the current animal
-
         holder.animal.text = sound_list[position]
         holder.animal.setOnClickListener { onSoundClick.invoke(position, holder.animal) }
         holder.itemView.setOnClickListener { onClick(holder, holder.adapterPosition) }
