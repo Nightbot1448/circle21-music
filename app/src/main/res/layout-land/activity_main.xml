@@ -548,5 +548,16 @@
         app:layout_constraintEnd_toEndOf="@+id/edittextmain3"
         app:layout_constraintTop_toBottomOf="@+id/edittextmain3" />
 
+    <Button
+        android:id="@+id/button6"
+        android:layout_width="74dp"
+        android:layout_height="30dp"
+        android:backgroundTint="#9C7425"
+        android:text="Delete"
+        android:textSize="7sp"
+        app:layout_constraintEnd_toEndOf="@+id/edittextmain4"
+        app:layout_constraintTop_toBottomOf="@+id/edittextmain4"
+        app:rippleColor="@color/colorPrimaryDark" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
