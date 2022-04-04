@@ -61,9 +61,21 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recyclerViewhor1: RecyclerView
     private lateinit var recyclerViewhor2: RecyclerView
     private lateinit var recyclerViewhor3: RecyclerView
+    private lateinit var recyclerViewhor4: RecyclerView
+    private lateinit var recyclerViewhor5: RecyclerView
+    private lateinit var recyclerViewhor6: RecyclerView
+    private lateinit var recyclerViewhor7: RecyclerView
+    private lateinit var recyclerViewhor8: RecyclerView
+    private lateinit var recyclerViewhor9: RecyclerView
     private lateinit var btnAdd1: Button
     private lateinit var btnAdd2: Button
     private lateinit var btnAdd3: Button
+    private lateinit var btnAdd4: Button
+    private lateinit var btnAdd5: Button
+    private lateinit var btnAdd6: Button
+    private lateinit var btnAdd7: Button
+    private lateinit var btnAdd8: Button
+    private lateinit var btnAdd9: Button
     /*private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
@@ -88,11 +100,43 @@ class MainActivity : AppCompatActivity() {
         recyclerViewhor3 = findViewById(R.id.recyclerViewhor3)
         recyclerViewhor3.adapter = SecondsListAdapter()
         (recyclerViewhor1.adapter as SecondsListAdapter).notifyDataSetChanged()
+        recyclerViewhor4 = findViewById(R.id.recyclerViewhor4)
+        recyclerViewhor4.adapter = SecondsListAdapter()
+        (recyclerViewhor1.adapter as SecondsListAdapter).notifyDataSetChanged()
+        recyclerViewhor5 = findViewById(R.id.recyclerViewhor5)
+        recyclerViewhor5.adapter = SecondsListAdapter()
+        (recyclerViewhor1.adapter as SecondsListAdapter).notifyDataSetChanged()
+        recyclerViewhor6 = findViewById(R.id.recyclerViewhor6)
+        recyclerViewhor6.adapter = SecondsListAdapter()
+        (recyclerViewhor1.adapter as SecondsListAdapter).notifyDataSetChanged()
+        recyclerViewhor7 = findViewById(R.id.recyclerViewhor7)
+        recyclerViewhor7.adapter = SecondsListAdapter()
+        (recyclerViewhor1.adapter as SecondsListAdapter).notifyDataSetChanged()
+        recyclerViewhor8 = findViewById(R.id.recyclerViewhor8)
+        recyclerViewhor8.adapter = SecondsListAdapter()
+        (recyclerViewhor1.adapter as SecondsListAdapter).notifyDataSetChanged()
+        recyclerViewhor9 = findViewById(R.id.recyclerViewhor9)
+        recyclerViewhor9.adapter = SecondsListAdapter()
+        (recyclerViewhor1.adapter as SecondsListAdapter).notifyDataSetChanged()
 
         btnAdd1 = findViewById(R.id.btnAdd1)
         btnAdd1.setOnClickListener { (recyclerViewhor1.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType.SOUND1)) }
         btnAdd2 = findViewById(R.id.btnAdd2)
+        btnAdd2.setOnClickListener { (recyclerViewhor2.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType.SOUND1)) }
         btnAdd3 = findViewById(R.id.btnAdd3)
+        btnAdd3.setOnClickListener { (recyclerViewhor3.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType.SOUND1)) }
+        btnAdd4 = findViewById(R.id.btnAdd4)
+        btnAdd4.setOnClickListener { (recyclerViewhor4.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType.SOUND1)) }
+        btnAdd5 = findViewById(R.id.btnAdd5)
+        btnAdd5.setOnClickListener { (recyclerViewhor5.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType.SOUND1)) }
+        btnAdd6 = findViewById(R.id.btnAdd6)
+        btnAdd6.setOnClickListener { (recyclerViewhor6.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType.SOUND1)) }
+        btnAdd7 = findViewById(R.id.btnAdd7)
+        btnAdd7.setOnClickListener { (recyclerViewhor7.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType.SOUND1)) }
+        btnAdd8 = findViewById(R.id.btnAdd8)
+        btnAdd8.setOnClickListener { (recyclerViewhor8.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType.SOUND1)) }
+        btnAdd9 = findViewById(R.id.btnAdd9)
+        btnAdd9.setOnClickListener { (recyclerViewhor9.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType.SOUND1)) }
 
         val textView = findViewById<TextView>(R.id.txt)
         textView.setOnClickListener(viewClickListener)

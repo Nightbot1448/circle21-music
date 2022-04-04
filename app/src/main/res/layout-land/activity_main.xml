@@ -82,46 +82,51 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewhor5"
             android:layout_width="0dp"
-            android:layout_height="20dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/recyclerViewhor4" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewhor6"
             android:layout_width="0dp"
-            android:layout_height="20dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/recyclerViewhor5" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewhor7"
             android:layout_width="0dp"
-            android:layout_height="20dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/recyclerViewhor6" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewhor8"
             android:layout_width="0dp"
-            android:layout_height="20dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/recyclerViewhor7" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewhor9"
             android:layout_width="0dp"
-            android:layout_height="20dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/recyclerViewhor8" />
 
 
@@ -409,31 +414,31 @@
         app:layout_constraintTop_toBottomOf="@+id/textView26" />
 
     <Button
-        android:id="@+id/button1a"
+        android:id="@+id/btnAdd8"
         android:layout_width="58dp"
         android:layout_height="28dp"
         android:text="add"
         android:textSize="7sp"
-        app:layout_constraintStart_toStartOf="@+id/button6a"
-        app:layout_constraintTop_toBottomOf="@+id/button6a" />
+        app:layout_constraintStart_toStartOf="@+id/btnAdd7"
+        app:layout_constraintTop_toBottomOf="@+id/btnAdd7" />
 
     <Button
-        android:id="@+id/button2a"
+        android:id="@+id/btnAdd6"
         android:layout_width="58dp"
         android:layout_height="28dp"
         android:text="add"
         android:textSize="7sp"
-        app:layout_constraintStart_toStartOf="@+id/button3a"
-        app:layout_constraintTop_toBottomOf="@+id/button3a" />
+        app:layout_constraintStart_toStartOf="@+id/btnAdd5"
+        app:layout_constraintTop_toBottomOf="@+id/btnAdd5" />
 
     <Button
-        android:id="@+id/button3a"
+        android:id="@+id/btnAdd5"
         android:layout_width="58dp"
         android:layout_height="28dp"
         android:text="add"
         android:textSize="7sp"
-        app:layout_constraintStart_toStartOf="@+id/button5a"
-        app:layout_constraintTop_toBottomOf="@+id/button5a" />
+        app:layout_constraintStart_toStartOf="@+id/btnAdd4"
+        app:layout_constraintTop_toBottomOf="@+id/btnAdd4" />
 
     <Button
         android:id="@+id/btnAdd3"
@@ -445,7 +450,7 @@
         app:layout_constraintTop_toBottomOf="@+id/btnAdd2" />
 
     <Button
-        android:id="@+id/button5a"
+        android:id="@+id/btnAdd4"
         android:layout_width="58dp"
         android:layout_height="28dp"
         android:text="add"
@@ -454,22 +459,22 @@
         app:layout_constraintTop_toBottomOf="@+id/btnAdd3" />
 
     <Button
-        android:id="@+id/button6a"
+        android:id="@+id/btnAdd7"
         android:layout_width="58dp"
         android:layout_height="28dp"
         android:text="add"
         android:textSize="7sp"
-        app:layout_constraintStart_toStartOf="@+id/button2a"
-        app:layout_constraintTop_toBottomOf="@+id/button2a" />
+        app:layout_constraintStart_toStartOf="@+id/btnAdd6"
+        app:layout_constraintTop_toBottomOf="@+id/btnAdd6" />
 
     <Button
-        android:id="@+id/buttona"
+        android:id="@+id/btnAdd9"
         android:layout_width="58dp"
         android:layout_height="28dp"
         android:text="add"
         android:textSize="7sp"
-        app:layout_constraintStart_toStartOf="@+id/button1a"
-        app:layout_constraintTop_toBottomOf="@+id/button1a" />
+        app:layout_constraintStart_toStartOf="@+id/btnAdd8"
+        app:layout_constraintTop_toBottomOf="@+id/btnAdd8" />
 
     <Button
         android:id="@+id/btnAdd1"
