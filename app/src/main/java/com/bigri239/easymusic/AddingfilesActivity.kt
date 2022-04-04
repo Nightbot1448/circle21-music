@@ -19,51 +19,61 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 @Suppress("DEPRECATION")
 class AddingfilesActivity : AppCompatActivity() {
     private var filePath = ""
-    private val itemsList = ArrayList<String>()
-    private val itemsList1 = ArrayList<String>()
+    private val itemsList : ArrayList<String> = arrayListOf("bassalbane",
+        "basscentury",
+        "bassflowers",
+        "clapchoppa",
+        "clapforeign",
+        "crashalect",
+        "crashbloods",
+        "crashvinyx",
+        "fxfreeze",
+        "fxgunnes",
+        "hihatcheque",
+        "hihatmystery",
+        "kickartillery",
+        "kickinfinite",
+        "percardonme",
+        "percpaolla",
+        "rimchaser",
+        "rimstount",
+        "snarecompas",
+        "snarewoods",
+        "voxanother",
+        "voxgilens")
+    private val itemsList1 = arrayListOf<String>()
     private lateinit var customAdapter: CustomAdapter
     private lateinit var customAdapter1: CustomAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_addfiles)
 
+        try {
+            val path = filesDir
+            val file = File(path, "sounds.conf")
+            val content: String = file.readText()
+            if (content != "") itemsList1.addAll(content.split("\n").toTypedArray())
+        }
+        catch (e: IOException) {
+            val path = filesDir
+            val file = File(path, "sounds.conf")
+            val content = ""
+            FileOutputStream(file).use {
+                it.write(content.toByteArray())
+            }
+        }
+
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView111)
         customAdapter = CustomAdapter(itemsList)
         val layoutManager = LinearLayoutManager(applicationContext)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = customAdapter
-        prepareItems()
 
         val recyclerView1: RecyclerView = findViewById(R.id.recyclerView222)
         customAdapter1 = CustomAdapter(itemsList1)
         val layoutManager1 = LinearLayoutManager(applicationContext)
         recyclerView1.layoutManager = layoutManager1
-        recyclerView1.adapter = customAdapter
-        prepareItems1()
-    }
-    private fun prepareItems() {
-        itemsList.add("Sound 1")
-        itemsList.add("Sound 2")
-        itemsList.add("Sound 3")
-        itemsList.add("Sound 4")
-        itemsList.add("Sound 5")
-        itemsList.add("Sound 6")
-        customAdapter.notifyDataSetChanged()
-
-
-        supportActionBar?.hide()
-    }
-    private fun prepareItems1() {
-        itemsList1.add("Sound aa")
-        itemsList1.add("Sound bb")
-        itemsList1.add("Sound cc")
-        itemsList1.add("Sound dd")
-        itemsList1.add("Sound sw")
-        itemsList1.add("Sound egdeiugd")
-        customAdapter1.notifyDataSetChanged()
-
-
-        supportActionBar?.hide()
+        recyclerView1.adapter = customAdapter1
     }
 
     override fun onStart() {
@@ -98,6 +108,15 @@ class AddingfilesActivity : AppCompatActivity() {
             FileOutputStream(file).use {
                 it.write(content)
             }
+            val file1 = File(path, "sounds.conf")
+            var sounds: String = file1.readText()
+            if (sounds != "") sounds += "\n"
+            sounds += filePath
+            FileOutputStream(file1).use {
+                it.write(sounds.toByteArray())
+            }
+            itemsList1.add(filePath)
+            customAdapter1.notifyDataSetChanged()
             dialog.dismiss()
         }
         dialog.show()

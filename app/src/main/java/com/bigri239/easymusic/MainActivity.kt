@@ -345,7 +345,7 @@ class MainActivity : AppCompatActivity() {
             txt.text = projectName
             openProject()
             state = "unready"
-            for (i in 0..countTracks) { // очистка данных по звукам
+            for (i in 0..countTracks) {
                 if (sounds[i][0] != SoundInfo("", i + 1, 0, 1.0F, 0, 1.0F)) {
                     state = "ready"
                 }
@@ -403,7 +403,28 @@ class MainActivity : AppCompatActivity() {
     }*/
 
     private fun isRawResource (name : String): Boolean {
-        val resourcesArray : Array<String> = arrayOf("file1", "file2", "memories1", "yf___vinnyx__crash_")
+        val resourcesArray : Array<String> = arrayOf("bassalbane",
+            "basscentury",
+            "bassflowers",
+            "clapchoppa",
+            "clapforeign",
+            "crashalect",
+            "crashbloods",
+            "crashvinyx",
+            "fxfreeze",
+            "fxgunnes",
+            "hihatcheque",
+            "hihatmystery",
+            "kickartillery",
+            "kickinfinite",
+            "percardonme",
+            "percpaolla",
+            "rimchaser",
+            "rimstount",
+            "snarecompas",
+            "snarewoods",
+            "voxanother",
+            "voxgilens")
         return resourcesArray.contains(name)
     }
 
