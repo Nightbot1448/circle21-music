@@ -80,6 +80,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="ADD"
+        android:clickable="true"
+        android:onClick="openFile"
         app:layout_constraintEnd_toEndOf="@+id/recyclerView222"
         app:layout_constraintStart_toStartOf="@+id/recyclerView222"
         app:layout_constraintTop_toBottomOf="@+id/recyclerView222" />
