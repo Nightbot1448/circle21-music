@@ -250,26 +250,15 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="100dp"
-        android:layout_height="210dp"
-        android:layout_marginStart="568dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="102dp"
+        android:layout_height="270dp"
+        android:layout_marginStart="570dp"
+        android:layout_marginTop="4dp"
         android:contentDescription="@string/app_name"
         android:scaleType="center"
         android:src="@drawable/soundmenunew"
         app:layout_constraintStart_toEndOf="@+id/file"
         app:layout_constraintTop_toBottomOf="@+id/file" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="73dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="4dp"
-        android:text="kick1"
-        android:textColor="@color/colorPrimaryDark"
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/imageView" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton2"
@@ -503,61 +492,53 @@
         app:layout_constraintStart_toStartOf="@+id/btnAdd1"
         app:layout_constraintTop_toBottomOf="@+id/btnAdd1" />
 
-    <TextView
-        android:id="@+id/textView28"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="Start time"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+    <EditText
+        android:id="@+id/edittextmain1"
+        android:layout_width="84dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="8dp"
+        android:hint="Length"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/btnAdd1"
+        app:layout_constraintTop_toBottomOf="@+id/edittextmain2" />
 
-    <TextView
-        android:id="@+id/textView29"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="0"
-        android:textColor="@color/colorPrimaryDark"
-        app:layout_constraintStart_toStartOf="@+id/textView28"
-        app:layout_constraintTop_toBottomOf="@+id/textView28" />
+    <EditText
+        android:id="@+id/edittextmain2"
+        android:layout_width="84dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="60dp"
+        android:hint="name"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/txt" />
 
-    <TextView
-        android:id="@+id/textView30"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="Length"
-        app:layout_constraintStart_toStartOf="@+id/textView29"
-        app:layout_constraintTop_toBottomOf="@+id/textView29" />
+    <EditText
+        android:id="@+id/edittextmain3"
+        android:layout_width="84dp"
+        android:layout_height="37dp"
+        android:hint="Indent"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/edittextmain1"
+        app:layout_constraintTop_toBottomOf="@+id/edittextmain1" />
 
-    <TextView
-        android:id="@+id/textView32"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="0"
-        android:textColor="@color/colorPrimaryDark"
-        app:layout_constraintStart_toStartOf="@+id/textView30"
-        app:layout_constraintTop_toBottomOf="@+id/textView30" />
+    <EditText
+        android:id="@+id/edittextmain4"
+        android:layout_width="84dp"
+        android:layout_height="37dp"
+        android:hint="Volume"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/edittextmain3"
+        app:layout_constraintTop_toBottomOf="@+id/edittextmain3" />
 
-    <TextView
-        android:id="@+id/textView33"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="Volume"
-        app:layout_constraintStart_toStartOf="@+id/textView32"
-        app:layout_constraintTop_toBottomOf="@+id/textView32" />
+    <EditText
+        android:id="@+id/edittextmain5"
+        android:layout_width="84dp"
+        android:layout_height="37dp"
+        android:hint="Color"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/edittextmain4"
+        app:layout_constraintTop_toBottomOf="@+id/edittextmain4" />
 
-    <TextView
-        android:id="@+id/textView34"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="0"
-        android:textColor="@color/colorPrimaryDark"
-        app:layout_constraintStart_toStartOf="@+id/textView33"
-        app:layout_constraintTop_toBottomOf="@+id/textView33" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
