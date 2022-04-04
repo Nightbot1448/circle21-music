@@ -9,7 +9,6 @@ import android.media.AudioManager
 import android.media.SoundPool
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.text.Editable
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
@@ -30,6 +29,7 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
 import java.lang.System.currentTimeMillis
+import kotlin.math.roundToInt
 
 
 @Suppress("DEPRECATION")
@@ -49,11 +49,11 @@ class MainActivity : AppCompatActivity() {
     private var projectName = "projectDefault"
     private val projects = mutableListOf<String>()
     private val tracks: Array<SoundPool> =
-        Array(100) { SoundPool(10, AudioManager.STREAM_MUSIC, 0) }
+        Array(9) { SoundPool(10, AudioManager.STREAM_MUSIC, 0) }
     private var countTracks = 0
-    private val countSounds: Array<Int> = Array(100) { 0 }
+    private val countSounds: Array<Int> = Array(9) { -1 }
     private val sounds: Array<Array<SoundInfo>> =
-        Array(100) { Array(1000) { i -> SoundInfo("", i + 1, 0, 1.0F, 0, 1.0F) } }
+        Array(100) { Array(100) { i -> SoundInfo("", i + 1, 0, 1.0F, 0, 1.0F) } }
     private var viewClickListener = View.OnClickListener { v -> create_select_project_popup_menu(v) }
     private var mAdapter: RecyclerAdapter? = null
     private var mRecyclerView: RecyclerView? = null
@@ -119,23 +119,122 @@ class MainActivity : AppCompatActivity() {
         (recyclerViewhor1.adapter as SecondsListAdapter).notifyDataSetChanged()
 
         btnAdd1 = findViewById(R.id.btnAdd1)
-        btnAdd1.setOnClickListener { (recyclerViewhor1.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType. SOUND1)) }
         btnAdd2 = findViewById(R.id.btnAdd2)
-        btnAdd2.setOnClickListener { (recyclerViewhor2.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType. SOUND2)) }
         btnAdd3 = findViewById(R.id.btnAdd3)
-        btnAdd3.setOnClickListener { (recyclerViewhor3.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType. SOUND3)) }
         btnAdd4 = findViewById(R.id.btnAdd4)
-        btnAdd4.setOnClickListener { (recyclerViewhor4.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType. SOUND4)) }
         btnAdd5 = findViewById(R.id.btnAdd5)
-        btnAdd5.setOnClickListener { (recyclerViewhor5.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType. SOUND5)) }
         btnAdd6 = findViewById(R.id.btnAdd6)
-        btnAdd6.setOnClickListener { (recyclerViewhor6.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType. SOUND1)) }
         btnAdd7 = findViewById(R.id.btnAdd7)
-        btnAdd7.setOnClickListener { (recyclerViewhor7.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType. SOUND1)) }
         btnAdd8 = findViewById(R.id.btnAdd8)
-        btnAdd8.setOnClickListener { (recyclerViewhor8.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType. SOUND1)) }
         btnAdd9 = findViewById(R.id.btnAdd9)
-        btnAdd9.setOnClickListener { (recyclerViewhor9.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType. SOUND1)) }
+        btnAdd1.setOnClickListener {
+            val x = 0
+            if (state == "unready") state = "ready"
+            if (countTracks < x) countTracks = x
+            val sound = getSoundParameters(x, countSounds[x] + 1)
+            countSounds[x]++
+            sounds[x][countSounds[x]] = sound
+            (recyclerViewhor1.adapter as SecondsListAdapter).addSound(Sound(
+                (edittextmain1.text.toString().toFloat() / 100).roundToInt(),
+                ((getSoundLength(sound.res) / sound.ratio) / 100).toInt() + 1,
+                SoundType. SOUND1))
+        }
+        btnAdd2.setOnClickListener {
+            val x = 1
+            if (state == "unready") state = "ready"
+            if (countTracks < x) countTracks = x
+            val sound = getSoundParameters(x, countSounds[x] + 1)
+            countSounds[x]++
+            sounds[x][countSounds[x]] = sound
+            (recyclerViewhor2.adapter as SecondsListAdapter).addSound(Sound(
+                (edittextmain1.text.toString().toFloat() / 100).roundToInt(),
+                ((getSoundLength(sound.res) / sound.ratio) / 100).toInt() + 1,
+                SoundType. SOUND2))
+        }
+        btnAdd3.setOnClickListener {
+            val x = 2
+            if (state == "unready") state = "ready"
+            if (countTracks < x) countTracks = x
+            val sound = getSoundParameters(x, countSounds[x] + 1)
+            countSounds[x]++
+            sounds[x][countSounds[x]] = sound
+            (recyclerViewhor3.adapter as SecondsListAdapter).addSound(Sound(
+                (edittextmain1.text.toString().toFloat() / 100).roundToInt(),
+                ((getSoundLength(sound.res) / sound.ratio) / 100).toInt() + 1,
+                SoundType. SOUND3))
+        }
+        btnAdd4.setOnClickListener {
+            val x = 3
+            if (state == "unready") state = "ready"
+            if (countTracks < x) countTracks = x
+            val sound = getSoundParameters(x, countSounds[x] + 1)
+            countSounds[x]++
+            sounds[x][countSounds[x]] = sound
+            (recyclerViewhor4.adapter as SecondsListAdapter).addSound(Sound(
+                (edittextmain1.text.toString().toFloat() / 100).roundToInt(),
+                ((getSoundLength(sound.res) / sound.ratio) / 100).toInt() + 1,
+                SoundType. SOUND4))
+        }
+        btnAdd5.setOnClickListener {
+            val x = 4
+            if (state == "unready") state = "ready"
+            if (countTracks < x) countTracks = x
+            val sound = getSoundParameters(x, countSounds[x] + 1)
+            countSounds[x]++
+            sounds[x][countSounds[x]] = sound
+            (recyclerViewhor5.adapter as SecondsListAdapter).addSound(Sound(
+                (edittextmain1.text.toString().toFloat() / 100).roundToInt(),
+                ((getSoundLength(sound.res) / sound.ratio) / 100).toInt() + 1,
+                SoundType. SOUND5))
+        }
+        btnAdd6.setOnClickListener {
+            val x = 5
+            if (state == "unready") state = "ready"
+            if (countTracks < x) countTracks = x
+            val sound = getSoundParameters(x, countSounds[x] + 1)
+            countSounds[x]++
+            sounds[x][countSounds[x]] = sound
+            (recyclerViewhor6.adapter as SecondsListAdapter).addSound(Sound(
+                (edittextmain1.text.toString().toFloat() / 100).roundToInt(),
+                ((getSoundLength(sound.res) / sound.ratio) / 100).toInt() + 1,
+                SoundType.SOUND1))
+        }
+        btnAdd7.setOnClickListener {
+            val x = 6
+            if (state == "unready") state = "ready"
+            if (countTracks < x) countTracks = x
+            val sound = getSoundParameters(x, countSounds[x] + 1)
+            countSounds[x]++
+            sounds[x][countSounds[x]] = sound
+            (recyclerViewhor7.adapter as SecondsListAdapter).addSound(Sound(
+                (edittextmain1.text.toString().toFloat() / 100).roundToInt(),
+                ((getSoundLength(sound.res) / sound.ratio) / 100).toInt() + 1,
+                SoundType. SOUND2))
+        }
+        btnAdd8.setOnClickListener {
+            val x = 7
+            if (state == "unready") state = "ready"
+            if (countTracks < x) countTracks = x
+            val sound = getSoundParameters(x, countSounds[x] + 1)
+            countSounds[x]++
+            sounds[x][countSounds[x]] = sound
+            (recyclerViewhor8.adapter as SecondsListAdapter).addSound(Sound(
+                (edittextmain1.text.toString().toFloat() / 100).roundToInt(),
+                ((getSoundLength(sound.res) / sound.ratio) / 100).toInt() + 1,
+                SoundType. SOUND3))
+        }
+        btnAdd9.setOnClickListener {
+            val x = 8
+            if (state == "unready") state = "ready"
+            if (countTracks < x) countTracks = x
+            val sound = getSoundParameters(x, countSounds[x] + 1)
+            countSounds[x]++
+            sounds[x][countSounds[x]] = sound
+            (recyclerViewhor9.adapter as SecondsListAdapter).addSound(Sound(
+                (edittextmain1.text.toString().toFloat() / 100).roundToInt(),
+                ((getSoundLength(sound.res) / sound.ratio) / 100).toInt() + 1,
+                SoundType. SOUND4))
+        }
 
         val textView = findViewById<TextView>(R.id.txt)
         textView.setOnClickListener(viewClickListener)
@@ -160,7 +259,6 @@ class MainActivity : AppCompatActivity() {
             FileOutputStream(file).use {
                 it.write(content.toByteArray())
             }
-            setExample()
             saveProject()
         }
     }
@@ -220,14 +318,17 @@ class MainActivity : AppCompatActivity() {
                 it.write(content.toByteArray())
             }
 
-            /*for (i in 0..countTracks) { // очистка данных по звукам
+            for (i in 0..countTracks) { // очистка данных по звукам
                 tracks[i].release()
                 tracks[i] = SoundPool(10, AudioManager.STREAM_MUSIC, 0)
                 for (j in 0..countSounds[i]) {
                     sounds[i][j] = SoundInfo("", i + 1, 0, 1.0F, 0, 1.0F)
                 }
-            }*/
-
+                countSounds[i] = -1
+            }
+            countTracks = 0
+            state = "unready"
+            saveProject()
             dialog.dismiss()
         }
         dialog.show()
@@ -243,6 +344,12 @@ class MainActivity : AppCompatActivity() {
             projectName = itemTitle
             txt.text = projectName
             openProject()
+            state = "unready"
+            for (i in 0..countTracks) { // очистка данных по звукам
+                if (sounds[i][0] != SoundInfo("", i + 1, 0, 1.0F, 0, 1.0F)) {
+                    state = "ready"
+                }
+            }
         }
     }
 
@@ -356,21 +463,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setExample() { //демонстрация работы как одного трека, так и нескольких звуков (что все работает)
-        sounds[0][0].ratio = 0.5F // по фану, для демонстрации
-        sounds[0][0].res = "file1"
-        countTracks = 1 // к следующей дорожке
-
-        sounds[1][0].res = "file1"
-        sounds[1][0].delay = (getSoundLength(sounds[0][0].res) / sounds[0][0].ratio).toLong() // задержка перед следующим звуком - длина этого, деленное на ratio
-        countSounds[1] = 1 // к следующему звуку
-        sounds[1][1].res = "file2"
-        sounds[1][1].delay = (getSoundLength(sounds[1][0].res) / sounds[1][0].ratio).toLong() - 3000 // для демонстрации
-        sounds[1][1].loop = 1
-
-        state = "ready"
-    }
-
     /*private fun commonMusicFile(fileName: String): File {
         val dir: File = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC), fileName)
@@ -400,8 +492,8 @@ class MainActivity : AppCompatActivity() {
             override fun onFinish() {
                 val sound = sounds[i][j]
                 if (state != "pause" && started == played) {
-                    tracks[i].play(sound.id, sound.volume, sound.volume, 0, sound.loop, sound.ratio)
-                    Log.d(TAG, "MYMSG play: $i $j " + sounds[i][0].id.toString())
+                    tracks[i].play(sound.id, sound.volume, sound.volume, 0, 0, sound.ratio)
+                    Log.d(TAG, "MYMSG play: $i $j " + sounds[i][0].res)
                 }
                 if (j < countSounds[i] && started == played) playTrack(i, j + 1)
                 if (j == countSounds[i] && i == countTracks && state != "pause" && started == played) {
@@ -417,6 +509,16 @@ class MainActivity : AppCompatActivity() {
         }.start()
     }
 
+    private fun getSoundParameters(x : Int, y : Int): SoundInfo {
+        val res : String = edittextmain2.text.toString()
+        val volume : Float = edittextmain3.text.toString().toFloat() / 100
+        val ratio : Float = 100 / (edittextmain4.text.toString().toFloat())
+        Log.d(TAG, "MYMSG param: $res")
+        val delay : Long = if (y > 0) (edittextmain1.text.toString().toFloat() + getSoundLength(sounds[x][y - 1].res) / sounds[x][y - 1].ratio).toLong()
+        else edittextmain1.text.toString().toLong()
+        return SoundInfo(res, 0, delay, volume, 0, ratio)
+    }
+
     /*private fun saveMusic() {
         val file = commonMusicFile("$projectName.wav")
         val recorder = MediaRecorder();
@@ -426,7 +528,6 @@ class MainActivity : AppCompatActivity() {
         recorder.setOutputFile(file.absolutePath);
         recorder.prepare();
         recorder.start();
-
         recorder.stop();
         recorder.reset();
         recorder.release();
@@ -464,7 +565,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             if (state != "playing") {
-                val start: Long = currentTimeMillis() + 300
+                val start: Long = currentTimeMillis() + 100
                 state = "playing"
                 for (i in 0..countTracks) playTrack(i, 0, start - currentTimeMillis())
             }
