@@ -19,28 +19,10 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 @Suppress("DEPRECATION")
 class AddingfilesActivity : AppCompatActivity() {
     private var filePath = ""
-    private val itemsList : ArrayList<String> = arrayListOf("bassalbane",
-        "basscentury",
-        "bassflowers",
-        "clapchoppa",
-        "clapforeign",
-        "crashalect",
-        "crashbloods",
-        "crashvinnyx",
-        "fxfreeze",
-        "fxgunnes",
-        "hihatcheque",
-        "hihatmystery",
-        "kickartillery",
-        "kickinfinite",
-        "percardonme",
-        "percpaolla",
-        "rimchaser",
-        "rimstount",
-        "snarecompas",
-        "snarewoods",
-        "voxanother",
-        "voxgilens")
+    private val itemsList : ArrayList<String> = arrayListOf("bassalbane", "basscentury", "bassflowers",
+        "clapchoppa", "clapforeign", "crashalect", "crashbloods", "crashvinnyx", "fxfreeze",
+        "fxgunnes", "hihatcheque", "hihatmystery", "kickartillery", "kickinfinite", "percardonme",
+        "percpaolla", "rimchaser", "rimstount", "snarecompas", "snarewoods", "voxanother", "voxgilens")
     private val itemsList1 = arrayListOf<String>()
     private lateinit var customAdapter: CustomAdapter
     private lateinit var customAdapter1: CustomAdapter
