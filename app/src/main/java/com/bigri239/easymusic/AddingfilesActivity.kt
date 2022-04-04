@@ -10,16 +10,59 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import java.io.*
+import androidx.recyclerview.widget.DefaultItemAnimator
 
 
 @Suppress("DEPRECATION")
 class AddingfilesActivity : AppCompatActivity() {
     private var filePath = ""
-
+    private val itemsList = ArrayList<String>()
+    private val itemsList1 = ArrayList<String>()
+    private lateinit var customAdapter: CustomAdapter
+    private lateinit var customAdapter1: CustomAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_addfiles)
+
+        val recyclerView: RecyclerView = findViewById(R.id.recyclerView111)
+        customAdapter = CustomAdapter(itemsList)
+        val layoutManager = LinearLayoutManager(applicationContext)
+        recyclerView.layoutManager = layoutManager
+        recyclerView.adapter = customAdapter
+        prepareItems()
+
+        val recyclerView1: RecyclerView = findViewById(R.id.recyclerView222)
+        customAdapter1 = CustomAdapter(itemsList1)
+        val layoutManager1 = LinearLayoutManager(applicationContext)
+        recyclerView1.layoutManager = layoutManager1
+        recyclerView1.adapter = customAdapter
+        prepareItems1()
+    }
+    private fun prepareItems() {
+        itemsList.add("Sound 1")
+        itemsList.add("Sound 2")
+        itemsList.add("Sound 3")
+        itemsList.add("Sound 4")
+        itemsList.add("Sound 5")
+        itemsList.add("Sound 6")
+        customAdapter.notifyDataSetChanged()
+
+
+        supportActionBar?.hide()
+    }
+    private fun prepareItems1() {
+        itemsList1.add("Sound aa")
+        itemsList1.add("Sound bb")
+        itemsList1.add("Sound cc")
+        itemsList1.add("Sound dd")
+        itemsList1.add("Sound sw")
+        itemsList1.add("Sound egdeiugd")
+        customAdapter1.notifyDataSetChanged()
+
+
         supportActionBar?.hide()
     }
 

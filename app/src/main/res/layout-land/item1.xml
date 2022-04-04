@@ -5,12 +5,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cardView"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
+    android:layout_height="30dp"
     app:cardBackgroundColor="@color/colorAccent"
     app:cardCornerRadius="8dp"
     app:cardElevation="5dp"
     app:cardMaxElevation="7dp"
-    app:contentPadding="24dp"
     android:layout_margin="4dp"
     tools:ignore="MissingDefaultResource">
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

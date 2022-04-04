@@ -21,6 +21,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView111"
+        android:layout_width="350dp"
+        android:layout_height="201dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="70dp"
+        app:layout_constraintEnd_toStartOf="@+id/recyclerView222"
+        app:layout_constraintTop_toBottomOf="@+id/from" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView222"
+        android:layout_width="350dp"
+        android:layout_height="201dp"
+        android:layout_marginStart="350dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toEndOf="@+id/back_A"
+        app:layout_constraintTop_toBottomOf="@+id/to" />
+
     <TextView
         android:id="@+id/from"
         android:layout_width="wrap_content"
@@ -55,5 +73,15 @@
         app:layout_constraintBottom_toBottomOf="@+id/file"
         app:layout_constraintEnd_toStartOf="@+id/file"
         app:layout_constraintTop_toTopOf="@+id/file" />
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="ADD"
+        app:layout_constraintEnd_toEndOf="@+id/recyclerView222"
+        app:layout_constraintStart_toStartOf="@+id/recyclerView222"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerView222" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
