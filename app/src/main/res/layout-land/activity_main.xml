@@ -43,86 +43,99 @@
             android:id="@+id/recyclerViewhor1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_marginTop="1dp"
             android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewhor2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="1dp"
             android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/recyclerViewhor1" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewhor3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
             android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/recyclerViewhor2" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewhor4"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
             android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/recyclerViewhor3" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewhor5"
             android:layout_width="0dp"
-            android:layout_height="20dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/recyclerViewhor4" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewhor6"
             android:layout_width="0dp"
-            android:layout_height="20dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/recyclerViewhor5" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewhor7"
             android:layout_width="0dp"
-            android:layout_height="20dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/recyclerViewhor6" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewhor8"
             android:layout_width="0dp"
-            android:layout_height="20dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/recyclerViewhor7" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewhor9"
             android:layout_width="0dp"
-            android:layout_height="20dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/recyclerViewhor8" />
 
 
@@ -250,26 +263,15 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="100dp"
-        android:layout_height="210dp"
-        android:layout_marginStart="568dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="102dp"
+        android:layout_height="270dp"
+        android:layout_marginStart="570dp"
+        android:layout_marginTop="4dp"
         android:contentDescription="@string/app_name"
         android:scaleType="center"
         android:src="@drawable/soundmenunew"
         app:layout_constraintStart_toEndOf="@+id/file"
         app:layout_constraintTop_toBottomOf="@+id/file" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="73dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="4dp"
-        android:text="kick1"
-        android:textColor="@color/colorPrimaryDark"
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/imageView" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton2"
@@ -421,31 +423,31 @@
         app:layout_constraintTop_toBottomOf="@+id/textView26" />
 
     <Button
-        android:id="@+id/button1a"
+        android:id="@+id/btnAdd8"
         android:layout_width="58dp"
         android:layout_height="28dp"
         android:text="add"
         android:textSize="7sp"
-        app:layout_constraintStart_toStartOf="@+id/button6a"
-        app:layout_constraintTop_toBottomOf="@+id/button6a" />
+        app:layout_constraintStart_toStartOf="@+id/btnAdd7"
+        app:layout_constraintTop_toBottomOf="@+id/btnAdd7" />
 
     <Button
-        android:id="@+id/button2a"
+        android:id="@+id/btnAdd6"
         android:layout_width="58dp"
         android:layout_height="28dp"
         android:text="add"
         android:textSize="7sp"
-        app:layout_constraintStart_toStartOf="@+id/button3a"
-        app:layout_constraintTop_toBottomOf="@+id/button3a" />
+        app:layout_constraintStart_toStartOf="@+id/btnAdd5"
+        app:layout_constraintTop_toBottomOf="@+id/btnAdd5" />
 
     <Button
-        android:id="@+id/button3a"
+        android:id="@+id/btnAdd5"
         android:layout_width="58dp"
         android:layout_height="28dp"
         android:text="add"
         android:textSize="7sp"
-        app:layout_constraintStart_toStartOf="@+id/button5a"
-        app:layout_constraintTop_toBottomOf="@+id/button5a" />
+        app:layout_constraintStart_toStartOf="@+id/btnAdd4"
+        app:layout_constraintTop_toBottomOf="@+id/btnAdd4" />
 
     <Button
         android:id="@+id/btnAdd3"
@@ -457,7 +459,7 @@
         app:layout_constraintTop_toBottomOf="@+id/btnAdd2" />
 
     <Button
-        android:id="@+id/button5a"
+        android:id="@+id/btnAdd4"
         android:layout_width="58dp"
         android:layout_height="28dp"
         android:text="add"
@@ -466,22 +468,22 @@
         app:layout_constraintTop_toBottomOf="@+id/btnAdd3" />
 
     <Button
-        android:id="@+id/button6a"
+        android:id="@+id/btnAdd7"
         android:layout_width="58dp"
         android:layout_height="28dp"
         android:text="add"
         android:textSize="7sp"
-        app:layout_constraintStart_toStartOf="@+id/button2a"
-        app:layout_constraintTop_toBottomOf="@+id/button2a" />
+        app:layout_constraintStart_toStartOf="@+id/btnAdd6"
+        app:layout_constraintTop_toBottomOf="@+id/btnAdd6" />
 
     <Button
-        android:id="@+id/buttona"
+        android:id="@+id/btnAdd9"
         android:layout_width="58dp"
         android:layout_height="28dp"
         android:text="add"
         android:textSize="7sp"
-        app:layout_constraintStart_toStartOf="@+id/button1a"
-        app:layout_constraintTop_toBottomOf="@+id/button1a" />
+        app:layout_constraintStart_toStartOf="@+id/btnAdd8"
+        app:layout_constraintTop_toBottomOf="@+id/btnAdd8" />
 
     <Button
         android:id="@+id/btnAdd1"
@@ -503,61 +505,58 @@
         app:layout_constraintStart_toStartOf="@+id/btnAdd1"
         app:layout_constraintTop_toBottomOf="@+id/btnAdd1" />
 
-    <TextView
-        android:id="@+id/textView28"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="Start time"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+    <EditText
+        android:id="@+id/edittextmain1"
+        android:layout_width="84dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="8dp"
+        android:hint="Length"
+        android:textSize="14sp"
+        android:inputType="number"
+        app:layout_constraintStart_toEndOf="@+id/btnAdd1"
+        app:layout_constraintTop_toBottomOf="@+id/edittextmain2" />
 
-    <TextView
-        android:id="@+id/textView29"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="0"
-        android:textColor="@color/colorPrimaryDark"
-        app:layout_constraintStart_toStartOf="@+id/textView28"
-        app:layout_constraintTop_toBottomOf="@+id/textView28" />
+    <EditText
+        android:id="@+id/edittextmain2"
+        android:layout_width="84dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="60dp"
+        android:hint="name"
+        android:inputType="textCapWords"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/txt" />
 
-    <TextView
-        android:id="@+id/textView30"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="Length"
-        app:layout_constraintStart_toStartOf="@+id/textView29"
-        app:layout_constraintTop_toBottomOf="@+id/textView29" />
+    <EditText
+        android:id="@+id/edittextmain3"
+        android:layout_width="84dp"
+        android:layout_height="37dp"
+        android:hint="Indent"
+        android:textSize="14sp"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="@+id/edittextmain1"
+        app:layout_constraintTop_toBottomOf="@+id/edittextmain1" />
 
-    <TextView
-        android:id="@+id/textView32"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="0"
-        android:textColor="@color/colorPrimaryDark"
-        app:layout_constraintStart_toStartOf="@+id/textView30"
-        app:layout_constraintTop_toBottomOf="@+id/textView30" />
+    <EditText
+        android:id="@+id/edittextmain4"
+        android:layout_width="84dp"
+        android:layout_height="37dp"
+        android:hint="Volume"
+        android:textSize="14sp"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="@+id/edittextmain3"
+        app:layout_constraintTop_toBottomOf="@+id/edittextmain3" />
 
-    <TextView
-        android:id="@+id/textView33"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="Volume"
-        app:layout_constraintStart_toStartOf="@+id/textView32"
-        app:layout_constraintTop_toBottomOf="@+id/textView32" />
+    <EditText
+        android:id="@+id/edittextmain5"
+        android:layout_width="84dp"
+        android:layout_height="37dp"
+        android:hint="Color"
+        android:textSize="14sp"
+        android:inputType="textCapWords"
+        app:layout_constraintStart_toStartOf="@+id/edittextmain4"
+        app:layout_constraintTop_toBottomOf="@+id/edittextmain4" />
 
-    <TextView
-        android:id="@+id/textView34"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="0"
-        android:textColor="@color/colorPrimaryDark"
-        app:layout_constraintStart_toStartOf="@+id/textView33"
-        app:layout_constraintTop_toBottomOf="@+id/textView33" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
