@@ -286,7 +286,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.tutorial).setOnClickListener {
             startActivity(intent4)
         }
-        val intent14 = Intent(this, RecoveryActivity::class.java)
+        val intent14 = Intent(this, SigninActivity::class.java)
         findViewById<TextView>(R.id.account).setOnClickListener {
             startActivity(intent14)
         }
