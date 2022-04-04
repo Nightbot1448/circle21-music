@@ -503,6 +503,7 @@
         android:layout_marginStart="8dp"
         android:hint="Length"
         android:textSize="14sp"
+        android:inputType="number"
         app:layout_constraintStart_toEndOf="@+id/btnAdd1"
         app:layout_constraintTop_toBottomOf="@+id/edittextmain2" />
 
@@ -513,6 +514,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="60dp"
         android:hint="name"
+        android:inputType="textCapWords"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/txt" />
@@ -523,6 +525,7 @@
         android:layout_height="37dp"
         android:hint="Indent"
         android:textSize="14sp"
+        android:inputType="number"
         app:layout_constraintEnd_toEndOf="@+id/edittextmain1"
         app:layout_constraintTop_toBottomOf="@+id/edittextmain1" />
 
@@ -532,6 +535,7 @@
         android:layout_height="37dp"
         android:hint="Volume"
         android:textSize="14sp"
+        android:inputType="number"
         app:layout_constraintEnd_toEndOf="@+id/edittextmain3"
         app:layout_constraintTop_toBottomOf="@+id/edittextmain3" />
 
@@ -541,6 +545,7 @@
         android:layout_height="37dp"
         android:hint="Color"
         android:textSize="14sp"
+        android:inputType="textCapWords"
         app:layout_constraintStart_toStartOf="@+id/edittextmain4"
         app:layout_constraintTop_toBottomOf="@+id/edittextmain4" />
 

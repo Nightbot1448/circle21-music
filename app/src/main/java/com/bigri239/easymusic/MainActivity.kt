@@ -7,10 +7,9 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.media.AudioManager
 import android.media.SoundPool
-import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.os.Environment
+import android.text.Editable
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
@@ -119,24 +118,27 @@ class MainActivity : AppCompatActivity() {
         recyclerViewhor9.adapter = SecondsListAdapter()
         (recyclerViewhor1.adapter as SecondsListAdapter).notifyDataSetChanged()
 
+        val SoundTT: String = edittextmain5.getText().toString()
+        val SoundShift: Editable? = edittextmain1.getText()
+
         btnAdd1 = findViewById(R.id.btnAdd1)
-        btnAdd1.setOnClickListener { (recyclerViewhor1.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType.SOUND1)) }
+        btnAdd1.setOnClickListener { (recyclerViewhor1.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType. SOUND1)) }
         btnAdd2 = findViewById(R.id.btnAdd2)
-        btnAdd2.setOnClickListener { (recyclerViewhor2.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType.SOUND1)) }
+        btnAdd2.setOnClickListener { (recyclerViewhor2.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType. SOUND2)) }
         btnAdd3 = findViewById(R.id.btnAdd3)
-        btnAdd3.setOnClickListener { (recyclerViewhor3.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType.SOUND1)) }
+        btnAdd3.setOnClickListener { (recyclerViewhor3.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType. SOUND3)) }
         btnAdd4 = findViewById(R.id.btnAdd4)
-        btnAdd4.setOnClickListener { (recyclerViewhor4.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType.SOUND1)) }
+        btnAdd4.setOnClickListener { (recyclerViewhor4.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType. SOUND4)) }
         btnAdd5 = findViewById(R.id.btnAdd5)
-        btnAdd5.setOnClickListener { (recyclerViewhor5.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType.SOUND1)) }
+        btnAdd5.setOnClickListener { (recyclerViewhor5.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType. SOUND5)) }
         btnAdd6 = findViewById(R.id.btnAdd6)
-        btnAdd6.setOnClickListener { (recyclerViewhor6.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType.SOUND1)) }
+        btnAdd6.setOnClickListener { (recyclerViewhor6.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType. SOUND1)) }
         btnAdd7 = findViewById(R.id.btnAdd7)
-        btnAdd7.setOnClickListener { (recyclerViewhor7.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType.SOUND1)) }
+        btnAdd7.setOnClickListener { (recyclerViewhor7.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType. SOUND1)) }
         btnAdd8 = findViewById(R.id.btnAdd8)
-        btnAdd8.setOnClickListener { (recyclerViewhor8.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType.SOUND1)) }
+        btnAdd8.setOnClickListener { (recyclerViewhor8.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType. SOUND1)) }
         btnAdd9 = findViewById(R.id.btnAdd9)
-        btnAdd9.setOnClickListener { (recyclerViewhor9.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType.SOUND1)) }
+        btnAdd9.setOnClickListener { (recyclerViewhor9.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType. SOUND1)) }
 
         val textView = findViewById<TextView>(R.id.txt)
         textView.setOnClickListener(viewClickListener)
