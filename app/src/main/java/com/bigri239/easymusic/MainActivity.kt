@@ -118,8 +118,8 @@ class MainActivity : AppCompatActivity() {
         recyclerViewhor9.adapter = SecondsListAdapter()
         (recyclerViewhor1.adapter as SecondsListAdapter).notifyDataSetChanged()
 
-        val SoundTT: String = edittextmain5.getText().toString()
-        val SoundShift: Editable? = edittextmain1.getText()
+        val SoundTT: String = edittextmain5.text.toString()
+        val SoundShift: Editable? = edittextmain1.text
 
         btnAdd1 = findViewById(R.id.btnAdd1)
         btnAdd1.setOnClickListener { (recyclerViewhor1.adapter as SecondsListAdapter).addSound(Sound(3,3, SoundType. SOUND1)) }

@@ -14,33 +14,12 @@
         android:layout_marginStart="321dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="250dp"
-        android:text="Adding files"
+        android:text="Adding sounds"
         android:textColor="@color/colorAccent"
         android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/official"
-        android:layout_width="112dp"
-        android:layout_height="57dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="20dp"
-        android:text="Official library"
-        android:contentDescription="Official library"
-        app:layout_constraintEnd_toEndOf="@+id/from"
-        app:layout_constraintTop_toBottomOf="@+id/from" />
-
-    <Button
-        android:id="@+id/my"
-        android:layout_width="126dp"
-        android:layout_height="56dp"
-        android:layout_marginStart="10dp"
-        android:text="My library"
-        android:contentDescription="My library"
-        app:layout_constraintStart_toEndOf="@+id/official"
-        app:layout_constraintTop_toTopOf="@+id/official" />
 
     <TextView
         android:id="@+id/from"
@@ -48,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="150dp"
-        android:text="FROM"
+        android:text="OFFICIAL"
         android:textColor="@color/colorAccent"
         android:textSize="15dp"
         app:layout_constraintEnd_toStartOf="@+id/file"
@@ -60,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
         android:layout_marginTop="8dp"
-        android:text="TO"
+        android:text="CUSTOM"
         android:textColor="@color/colorAccent"
         android:textSize="15dp"
         app:layout_constraintStart_toEndOf="@+id/file"
