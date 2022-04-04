@@ -10,13 +10,8 @@ import android.media.SoundPool
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
-import android.view.MenuItem
-import android.view.View
-import android.view.Window
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.view.*
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
@@ -33,7 +28,12 @@ import kotlin.math.roundToInt
 
 
 @Suppress("DEPRECATION")
-class MainActivity : AppCompatActivity() {
+open class MainActivity : AppCompatActivity(){
+
+    interface Connector {
+        fun function(i : Int)
+    }
+
     data class SoundInfo(
         var res: String = "",
         var id: Int = 0,
@@ -55,191 +55,34 @@ class MainActivity : AppCompatActivity() {
     private val sounds: Array<Array<SoundInfo>> =
         Array(100) { Array(100) { i -> SoundInfo("", i + 1, 0, 1.0F, 0, 1.0F) } }
     private var viewClickListener = View.OnClickListener { v -> create_select_project_popup_menu(v) }
-    private var mAdapter: RecyclerAdapter? = null
-    private var mRecyclerView: RecyclerView? = null
-    private lateinit var recyclerViewhor1: RecyclerView
-    private lateinit var recyclerViewhor2: RecyclerView
-    private lateinit var recyclerViewhor3: RecyclerView
-    private lateinit var recyclerViewhor4: RecyclerView
-    private lateinit var recyclerViewhor5: RecyclerView
-    private lateinit var recyclerViewhor6: RecyclerView
-    private lateinit var recyclerViewhor7: RecyclerView
-    private lateinit var recyclerViewhor8: RecyclerView
-    private lateinit var recyclerViewhor9: RecyclerView
-    private lateinit var btnAdd1: Button
-    private lateinit var btnAdd2: Button
-    private lateinit var btnAdd3: Button
-    private lateinit var btnAdd4: Button
-    private lateinit var btnAdd5: Button
-    private lateinit var btnAdd6: Button
-    private lateinit var btnAdd7: Button
-    private lateinit var btnAdd8: Button
-    private lateinit var btnAdd9: Button
-    /*private val requestPermissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
-                saveMusic()
-            } else {
-                Toast.makeText(this, "Oops! You did not give permission to write files! :(", Toast.LENGTH_LONG).show()
-            }
-        }*/
+    private val connector = object : Connector {
+        override fun function(i: Int) {
+            removeLastSound(i)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 
-        recyclerViewhor1 = findViewById(R.id.recyclerViewhor1)
-        recyclerViewhor1.adapter = SecondsListAdapter()
-        (recyclerViewhor1.adapter as SecondsListAdapter).notifyDataSetChanged()
-        recyclerViewhor2 = findViewById(R.id.recyclerViewhor2)
-        recyclerViewhor2.adapter = SecondsListAdapter()
-        (recyclerViewhor1.adapter as SecondsListAdapter).notifyDataSetChanged()
-        recyclerViewhor3 = findViewById(R.id.recyclerViewhor3)
-        recyclerViewhor3.adapter = SecondsListAdapter()
-        (recyclerViewhor1.adapter as SecondsListAdapter).notifyDataSetChanged()
-        recyclerViewhor4 = findViewById(R.id.recyclerViewhor4)
-        recyclerViewhor4.adapter = SecondsListAdapter()
-        (recyclerViewhor1.adapter as SecondsListAdapter).notifyDataSetChanged()
-        recyclerViewhor5 = findViewById(R.id.recyclerViewhor5)
-        recyclerViewhor5.adapter = SecondsListAdapter()
-        (recyclerViewhor1.adapter as SecondsListAdapter).notifyDataSetChanged()
-        recyclerViewhor6 = findViewById(R.id.recyclerViewhor6)
-        recyclerViewhor6.adapter = SecondsListAdapter()
-        (recyclerViewhor1.adapter as SecondsListAdapter).notifyDataSetChanged()
-        recyclerViewhor7 = findViewById(R.id.recyclerViewhor7)
-        recyclerViewhor7.adapter = SecondsListAdapter()
-        (recyclerViewhor1.adapter as SecondsListAdapter).notifyDataSetChanged()
-        recyclerViewhor8 = findViewById(R.id.recyclerViewhor8)
-        recyclerViewhor8.adapter = SecondsListAdapter()
-        (recyclerViewhor1.adapter as SecondsListAdapter).notifyDataSetChanged()
-        recyclerViewhor9 = findViewById(R.id.recyclerViewhor9)
-        recyclerViewhor9.adapter = SecondsListAdapter()
-        (recyclerViewhor1.adapter as SecondsListAdapter).notifyDataSetChanged()
+        for (i in 0..8) {
+            currentRecycler(i).adapter = SecondsListAdapter(connector)
+            (currentRecycler(i).adapter as SecondsListAdapter).notifyDataSetChanged()
+        }
 
-        btnAdd1 = findViewById(R.id.btnAdd1)
-        btnAdd2 = findViewById(R.id.btnAdd2)
-        btnAdd3 = findViewById(R.id.btnAdd3)
-        btnAdd4 = findViewById(R.id.btnAdd4)
-        btnAdd5 = findViewById(R.id.btnAdd5)
-        btnAdd6 = findViewById(R.id.btnAdd6)
-        btnAdd7 = findViewById(R.id.btnAdd7)
-        btnAdd8 = findViewById(R.id.btnAdd8)
-        btnAdd9 = findViewById(R.id.btnAdd9)
-        btnAdd1.setOnClickListener {
-            val x = 0
-            if (state == "unready") state = "ready"
-            if (countTracks < x) countTracks = x
-            val sound = getSoundParameters(x, countSounds[x] + 1)
-            countSounds[x]++
-            sounds[x][countSounds[x]] = sound
-            (recyclerViewhor1.adapter as SecondsListAdapter).addSound(Sound(
-                (edittextmain1.text.toString().toFloat() / 100).roundToInt(),
-                ((getSoundLength(sound.res) / sound.ratio) / 100).toInt() + 1,
-                SoundType. SOUND1))
-        }
-        btnAdd2.setOnClickListener {
-            val x = 1
-            if (state == "unready") state = "ready"
-            if (countTracks < x) countTracks = x
-            val sound = getSoundParameters(x, countSounds[x] + 1)
-            countSounds[x]++
-            sounds[x][countSounds[x]] = sound
-            (recyclerViewhor2.adapter as SecondsListAdapter).addSound(Sound(
-                (edittextmain1.text.toString().toFloat() / 100).roundToInt(),
-                ((getSoundLength(sound.res) / sound.ratio) / 100).toInt() + 1,
-                SoundType. SOUND2))
-        }
-        btnAdd3.setOnClickListener {
-            val x = 2
-            if (state == "unready") state = "ready"
-            if (countTracks < x) countTracks = x
-            val sound = getSoundParameters(x, countSounds[x] + 1)
-            countSounds[x]++
-            sounds[x][countSounds[x]] = sound
-            (recyclerViewhor3.adapter as SecondsListAdapter).addSound(Sound(
-                (edittextmain1.text.toString().toFloat() / 100).roundToInt(),
-                ((getSoundLength(sound.res) / sound.ratio) / 100).toInt() + 1,
-                SoundType. SOUND3))
-        }
-        btnAdd4.setOnClickListener {
-            val x = 3
-            if (state == "unready") state = "ready"
-            if (countTracks < x) countTracks = x
-            val sound = getSoundParameters(x, countSounds[x] + 1)
-            countSounds[x]++
-            sounds[x][countSounds[x]] = sound
-            (recyclerViewhor4.adapter as SecondsListAdapter).addSound(Sound(
-                (edittextmain1.text.toString().toFloat() / 100).roundToInt(),
-                ((getSoundLength(sound.res) / sound.ratio) / 100).toInt() + 1,
-                SoundType. SOUND4))
-        }
-        btnAdd5.setOnClickListener {
-            val x = 4
-            if (state == "unready") state = "ready"
-            if (countTracks < x) countTracks = x
-            val sound = getSoundParameters(x, countSounds[x] + 1)
-            countSounds[x]++
-            sounds[x][countSounds[x]] = sound
-            (recyclerViewhor5.adapter as SecondsListAdapter).addSound(Sound(
-                (edittextmain1.text.toString().toFloat() / 100).roundToInt(),
-                ((getSoundLength(sound.res) / sound.ratio) / 100).toInt() + 1,
-                SoundType. SOUND5))
-        }
-        btnAdd6.setOnClickListener {
-            val x = 5
-            if (state == "unready") state = "ready"
-            if (countTracks < x) countTracks = x
-            val sound = getSoundParameters(x, countSounds[x] + 1)
-            countSounds[x]++
-            sounds[x][countSounds[x]] = sound
-            (recyclerViewhor6.adapter as SecondsListAdapter).addSound(Sound(
-                (edittextmain1.text.toString().toFloat() / 100).roundToInt(),
-                ((getSoundLength(sound.res) / sound.ratio) / 100).toInt() + 1,
-                SoundType.SOUND1))
-        }
-        btnAdd7.setOnClickListener {
-            val x = 6
-            if (state == "unready") state = "ready"
-            if (countTracks < x) countTracks = x
-            val sound = getSoundParameters(x, countSounds[x] + 1)
-            countSounds[x]++
-            sounds[x][countSounds[x]] = sound
-            (recyclerViewhor7.adapter as SecondsListAdapter).addSound(Sound(
-                (edittextmain1.text.toString().toFloat() / 100).roundToInt(),
-                ((getSoundLength(sound.res) / sound.ratio) / 100).toInt() + 1,
-                SoundType. SOUND2))
-        }
-        btnAdd8.setOnClickListener {
-            val x = 7
-            if (state == "unready") state = "ready"
-            if (countTracks < x) countTracks = x
-            val sound = getSoundParameters(x, countSounds[x] + 1)
-            countSounds[x]++
-            sounds[x][countSounds[x]] = sound
-            (recyclerViewhor8.adapter as SecondsListAdapter).addSound(Sound(
-                (edittextmain1.text.toString().toFloat() / 100).roundToInt(),
-                ((getSoundLength(sound.res) / sound.ratio) / 100).toInt() + 1,
-                SoundType. SOUND3))
-        }
-        btnAdd9.setOnClickListener {
-            val x = 8
-            if (state == "unready") state = "ready"
-            if (countTracks < x) countTracks = x
-            val sound = getSoundParameters(x, countSounds[x] + 1)
-            countSounds[x]++
-            sounds[x][countSounds[x]] = sound
-            (recyclerViewhor9.adapter as SecondsListAdapter).addSound(Sound(
-                (edittextmain1.text.toString().toFloat() / 100).roundToInt(),
-                ((getSoundLength(sound.res) / sound.ratio) / 100).toInt() + 1,
-                SoundType. SOUND4))
-        }
+        btnAdd1.setOnClickListener { addSound(0) }
+        btnAdd2.setOnClickListener { addSound(1) }
+        btnAdd3.setOnClickListener { addSound(2) }
+        btnAdd4.setOnClickListener { addSound(3) }
+        btnAdd5.setOnClickListener { addSound(4) }
+        btnAdd6.setOnClickListener { addSound(5) }
+        btnAdd7.setOnClickListener { addSound(6) }
+        btnAdd8.setOnClickListener { addSound(7) }
+        btnAdd9.setOnClickListener { addSound(8) }
 
         val textView = findViewById<TextView>(R.id.txt)
         textView.setOnClickListener(viewClickListener)
-        // create_horizontal_list()
-//        create_sounds_list()
         try {
             val path = filesDir
             val file = File(path, "projects.conf")
@@ -299,6 +142,44 @@ class MainActivity : AppCompatActivity() {
         } ?: throw IllegalStateException("Activity cannot be null")
     }
 
+    private fun currentRecycler (i : Int) : RecyclerView {
+        val recyclerCurrent : RecyclerView = when(i) {
+            0 -> recyclerViewhor1
+            1 -> recyclerViewhor2
+            2 -> recyclerViewhor3
+            3 -> recyclerViewhor4
+            4 -> recyclerViewhor5
+            5 -> recyclerViewhor6
+            6 -> recyclerViewhor7
+            7 -> recyclerViewhor8
+            else -> recyclerViewhor9
+        }
+        return recyclerCurrent
+    }
+
+    private fun currentColor (j : Int) : SoundType {
+        val color : SoundType = when (j % 5) {
+            0 -> SoundType.SOUND1
+            1 -> SoundType.SOUND2
+            2 -> SoundType.SOUND3
+            3 -> SoundType.SOUND4
+            else -> SoundType.SOUND5
+        }
+        return color
+    }
+
+    private fun addSound (x : Int) {
+        if (state == "unready") state = "ready"
+        if (countTracks < x) countTracks = x
+        val sound = getSoundParameters(x, countSounds[x] + 1)
+        countSounds[x]++
+        sounds[x][countSounds[x]] = sound
+        (currentRecycler(x).adapter as SecondsListAdapter).addSound(Sound(
+            (edittextmain1.text.toString().toFloat() / 100).roundToInt(),
+            ((getSoundLength(sound.res) / sound.ratio) / 100).toInt() + 1,
+            currentColor(countSounds[x]), x))
+    }
+
     private fun showProjectDialog() {
         val dialog = Dialog(this, R.style.ThemeOverlay_Material3_Dialog)
         dialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
@@ -328,6 +209,7 @@ class MainActivity : AppCompatActivity() {
             }
             countTracks = 0
             state = "unready"
+            clearRecycler()
             saveProject()
             dialog.dismiss()
         }
@@ -339,10 +221,11 @@ class MainActivity : AppCompatActivity() {
         if (itemTitle == "New project") {
             showProjectDialog()
         }
-        else { // TODO: после написания рабочего recycler, надо вставить его обновление в конец и в диалог
+        else {
             saveProject()
             projectName = itemTitle
             txt.text = projectName
+            clearRecycler()
             openProject()
             state = "unready"
             for (i in 0..countTracks) {
@@ -353,33 +236,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /*private fun create_sounds_list() {
-        val sound_list = mutableListOf(
-            "Kick", "Type1", "Snare",
-            "Type1", "Hihat", "Type1",
-            "Loop", "Type1", "Bass",
-            "Type1", "808", "Type1",
-            "+", "Type1", "+",
-            "Type1"
-        )
-        val on_sound_click =  { position: Int, text_item: TextView ->
-            sound_list[position] = "changed"
-            text_item.text = sound_list[position]
-            Log.d("MYMSG vert_recyc: ", sound_list[position])
-            Unit
-        }
-        GridLayoutManager(
-            this, // context
-            2, // span count
-            RecyclerView.VERTICAL, // orientation
-            false // reverse layout
-        ).apply {
-            // specify the layout manager for recycler view
-            recyclerView.layoutManager = this
-        }
-        recyclerView.adapter = RecyclerViewAdapter(sound_list, on_sound_click)
-    }*/
-
     private fun create_select_project_popup_menu(v: View) {
         val popupMenu = PopupMenu(this, v)
         for (i in projects.indices) popupMenu.menu.add(projects[i])
@@ -388,42 +244,11 @@ class MainActivity : AppCompatActivity() {
         popupMenu.show()
     }
 
-    /*private fun create_horizontal_list() {
-        mRecyclerView = findViewById(R.id.recyclerViewhor)
-        mRecyclerView?.layoutManager = LinearLayoutManager(
-            this,
-            LinearLayoutManager.HORIZONTAL, false
-        )
-        val dataset = arrayOfNulls<String>(50)
-        for (i in dataset.indices) {
-            dataset[i] = "item$i"
-        }
-        mAdapter = RecyclerAdapter(dataset, this)
-        mRecyclerView?.adapter = mAdapter
-    }*/
-
     private fun isRawResource (name : String): Boolean {
-        val resourcesArray : Array<String> = arrayOf("bassalbane",
-            "basscentury",
-            "bassflowers",
-            "clapchoppa",
-            "clapforeign",
-            "crashalect",
-            "crashbloods",
-            "crashvinnyx",
-            "fxfreeze",
-            "fxgunnes",
-            "hihatcheque",
-            "hihatmystery",
-            "kickartillery",
-            "kickinfinite",
-            "percardonme",
-            "percpaolla",
-            "rimchaser",
-            "rimstount",
-            "snarecompas",
-            "snarewoods",
-            "voxanother",
+        val resourcesArray : Array<String> = arrayOf("bassalbane", "basscentury", "bassflowers",
+            "clapchoppa", "clapforeign", "crashalect", "crashbloods", "crashvinnyx", "fxfreeze",
+            "fxgunnes", "hihatcheque", "hihatmystery", "kickartillery", "kickinfinite", "percardonme",
+            "percpaolla", "rimchaser", "rimstount", "snarecompas", "snarewoods", "voxanother",
             "voxgilens")
         return resourcesArray.contains(name)
     }
@@ -432,9 +257,16 @@ class MainActivity : AppCompatActivity() {
         return arr[start].toInt() + arr[start + 1].toInt() * 256 + arr[start + 2].toInt() * 256 * 256 + arr[start + 3].toInt() * 256 * 256 * 256
     }
 
+    private fun clearRecycler () {
+        for (i in 0..8) {
+            (currentRecycler(i).adapter as SecondsListAdapter).eraseSounds()
+        }
+    }
+
     private fun openProject() {
         try {
             Toast.makeText(this, "Opening project $projectName...", Toast.LENGTH_SHORT).show()
+            clearRecycler()
             val path = filesDir
             val file = File(path, "$projectName.emproj")
             val content: String = file.readText()
@@ -453,6 +285,12 @@ class MainActivity : AppCompatActivity() {
                         params[4].toInt(),
                         params[5].toFloat()
                     )
+                    val indentFloat : Float = if (j != 0) params[2].toLong() - getSoundLength(sounds[i][j - 1].res) / sounds[i][j - 1].ratio
+                    else params[2].toFloat()
+                    (currentRecycler(i).adapter as SecondsListAdapter).addSound(Sound(
+                        (indentFloat / 100).roundToInt(),
+                        ((getSoundLength(sounds[i][j].res) / sounds[i][j].ratio) / 100).toInt() + 1,
+                        currentColor(j), i))
                 }
             }
             state = "ready"
@@ -484,13 +322,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /*private fun commonMusicFile(fileName: String): File {
-        val dir: File = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC), fileName)
-        }
-        else File(Environment.getExternalStorageDirectory(), fileName)
-        return dir
-    }*/
+    fun removeLastSound(i : Int) {
+        sounds[i][countSounds[i]] = SoundInfo("", i + 1, 0, 1.0F, 0, 1.0F)
+        countSounds[i]--
+    }
 
     private fun getSoundLength(name: String): Long {
         val inStream: InputStream = if (isRawResource(name)) resources.openRawResource(resources.getIdentifier(name, "raw", packageName))
@@ -540,20 +375,6 @@ class MainActivity : AppCompatActivity() {
         return SoundInfo(res, 0, delay, volume, 0, ratio)
     }
 
-    /*private fun saveMusic() {
-        val file = commonMusicFile("$projectName.wav")
-        val recorder = MediaRecorder();
-        recorder.setAudioSource(MediaRecorder.AudioSource.);
-        recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-        recorder.setOutputFile(file.absolutePath);
-        recorder.prepare();
-        recorder.start();
-        recorder.stop();
-        recorder.reset();
-        recorder.release();
-    }*/
-
     fun pause(view: View) {
         if (state == "playing") {
             Toast.makeText(this, "Music paused", Toast.LENGTH_SHORT).show()
@@ -590,7 +411,8 @@ class MainActivity : AppCompatActivity() {
                 state = "playing"
                 for (i in 0..countTracks) playTrack(i, 0, start - currentTimeMillis())
             }
-        } else if (state == "pause") {
+        }
+        else if (state == "pause") {
             Toast.makeText(this, "Music unpaused", Toast.LENGTH_SHORT).show()
             state = "playing"
             for (i in 0..countTracks) tracks[i].autoResume()
@@ -601,20 +423,6 @@ class MainActivity : AppCompatActivity() {
         saveProject()
         if (state != "unready") Toast.makeText(this, "Saving project...", Toast.LENGTH_SHORT).show()
     }
-
-    /*@RequiresApi(Build.VERSION_CODES.R)
-    fun saveMusicUI(view: View) {
-        if (state != "unready") {
-            Toast.makeText(this, "Saving music...", Toast.LENGTH_SHORT).show()
-            when (PackageManager.PERMISSION_GRANTED) {
-                ContextCompat.checkSelfPermission(
-                    baseContext,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) -> saveMusic()
-                else -> requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            }
-        }
-    }*/
 
     fun resetPlaying(view: View) {
         Toast.makeText(this, "Playing halted", Toast.LENGTH_SHORT).show()
