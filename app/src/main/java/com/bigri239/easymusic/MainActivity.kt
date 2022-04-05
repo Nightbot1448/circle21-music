@@ -16,7 +16,6 @@ import android.view.View
 import android.view.Window
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
@@ -65,6 +64,8 @@ open class MainActivity : AppCompatActivity(){
         "fxgunnes", "hihatcheque", "hihatmystery", "kickartillery", "kickinfinite", "percardonme",
         "percpaolla", "rimchaser", "rimstount", "snarecompas", "snarewoods", "voxanother", "voxgilens")
     private val customArray = arrayListOf<String>()
+    private var timer : CountDownTimer? = null
+    private var timeRemaining : Long = 0
     private val connector = object : Connector {
         override fun function(i: Int) {
             removeLastSound(i)
@@ -321,9 +322,8 @@ open class MainActivity : AppCompatActivity(){
         } else 0
     }
 
-    private fun setMusicLength() {
+    private fun setMusicLength(length : Long = getMusicLength()) {
         time.text = if (state != "unready") {
-            val length = getMusicLength()
             val millis = length % 1000
             val seconds = (length / 1000) % 60
             val minutes = length / 60000
@@ -456,6 +456,21 @@ open class MainActivity : AppCompatActivity(){
         return SoundInfo(res, 0, delay, volume, 0, ratio)
     }
 
+    private fun setTimer (length: Long = getMusicLength()) {
+        val len = getMusicLength()
+        timer = object : CountDownTimer(length + 100, 1) {
+            override fun onTick(millisUntilFinished: Long) {
+                timeRemaining = millisUntilFinished
+                if (len - timeRemaining >= 100) setMusicLength(len - timeRemaining - 100)
+            }
+            override fun onFinish() {
+                timeRemaining = 0
+                setMusicLength()
+                state = "ready"
+            }
+        }.start()
+    }
+
     fun playSound(view: View) {
         if (state == "ready") {
             played += 1
@@ -481,12 +496,8 @@ open class MainActivity : AppCompatActivity(){
             }
 
             if (state != "playing") {
-                object : CountDownTimer(getMusicLength() + 100, 1000) {
-                    override fun onTick(millisUntilFinished: Long) {}
-                    override fun onFinish() {
-                        state = "ready"
-                    }
-                }.start()
+                val length = getMusicLength()
+                setTimer()
                 val start: Long = currentTimeMillis() + 100
                 state = "playing"
                 for (i in 0..countTracks) if (countSounds[i] != -1) playTrack(i, 0, start - currentTimeMillis())
@@ -494,12 +505,14 @@ open class MainActivity : AppCompatActivity(){
         }
         else if (state == "pause") {
             Toast.makeText(this, "Music unpaused", Toast.LENGTH_SHORT).show()
+            setTimer(timeRemaining)
             state = "playing"
             for (i in 0..countTracks) tracks[i].autoResume()
         }
     }
 
     fun resetPlaying(view: View) {
+        timer?.cancel()
         Toast.makeText(this, "Playing halted", Toast.LENGTH_SHORT).show()
         for (i in 0..countTracks) { // очищение и перезаполнение, если играем еще раз
             tracks[i].autoPause()
@@ -511,6 +524,7 @@ open class MainActivity : AppCompatActivity(){
 
     fun pause(view: View) {
         if (state == "playing") {
+            timer?.cancel()
             Toast.makeText(this, "Music paused", Toast.LENGTH_SHORT).show()
             for (i in 0..countTracks) tracks[i].autoPause()
             state = "pause"
