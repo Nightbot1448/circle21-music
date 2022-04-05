@@ -46,7 +46,7 @@ class SecondsListAdapter(val connector : MainActivity.Connector) : RecyclerView.
             }
         }
         // TODO check
-        for (i in 0..300-soundSeconds.size) {
+        for (i in 0..3000-soundSeconds.size) {
             soundSeconds.add(SoundSecond())
         }
         notifyDataSetChanged()
