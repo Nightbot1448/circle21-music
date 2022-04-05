@@ -1,12 +1,9 @@
-package com.bigri239.easymusic.recyclers
+package com.bigri239.easymusic
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bigri239.easymusic.MainActivity
-import com.bigri239.easymusic.R
 
 class SecondsListAdapter(val connector : MainActivity.Connector) : RecyclerView.Adapter<SecondsListAdapter.SecondsListViewHolder>() {
 
@@ -68,10 +65,11 @@ class SecondsListAdapter(val connector : MainActivity.Connector) : RecyclerView.
     }
 
     fun removeSound(sound: Sound) {
-        val i = sound.track
-        connector.function(i)
-        sounds.removeAt(sounds.size - 1)
-        initSecondSounds()
+        if (sounds.size > 0) {
+            connector.function(sound.track)
+            sounds.removeAt(sounds.size - 1)
+            initSecondSounds()
+        }
     }
 
     inner class SecondsListViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {

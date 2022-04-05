@@ -8,8 +8,6 @@
     android:orientation="horizontal"
     tools:ignore="MissingDefaultResource">
 
-    <!-- Это временно!!!-->
-
     <!--    <androidx.recyclerview.widget.RecyclerView-->
 <!--        android:id="@+id/recyclerView"-->
 <!--        android:layout_width="150dp"-->
@@ -254,7 +252,7 @@
         android:layout_marginStart="4dp"
         android:layout_marginTop="12dp"
         android:clickable="true"
-        android:onClick="create_select_project_popup_menu"
+        android:onClick="createSelectProjectPopupMenu"
         android:text="projectDefault"
         android:textColor="@color/colorAccent"
         android:textSize="14sp"

@@ -21,9 +21,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
-import com.bigri239.easymusic.recyclers.SecondsListAdapter
-import com.bigri239.easymusic.recyclers.Sound
-import com.bigri239.easymusic.recyclers.SoundType
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 import java.io.FileOutputStream
@@ -246,7 +243,7 @@ open class MainActivity : AppCompatActivity(){
         dialog.show()
     }
 
-    private fun project_select_popup_menu_click_listener(menuItem: MenuItem) {
+    private fun projectSelectPopupMenuClickListener(menuItem: MenuItem) {
         val itemTitle = menuItem.title.toString()
         if (itemTitle == "New project") {
             showProjectDialog()
@@ -478,11 +475,11 @@ open class MainActivity : AppCompatActivity(){
         if (state != "unready") Toast.makeText(this, "Saving project...", Toast.LENGTH_SHORT).show()
     }
 
-    fun create_select_project_popup_menu(v: View) {
+    fun createSelectProjectPopupMenu(v: View) {
         val popupMenu = PopupMenu(this, v)
         for (i in projects.indices) popupMenu.menu.add(projects[i])
         popupMenu.inflate(R.menu.popupmenu)
-        popupMenu.setOnMenuItemClickListener { project_select_popup_menu_click_listener(it); true }
+        popupMenu.setOnMenuItemClickListener { projectSelectPopupMenuClickListener(it); true }
         popupMenu.show()
     }
 
