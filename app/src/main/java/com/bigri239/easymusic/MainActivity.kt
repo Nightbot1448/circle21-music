@@ -27,6 +27,8 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
 import java.lang.System.currentTimeMillis
+import java.util.Collections.max
+import kotlin.math.abs
 import kotlin.math.roundToInt
 
 
@@ -90,23 +92,32 @@ open class MainActivity : AppCompatActivity(){
         btnAdd9.setOnClickListener { addSound(8) }
 
         btnRem1.setOnClickListener { (currentRecycler(0).adapter as SecondsListAdapter).removeSound(
-            Sound(0,0, SoundType.SOUND1, 0)) }
+            Sound(0,0, SoundType.SOUND1, 0))
+            setMusicLength()}
         btnRem2.setOnClickListener { (currentRecycler(1).adapter as SecondsListAdapter).removeSound(
-            Sound(0,0, SoundType.SOUND1, 1)) }
+            Sound(0,0, SoundType.SOUND1, 1))
+            setMusicLength()}
         btnRem3.setOnClickListener { (currentRecycler(2).adapter as SecondsListAdapter).removeSound(
-            Sound(0,0, SoundType.SOUND1, 2)) }
+            Sound(0,0, SoundType.SOUND1, 2))
+            setMusicLength()}
         btnRem4.setOnClickListener { (currentRecycler(3).adapter as SecondsListAdapter).removeSound(
-            Sound(0,0, SoundType.SOUND1, 3)) }
+            Sound(0,0, SoundType.SOUND1, 3))
+            setMusicLength()}
         btnRem5.setOnClickListener { (currentRecycler(4).adapter as SecondsListAdapter).removeSound(
-            Sound(0,0, SoundType.SOUND1, 4)) }
+            Sound(0,0, SoundType.SOUND1, 4))
+            setMusicLength()}
         btnRem6.setOnClickListener { (currentRecycler(5).adapter as SecondsListAdapter).removeSound(
-            Sound(0,0, SoundType.SOUND1, 5)) }
+            Sound(0,0, SoundType.SOUND1, 5))
+            setMusicLength()}
         btnRem7.setOnClickListener { (currentRecycler(6).adapter as SecondsListAdapter).removeSound(
-            Sound(0,0, SoundType.SOUND1, 6)) }
+            Sound(0,0, SoundType.SOUND1, 6))
+            setMusicLength()}
         btnRem8.setOnClickListener { (currentRecycler(7).adapter as SecondsListAdapter).removeSound(
-            Sound(0,0, SoundType.SOUND1, 7)) }
+            Sound(0,0, SoundType.SOUND1, 7))
+            setMusicLength()}
         btnRem9.setOnClickListener { (currentRecycler(8).adapter as SecondsListAdapter).removeSound(
-            Sound(0,0, SoundType.SOUND1, 8)) }
+            Sound(0,0, SoundType.SOUND1, 8))
+            setMusicLength()}
 
         val path = filesDir
 
@@ -148,28 +159,28 @@ open class MainActivity : AppCompatActivity(){
     override fun onStart() {
         super.onStart()
         val intent = Intent(this, HelpActivity::class.java)
-        findViewById<TextView>(R.id.help).setOnClickListener {
+        help.setOnClickListener {
             startActivity(intent)
         }
         val intent1 = Intent(this, AddingfilesActivity::class.java)
-        findViewById<TextView>(R.id.file).setOnClickListener {
+        file.setOnClickListener {
             startActivity(intent1)
         }
         val intent2 = Intent(this, SettingsActivity::class.java)
-        findViewById<TextView>(R.id.settings).setOnClickListener {
+        settings.setOnClickListener {
             startActivity(intent2)
         }
         val intent3 = Intent(this, InstrumentsActivity::class.java)
-        findViewById<TextView>(R.id.instruments).setOnClickListener {
+        instruments.setOnClickListener {
             startActivity(intent3)
         }
         val intent4 = Intent(this, TutorialActivity::class.java)
-        findViewById<TextView>(R.id.tutorial).setOnClickListener {
+        tutorial.setOnClickListener {
             startActivity(intent4)
         }
-        val intent14 = Intent(this, SigninActivity::class.java)
-        findViewById<TextView>(R.id.account).setOnClickListener {
-            startActivity(intent14)
+        val intent5 = Intent(this, SigninActivity::class.java)
+        account.setOnClickListener {
+            startActivity(intent5)
         }
     }
 
@@ -212,10 +223,14 @@ open class MainActivity : AppCompatActivity(){
         val sound = getSoundParameters(x, countSounds[x] + 1)
         countSounds[x]++
         sounds[x][countSounds[x]] = sound
+        var len = ((getSoundLength(sound.res) / sound.ratio) / 40).roundToInt()
+        len = if (len > 0) len else 1
         (currentRecycler(x).adapter as SecondsListAdapter).addSound(Sound(
             (edittextmain1.text.toString().toFloat() / 40).roundToInt(),
-            ((getSoundLength(sound.res) / sound.ratio) / 40).toInt() + 1,
+            len,
             currentColor(countSounds[x]), x))
+        Log.d(TAG, "MYMSG add: " + getSoundLength(sound.res))
+        setMusicLength()
     }
 
     private fun showProjectDialog() {
@@ -291,6 +306,36 @@ open class MainActivity : AppCompatActivity(){
         }
         countTracks = 0
         state = "unready"
+        setMusicLength()
+    }
+
+    private fun getMusicLength (): Long {
+        return if (state != "unready") {
+            val tracksLengths = mutableListOf<Long>()
+            for (i in 0..countTracks) {
+                tracksLengths.add(0)
+                for (j in 0..countSounds[i]) tracksLengths[i] += sounds[i][j].delay
+                tracksLengths[i] += (getSoundLength(sounds[i][countSounds[i]].res) / sounds[i][countSounds[i]].ratio).toLong()
+            }
+            max(tracksLengths)
+        } else 0
+    }
+
+    private fun setMusicLength() {
+        time.text = if (state != "unready") {
+            val length = getMusicLength()
+            val millis = length % 1000
+            val seconds = (length / 1000) % 60
+            val minutes = length / 60000
+            val millisString = if(millis >= 100) millis.toString() else {
+                if (millis >= 10) "0$millis"
+                else "00$millis"
+            }
+            val secondsString = if (seconds >= 10) seconds.toString() else "0$seconds"
+            val minutesString = if (minutes >= 10) minutes.toString() else "0$minutes"
+            "$minutesString:$secondsString.$millisString"
+        }
+        else "00:00.000"
     }
 
     private fun openProject() {
@@ -317,13 +362,16 @@ open class MainActivity : AppCompatActivity(){
                     )
                     val indentFloat : Float = if (j != 0) params[2].toLong() - getSoundLength(sounds[i][j - 1].res) / sounds[i][j - 1].ratio
                     else params[2].toFloat()
+                    var len = ((getSoundLength(sounds[i][j].res) / sounds[i][j].ratio) / 40).roundToInt()
+                    len = if (len > 0) len else 1
                     (currentRecycler(i).adapter as SecondsListAdapter).addSound(Sound(
                         (indentFloat / 40).roundToInt(),
-                        ((getSoundLength(sounds[i][j].res) / sounds[i][j].ratio) / 40).toInt() + 1,
+                        len,
                         currentColor(j), i))
                 }
             }
             state = "ready"
+            setMusicLength()
         } catch (e: IOException) {
             Toast.makeText(this, "No such file!", Toast.LENGTH_SHORT).show()
         }
@@ -361,6 +409,7 @@ open class MainActivity : AppCompatActivity(){
                 countTracks = 0
                 state = "unready"
             }
+            setMusicLength()
         }
     }
 
@@ -372,13 +421,13 @@ open class MainActivity : AppCompatActivity(){
             inStream.close()
             val byteRate = bytesArrayPart4ToInt(wavdata, 28)
             val waveSize = bytesArrayPart4ToInt(wavdata, 40)
-            if (byteRate != 0) (waveSize * 1000.0 / byteRate).toLong()
+            if (byteRate != 0) abs((waveSize * 1000.0 / byteRate).toLong())
             else 0
         }
         else {
             val metaRetriever = MediaMetadataRetriever()
             metaRetriever.setDataSource(File(filesDir, "$name.wav").absolutePath)
-            metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)!!.toLong()
+            abs(metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)!!.toLong())
         }
     }
 
@@ -393,15 +442,6 @@ open class MainActivity : AppCompatActivity(){
                     Log.d(TAG, "MYMSG play: $i $j " + sounds[i][0].res)
                 }
                 if (j < countSounds[i] && started == played) playTrack(i, j + 1)
-                if (j == countSounds[i] && i == countTracks && state != "pause" && started == played) {
-                    object : CountDownTimer(
-                        (getSoundLength(sound.res) * (sound.loop + 1) / sound.ratio).toLong(), 1000) {
-                        override fun onTick(millisUntilFinished: Long) {}
-                        override fun onFinish() {
-                            state = "ready"
-                        }
-                    }.start()
-                }
             }
         }.start()
     }
@@ -421,6 +461,7 @@ open class MainActivity : AppCompatActivity(){
             played += 1
             Toast.makeText(this, "Playing compiled music...", Toast.LENGTH_SHORT).show()
             saveProject()
+            setMusicLength()
 
             for (i in 0..countTracks) { // очищение и перезаполнение, если играем еще раз
                 tracks[i].release()
@@ -440,9 +481,15 @@ open class MainActivity : AppCompatActivity(){
             }
 
             if (state != "playing") {
+                object : CountDownTimer(getMusicLength() + 100, 1000) {
+                    override fun onTick(millisUntilFinished: Long) {}
+                    override fun onFinish() {
+                        state = "ready"
+                    }
+                }.start()
                 val start: Long = currentTimeMillis() + 100
                 state = "playing"
-                for (i in 0..countTracks) playTrack(i, 0, start - currentTimeMillis())
+                for (i in 0..countTracks) if (countSounds[i] != -1) playTrack(i, 0, start - currentTimeMillis())
             }
         }
         else if (state == "pause") {
