@@ -221,18 +221,7 @@ open class MainActivity : AppCompatActivity(){
                 it.write(content.toByteArray())
             }
 
-            for (i in 0..countTracks) { // очистка данных по звукам
-                tracks[i].release()
-                tracks[i] = SoundPool(10, AudioManager.STREAM_MUSIC, 0)
-                for (j in 0..countSounds[i]) {
-                    sounds[i][j] = SoundInfo("", i + 1, 0, 1.0F, 0, 1.0F)
-                }
-                countSounds[i] = -1
-            }
-            countTracks = 0
-            state = "unready"
-            clearRecycler()
-            saveProject()
+            clearSounds()
             dialog.dismiss()
         }
         dialog.show()
@@ -247,7 +236,7 @@ open class MainActivity : AppCompatActivity(){
             saveProject()
             projectName = itemTitle
             txt.text = projectName
-            clearRecycler()
+            clearSounds()
             openProject()
             state = "unready"
             for (i in 0..countTracks) {
@@ -272,16 +261,26 @@ open class MainActivity : AppCompatActivity(){
         return arr[start].toInt() + arr[start + 1].toInt() * 256 + arr[start + 2].toInt() * 256 * 256 + arr[start + 3].toInt() * 256 * 256 * 256
     }
 
-    private fun clearRecycler () {
-        for (i in 0..8) {
+    private fun clearSounds () {
+        for (i in 0..8) { // очистка recycler
             (currentRecycler(i).adapter as SecondsListAdapter).eraseSounds()
         }
+        for (i in 0..countTracks) { // очистка данных по звукам
+            tracks[i].release()
+            tracks[i] = SoundPool(10, AudioManager.STREAM_MUSIC, 0)
+            for (j in 0..countSounds[i]) {
+                sounds[i][j] = SoundInfo("", i + 1, 0, 1.0F, 0, 1.0F)
+            }
+            countSounds[i] = -1
+        }
+        countTracks = 0
+        state = "unready"
     }
 
     private fun openProject() {
         try {
             Toast.makeText(this, "Opening project $projectName...", Toast.LENGTH_SHORT).show()
-            clearRecycler()
+            clearSounds()
             val path = filesDir
             val file = File(path, "$projectName.emproj")
             val content: String = file.readText()
@@ -340,6 +339,11 @@ open class MainActivity : AppCompatActivity(){
     fun removeLastSound(i : Int) {
         sounds[i][countSounds[i]] = SoundInfo("", i + 1, 0, 1.0F, 0, 1.0F)
         countSounds[i]--
+        if (countSounds[i] == -1 && countTracks == i) countTracks --
+        if (countTracks == -1) {
+            countTracks = 0
+            state = "unready"
+        }
     }
 
     private fun getSoundLength(name: String): Long {
@@ -352,7 +356,8 @@ open class MainActivity : AppCompatActivity(){
             val waveSize = bytesArrayPart4ToInt(wavdata, 40)
             if (byteRate != 0) (waveSize * 1000.0 / byteRate).toLong()
             else 0
-        } else {
+        }
+        else {
             val metaRetriever = MediaMetadataRetriever()
             metaRetriever.setDataSource(File(filesDir, "$name.wav").absolutePath)
             metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)!!.toLong()
