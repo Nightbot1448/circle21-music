@@ -1,9 +1,8 @@
-package com.bigri239.easymusic.recyclers
+package com.bigri239.easymusic
 
 import androidx.annotation.ColorRes
-import com.bigri239.easymusic.R
 
-data class Sound( // смотри data class SoundInfo!!!!!!!!
+data class Sound(
     val shift: Int,
     val length: Int,
     val type: SoundType,
