@@ -254,6 +254,7 @@
         android:layout_marginStart="4dp"
         android:layout_marginTop="12dp"
         android:clickable="true"
+        android:onClick="create_select_project_popup_menu"
         android:text="projectDefault"
         android:textColor="@color/colorAccent"
         android:textSize="14sp"
@@ -499,16 +500,17 @@
         android:textSize="14sp"
         android:inputType="number"
         app:layout_constraintStart_toEndOf="@+id/btnAdd1"
-        app:layout_constraintTop_toBottomOf="@+id/edittextmain2" />
+        app:layout_constraintTop_toBottomOf="@+id/txt2" />
 
-    <EditText
-        android:id="@+id/edittextmain2"
+    <TextView
+        android:id="@+id/txt2"
         android:layout_width="84dp"
         android:layout_height="37dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="60dp"
-        android:hint="name"
-        android:inputType="textCapWords"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="70dp"
+        android:text="bassalbane"
+        android:clickable="true"
+        android:onClick="selectSound"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/txt" />

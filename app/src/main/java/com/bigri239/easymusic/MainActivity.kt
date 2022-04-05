@@ -53,6 +53,7 @@ open class MainActivity : AppCompatActivity(){
     private var state: String = "unready"
     private var played = 0
     private var projectName = "projectDefault"
+    private var currentSound = "bassalbane"
     private val projects = mutableListOf<String>()
     private val tracks: Array<SoundPool> =
         Array(9) { SoundPool(10, AudioManager.STREAM_MUSIC, 0) }
@@ -60,7 +61,11 @@ open class MainActivity : AppCompatActivity(){
     private val countSounds: Array<Int> = Array(9) { -1 }
     private val sounds: Array<Array<SoundInfo>> =
         Array(100) { Array(100) { i -> SoundInfo("", i + 1, 0, 1.0F, 0, 1.0F) } }
-    private var viewClickListener = View.OnClickListener { v -> create_select_project_popup_menu(v) }
+    private val resourcesArray : Array<String> = arrayOf("bassalbane", "basscentury", "bassflowers",
+        "clapchoppa", "clapforeign", "crashalect", "crashbloods", "crashvinnyx", "fxfreeze",
+        "fxgunnes", "hihatcheque", "hihatmystery", "kickartillery", "kickinfinite", "percardonme",
+        "percpaolla", "rimchaser", "rimstount", "snarecompas", "snarewoods", "voxanother", "voxgilens")
+    private val customArray = arrayListOf<String>()
     private val connector = object : Connector {
         override fun function(i: Int) {
             removeLastSound(i)
@@ -87,18 +92,16 @@ open class MainActivity : AppCompatActivity(){
         btnAdd8.setOnClickListener { addSound(7) }
         btnAdd9.setOnClickListener { addSound(8) }
 
-        val textView = findViewById<TextView>(R.id.txt)
-        textView.setOnClickListener(viewClickListener)
+        val path = filesDir
+
         try {
-            val path = filesDir
             val file = File(path, "projects.conf")
             val content: String = file.readText()
             projects.addAll(content.split("\n").toTypedArray())
             openProject()
         }
         catch (e: IOException) {
-            projects.add("projectDefault")
-            val path = filesDir
+            projects.add(projectName)
             val file = File(path, "projects.conf")
             var content = ""
             for (i in projects.indices) {
@@ -109,6 +112,19 @@ open class MainActivity : AppCompatActivity(){
                 it.write(content.toByteArray())
             }
             saveProject()
+        }
+
+        try {
+            val file = File(path, "sounds.conf")
+            val content: String = file.readText()
+            if (content != "") customArray.addAll(content.split("\n").toTypedArray())
+        }
+        catch (e: IOException) {
+            val file = File(path, "sounds.conf")
+            val content = ""
+            FileOutputStream(file).use {
+                it.write(content.toByteArray())
+            }
         }
     }
 
@@ -242,20 +258,13 @@ open class MainActivity : AppCompatActivity(){
         }
     }
 
-    private fun create_select_project_popup_menu(v: View) {
-        val popupMenu = PopupMenu(this, v)
-        for (i in projects.indices) popupMenu.menu.add(projects[i])
-        popupMenu.inflate(R.menu.popupmenu)
-        popupMenu.setOnMenuItemClickListener { project_select_popup_menu_click_listener(it); true }
-        popupMenu.show()
+    private fun selectSoundClicked (menuItem: MenuItem) {
+        val itemTitle = menuItem.title.toString()
+        currentSound = itemTitle
+        txt2.text = currentSound
     }
 
     private fun isRawResource (name : String): Boolean {
-        val resourcesArray : Array<String> = arrayOf("bassalbane", "basscentury", "bassflowers",
-            "clapchoppa", "clapforeign", "crashalect", "crashbloods", "crashvinnyx", "fxfreeze",
-            "fxgunnes", "hihatcheque", "hihatmystery", "kickartillery", "kickinfinite", "percardonme",
-            "percpaolla", "rimchaser", "rimstount", "snarecompas", "snarewoods", "voxanother",
-            "voxgilens")
         return resourcesArray.contains(name)
     }
 
@@ -375,21 +384,13 @@ open class MainActivity : AppCompatActivity(){
     }
 
     private fun getSoundParameters(x : Int, y : Int): SoundInfo {
-        val res : String = edittextmain2.text.toString()
+        val res : String = currentSound
         val volume : Float = edittextmain3.text.toString().toFloat() / 100
         val ratio : Float = 100 / (edittextmain4.text.toString().toFloat())
         Log.d(TAG, "MYMSG param: $res")
         val delay : Long = if (y > 0) (edittextmain1.text.toString().toFloat() + getSoundLength(sounds[x][y - 1].res) / sounds[x][y - 1].ratio).toLong()
         else edittextmain1.text.toString().toLong()
         return SoundInfo(res, 0, delay, volume, 0, ratio)
-    }
-
-    fun pause(view: View) {
-        if (state == "playing") {
-            Toast.makeText(this, "Music paused", Toast.LENGTH_SHORT).show()
-            for (i in 0..countTracks) tracks[i].autoPause()
-            state = "pause"
-        }
     }
 
     fun playSound(view: View) {
@@ -428,11 +429,6 @@ open class MainActivity : AppCompatActivity(){
         }
     }
 
-    fun saveProjectUI (view: View) {
-        saveProject()
-        if (state != "unready") Toast.makeText(this, "Saving project...", Toast.LENGTH_SHORT).show()
-    }
-
     fun resetPlaying(view: View) {
         Toast.makeText(this, "Playing halted", Toast.LENGTH_SHORT).show()
         for (i in 0..countTracks) { // очищение и перезаполнение, если играем еще раз
@@ -441,5 +437,34 @@ open class MainActivity : AppCompatActivity(){
             tracks[i] = SoundPool(10, AudioManager.STREAM_MUSIC, 0)
             state = "ready"
         }
+    }
+
+    fun pause(view: View) {
+        if (state == "playing") {
+            Toast.makeText(this, "Music paused", Toast.LENGTH_SHORT).show()
+            for (i in 0..countTracks) tracks[i].autoPause()
+            state = "pause"
+        }
+    }
+
+    fun saveProjectUI (view: View) {
+        saveProject()
+        if (state != "unready") Toast.makeText(this, "Saving project...", Toast.LENGTH_SHORT).show()
+    }
+
+    fun create_select_project_popup_menu(v: View) {
+        val popupMenu = PopupMenu(this, v)
+        for (i in projects.indices) popupMenu.menu.add(projects[i])
+        popupMenu.inflate(R.menu.popupmenu)
+        popupMenu.setOnMenuItemClickListener { project_select_popup_menu_click_listener(it); true }
+        popupMenu.show()
+    }
+
+    fun selectSound(view: View) {
+        val popupMenu = PopupMenu(this, view)
+        for (i in customArray.indices) popupMenu.menu.add(customArray[i])
+        for (i in resourcesArray.indices) popupMenu.menu.add(resourcesArray[i])
+        popupMenu.setOnMenuItemClickListener { selectSoundClicked(it); true }
+        popupMenu.show()
     }
 }

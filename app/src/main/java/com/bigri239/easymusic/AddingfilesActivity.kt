@@ -30,20 +30,10 @@ class AddingfilesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_addfiles)
 
-        try {
-            val path = filesDir
-            val file = File(path, "sounds.conf")
-            val content: String = file.readText()
-            if (content != "") itemsList1.addAll(content.split("\n").toTypedArray())
-        }
-        catch (e: IOException) {
-            val path = filesDir
-            val file = File(path, "sounds.conf")
-            val content = ""
-            FileOutputStream(file).use {
-                it.write(content.toByteArray())
-            }
-        }
+        val path = filesDir
+        val file = File(path, "sounds.conf")
+        val content: String = file.readText()
+        if (content != "") itemsList1.addAll(content.split("\n").toTypedArray())
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView111)
         customAdapter = CustomAdapter(itemsList)
