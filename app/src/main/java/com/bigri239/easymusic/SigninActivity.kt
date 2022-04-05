@@ -13,13 +13,17 @@ class SigninActivity : AppCompatActivity() {
     }
     override fun onStart() {
         super.onStart()
-        val intent = Intent(this, RecoveryActivity::class.java)
+        val intent = Intent(this, MainActivity::class.java)
         findViewById<TextView>(R.id.backsi).setOnClickListener {
             startActivity(intent)
         }
         val intents2 = Intent(this, SignupActivity::class.java)
         findViewById<TextView>(R.id.signup).setOnClickListener {
             startActivity(intents2)
+        }
+        val intents3 = Intent(this, RecoveryActivity::class.java)
+        findViewById<TextView>(R.id.button3).setOnClickListener {
+            startActivity(intents3)
         }
     }
 

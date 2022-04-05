@@ -21,11 +21,11 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
-        android:layout_width="585dp"
+        android:layout_width="530dp"
         android:layout_height="247dp"
         android:layout_marginTop="16dp"
         android:background="#444444"
-        app:layout_constraintEnd_toStartOf="@+id/help"
+        app:layout_constraintStart_toStartOf="@+id/file"
         app:layout_constraintTop_toBottomOf="@+id/file"
         tools:context=".MainActivity"
         tools:ignore="MissingConstraints">
@@ -254,6 +254,7 @@
         android:layout_marginStart="4dp"
         android:layout_marginTop="12dp"
         android:clickable="true"
+        android:onClick="create_select_project_popup_menu"
         android:text="projectDefault"
         android:textColor="@color/colorAccent"
         android:textSize="14sp"
@@ -409,7 +410,7 @@
 
     <Button
         android:id="@+id/btnAdd8"
-        android:layout_width="58dp"
+        android:layout_width="50dp"
         android:layout_height="28dp"
         android:text="add"
         android:textSize="7sp"
@@ -418,7 +419,7 @@
 
     <Button
         android:id="@+id/btnAdd6"
-        android:layout_width="58dp"
+        android:layout_width="50dp"
         android:layout_height="28dp"
         android:text="add"
         android:textSize="7sp"
@@ -427,7 +428,7 @@
 
     <Button
         android:id="@+id/btnAdd5"
-        android:layout_width="58dp"
+        android:layout_width="50dp"
         android:layout_height="28dp"
         android:text="add"
         android:textSize="7sp"
@@ -436,7 +437,7 @@
 
     <Button
         android:id="@+id/btnAdd3"
-        android:layout_width="58dp"
+        android:layout_width="50dp"
         android:layout_height="28dp"
         android:text="add"
         android:textSize="7sp"
@@ -445,7 +446,7 @@
 
     <Button
         android:id="@+id/btnAdd4"
-        android:layout_width="58dp"
+        android:layout_width="50dp"
         android:layout_height="28dp"
         android:text="add"
         android:textSize="7sp"
@@ -454,7 +455,7 @@
 
     <Button
         android:id="@+id/btnAdd7"
-        android:layout_width="58dp"
+        android:layout_width="50dp"
         android:layout_height="28dp"
         android:text="add"
         android:textSize="7sp"
@@ -463,7 +464,7 @@
 
     <Button
         android:id="@+id/btnAdd9"
-        android:layout_width="58dp"
+        android:layout_width="50dp"
         android:layout_height="28dp"
         android:text="add"
         android:textSize="7sp"
@@ -472,23 +473,107 @@
 
     <Button
         android:id="@+id/btnAdd1"
-        android:layout_width="58dp"
+        android:layout_width="50dp"
         android:layout_height="28dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="12dp"
         android:text="add"
         android:textSize="7sp"
-        app:layout_constraintStart_toStartOf="@+id/help"
+        app:layout_constraintEnd_toStartOf="@+id/txt"
         app:layout_constraintTop_toBottomOf="@+id/help" />
 
     <Button
         android:id="@+id/btnAdd2"
-        android:layout_width="58dp"
+        android:layout_width="50dp"
         android:layout_height="28dp"
         android:text="add"
         android:textSize="7sp"
         app:layout_constraintStart_toStartOf="@+id/btnAdd1"
         app:layout_constraintTop_toBottomOf="@+id/btnAdd1" />
+
+
+    <Button
+        android:id="@+id/btnRem8"
+        android:layout_width="50dp"
+        android:layout_height="28dp"
+        android:text="del"
+        android:textSize="7sp"
+        app:layout_constraintStart_toStartOf="@+id/btnRem7"
+        app:layout_constraintTop_toBottomOf="@+id/btnRem7" />
+
+    <Button
+        android:id="@+id/btnRem6"
+        android:layout_width="50dp"
+        android:layout_height="28dp"
+        android:text="del"
+        android:textSize="7sp"
+        app:layout_constraintStart_toStartOf="@+id/btnRem5"
+        app:layout_constraintTop_toBottomOf="@+id/btnRem5" />
+
+    <Button
+        android:id="@+id/btnRem5"
+        android:layout_width="50dp"
+        android:layout_height="28dp"
+        android:text="del"
+        android:textSize="7sp"
+        app:layout_constraintStart_toStartOf="@+id/btnRem4"
+        app:layout_constraintTop_toBottomOf="@+id/btnRem4" />
+
+    <Button
+        android:id="@+id/btnRem3"
+        android:layout_width="50dp"
+        android:layout_height="28dp"
+        android:text="del"
+        android:textSize="7sp"
+        app:layout_constraintStart_toStartOf="@+id/btnRem2"
+        app:layout_constraintTop_toBottomOf="@+id/btnRem2" />
+
+    <Button
+        android:id="@+id/btnRem4"
+        android:layout_width="50dp"
+        android:layout_height="28dp"
+        android:text="del"
+        android:textSize="7sp"
+        app:layout_constraintStart_toStartOf="@+id/btnRem3"
+        app:layout_constraintTop_toBottomOf="@+id/btnRem3" />
+
+    <Button
+        android:id="@+id/btnRem7"
+        android:layout_width="50dp"
+        android:layout_height="28dp"
+        android:text="del"
+        android:textSize="7sp"
+        app:layout_constraintStart_toStartOf="@+id/btnRem6"
+        app:layout_constraintTop_toBottomOf="@+id/btnRem6" />
+
+    <Button
+        android:id="@+id/btnRem9"
+        android:layout_width="50dp"
+        android:layout_height="28dp"
+        android:text="del"
+        android:textSize="7sp"
+        app:layout_constraintStart_toStartOf="@+id/btnRem8"
+        app:layout_constraintTop_toBottomOf="@+id/btnRem8" />
+
+    <Button
+        android:id="@+id/btnRem1"
+        android:layout_width="50dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="12dp"
+        android:text="del"
+        android:textSize="7sp"
+        app:layout_constraintStart_toEndOf="@+id/constraintLayout"
+        app:layout_constraintTop_toBottomOf="@+id/help" />
+
+    <Button
+        android:id="@+id/btnRem2"
+        android:layout_width="50dp"
+        android:layout_height="28dp"
+        android:text="del"
+        android:textSize="7sp"
+        app:layout_constraintStart_toStartOf="@+id/btnRem1"
+        app:layout_constraintTop_toBottomOf="@+id/btnRem1" />
 
     <EditText
         android:id="@+id/edittextmain1"
@@ -499,16 +584,17 @@
         android:textSize="14sp"
         android:inputType="number"
         app:layout_constraintStart_toEndOf="@+id/btnAdd1"
-        app:layout_constraintTop_toBottomOf="@+id/edittextmain2" />
+        app:layout_constraintTop_toBottomOf="@+id/txt2" />
 
-    <EditText
-        android:id="@+id/edittextmain2"
+    <TextView
+        android:id="@+id/txt2"
         android:layout_width="84dp"
         android:layout_height="37dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="60dp"
-        android:hint="name"
-        android:inputType="textCapWords"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="70dp"
+        android:text="bassalbane"
+        android:clickable="true"
+        android:onClick="selectSound"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/txt" />
