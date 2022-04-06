@@ -232,6 +232,8 @@ open class MainActivity : AppCompatActivity(){
                 Log.d(TAG, "MYMSG add: " + getSoundLength(sound.res))
                 setMusicLength()
             }
+            buttonDelete.setOnClickListener {}
+            buttonEdit.setOnClickListener {}
         }
         else Toast.makeText(this, "Oops! Sound is too big!", Toast.LENGTH_SHORT).show()
     }
@@ -419,6 +421,8 @@ open class MainActivity : AppCompatActivity(){
                 state = "unready"
             }
             setMusicLength()
+            buttonDelete.setOnClickListener {}
+            buttonEdit.setOnClickListener {}
         }
     }
 
@@ -437,15 +441,12 @@ open class MainActivity : AppCompatActivity(){
         edittextmain1.setText(if (j != 0) (sound.delay - getSoundLength(sounds[i][j - 1].res) / sounds[i][j - 1].ratio).toInt().toString()
         else sound.delay.toString())
         edittextmain3.setText((sound.volume * 100).toInt().toString())
-        edittextmain4.setText((100 / sound.ratio).toInt().toString())
+        edittextmain4.setText((100 / sound.ratio).toString())
     }
 
     private fun deleteSelected (i : Int, j: Int) {
-        if (countSounds[i] != -1) {
-            val sound = sounds[i][j]
-            val indent : Long =  (sounds[i][j + 1].delay - getSoundLength(sound.res) / sound.ratio).toLong()
-            val delay : Long = if (j > 0) indent + (getSoundLength(sounds[i][j - 1].res) / sounds[i][j - 1].ratio).toLong()
-            else indent
+        if (j <= countSounds[i]) {
+            val delay : Long = sounds[i][j].delay + sounds[i][j + 1].delay
             sounds[i][j] = sounds[i][j + 1]
             sounds[i][j].delay = delay
             for (k in (j + 1)..countSounds[i]) sounds[i][k] = sounds[i][k + 1]
@@ -471,7 +472,7 @@ open class MainActivity : AppCompatActivity(){
     }
 
     private fun changeSelected (i : Int, j: Int) {
-        if (countSounds[i] != -1) {
+        if (j <= countSounds[i]) {
             sounds[i][j] = getSoundParameters(i, j)
             setMusicLength()
             (currentRecycler(i).adapter as SecondsListAdapter).eraseSounds()
@@ -524,6 +525,8 @@ open class MainActivity : AppCompatActivity(){
         val res : String = currentSound
         var volume : Float = abs(edittextmain3.text.toString().toFloat() / 100)
         if (volume > 1) volume = 1.0F
+        if (edittextmain4.text.toString().toFloat() < 12.5) edittextmain4.setText(12.5F.toString())
+        else if (edittextmain4.text.toString().toFloat() > 800) edittextmain4.setText(800.toString())
         val ratio : Float = abs(100 / (edittextmain4.text.toString().toFloat()))
         Log.d(TAG, "MYMSG param: $res")
         val delay : Long = if (y > 0) (edittextmain1.text.toString().toFloat() + getSoundLength(sounds[x][y - 1].res) / sounds[x][y - 1].ratio).toLong()
