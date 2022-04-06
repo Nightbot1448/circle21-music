@@ -12,8 +12,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.activity_addfiles.*
 import java.io.*
-import androidx.recyclerview.widget.DefaultItemAnimator
 
 
 @Suppress("DEPRECATION")
@@ -29,19 +29,28 @@ class AddingfilesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_addfiles)
-
         val path = filesDir
-        val file = File(path, "sounds.conf")
-        val content: String = file.readText()
-        if (content != "") itemsList1.addAll(content.split("\n").toTypedArray())
 
-        val recyclerView: RecyclerView = findViewById(R.id.recyclerView111)
+        try {
+            val file = File(path, "sounds.conf")
+            val content: String = file.readText()
+            if (content != "") itemsList1.addAll(content.split("\n").toTypedArray())
+        }
+        catch (e: IOException) {
+            val file = File(path, "sounds.conf")
+            val content = ""
+            FileOutputStream(file).use {
+                it.write(content.toByteArray())
+            }
+        }
+
+        val recyclerView: RecyclerView = recyclerView111
         customAdapter = CustomAdapter(itemsList)
         val layoutManager = LinearLayoutManager(applicationContext)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = customAdapter
 
-        val recyclerView1: RecyclerView = findViewById(R.id.recyclerView222)
+        val recyclerView1: RecyclerView = recyclerView222
         customAdapter1 = CustomAdapter(itemsList1)
         val layoutManager1 = LinearLayoutManager(applicationContext)
         recyclerView1.layoutManager = layoutManager1
@@ -75,33 +84,41 @@ class AddingfilesActivity : AppCompatActivity() {
         dialog.setContentView(R.layout.dialog_sound_name)
         dialog.findViewById<Button>(R.id.save).setOnClickListener {
             filePath = dialog.findViewById<EditText>(R.id.newname).text.toString()
-            val path = filesDir
-            val file = File(path, "$filePath.wav")
-            FileOutputStream(file).use {
-                it.write(content)
+            if (filePath != "") {
+                val path = filesDir
+                val file = File(path, "$filePath.wav")
+                FileOutputStream(file).use {
+                    it.write(content)
+                }
+                val file1 = File(path, "sounds.conf")
+                var sounds: String = file1.readText()
+                if (sounds != "") sounds += "\n"
+                sounds += filePath
+                FileOutputStream(file1).use {
+                    it.write(sounds.toByteArray())
+                }
+                if (!itemsList1.contains(filePath)) itemsList1.add(filePath)
+                customAdapter1.notifyDataSetChanged()
+                dialog.dismiss()
             }
-            val file1 = File(path, "sounds.conf")
-            var sounds: String = file1.readText()
-            if (sounds != "") sounds += "\n"
-            sounds += filePath
-            FileOutputStream(file1).use {
-                it.write(sounds.toByteArray())
-            }
-            itemsList1.add(filePath)
-            customAdapter1.notifyDataSetChanged()
-            dialog.dismiss()
         }
         dialog.show()
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 777) {
+        try {
+            if (requestCode == 777) {
             val input: InputStream? = data!!.data?.let { contentResolver.openInputStream(it) }
             val wavdata = input?.let { readBytes(it) }
             if (wavdata != null) {
                 showCopyingDialog(wavdata)
             }
+        }
+        }
+        catch (e: Exception) {
+            Toast.makeText(this, "Nothing selected!", Toast.LENGTH_SHORT).show()
         }
     }
 
