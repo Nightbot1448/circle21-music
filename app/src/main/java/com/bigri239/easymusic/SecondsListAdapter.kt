@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import java.lang.Exception
 
 class SecondsListAdapter(val connector : MainActivity.Connector) : RecyclerView.Adapter<SecondsListAdapter.SecondsListViewHolder>() {
 
@@ -77,7 +78,7 @@ class SecondsListAdapter(val connector : MainActivity.Connector) : RecyclerView.
         fun bind(second: SoundSecond) {
             viewSquare.setBackgroundResource(second.color)
             viewSquare.setOnClickListener {
-                second.sound?.let { removeSound(it)}
+                second.sound?.let { try {connector.function2(it.track, it.number)} catch (e: Exception) {} }
             }
         }
     }
