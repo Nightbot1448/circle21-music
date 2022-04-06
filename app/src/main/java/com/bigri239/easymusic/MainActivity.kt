@@ -423,7 +423,7 @@ open class MainActivity : AppCompatActivity(){
         val sound = sounds[i][j]
         currentSound = sound.res
         txt2.text = currentSound
-        edittextmain1.setText(if (j != 0) (sound.delay - getSoundLength(sounds[i][j - 1].res) / sounds[i][j - 1].delay).toInt().toString()
+        edittextmain1.setText(if (j != 0) (sound.delay - getSoundLength(sounds[i][j - 1].res) / sounds[i][j - 1].ratio).toInt().toString()
         else sound.delay.toString())
         edittextmain3.setText((sound.volume * 100).toInt().toString())
         edittextmain4.setText((100 / sound.ratio).toInt().toString())

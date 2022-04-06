@@ -12,8 +12,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.activity_addfiles.*
 import java.io.*
-import androidx.recyclerview.widget.DefaultItemAnimator
 
 
 @Suppress("DEPRECATION")
@@ -29,19 +29,28 @@ class AddingfilesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_addfiles)
-
         val path = filesDir
-        val file = File(path, "sounds.conf")
-        val content: String = file.readText()
-        if (content != "") itemsList1.addAll(content.split("\n").toTypedArray())
 
-        val recyclerView: RecyclerView = findViewById(R.id.recyclerView111)
+        try {
+            val file = File(path, "sounds.conf")
+            val content: String = file.readText()
+            if (content != "") itemsList1.addAll(content.split("\n").toTypedArray())
+        }
+        catch (e: IOException) {
+            val file = File(path, "sounds.conf")
+            val content = ""
+            FileOutputStream(file).use {
+                it.write(content.toByteArray())
+            }
+        }
+
+        val recyclerView: RecyclerView = recyclerView111
         customAdapter = CustomAdapter(itemsList)
         val layoutManager = LinearLayoutManager(applicationContext)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = customAdapter
 
-        val recyclerView1: RecyclerView = findViewById(R.id.recyclerView222)
+        val recyclerView1: RecyclerView = recyclerView222
         customAdapter1 = CustomAdapter(itemsList1)
         val layoutManager1 = LinearLayoutManager(applicationContext)
         recyclerView1.layoutManager = layoutManager1
@@ -99,25 +108,25 @@ class AddingfilesActivity : AppCompatActivity() {
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 777) {
+        try {
+            if (requestCode == 777) {
             val input: InputStream? = data!!.data?.let { contentResolver.openInputStream(it) }
             val wavdata = input?.let { readBytes(it) }
             if (wavdata != null) {
                 showCopyingDialog(wavdata)
             }
         }
-    }
-
-    fun openFile(view: View) {
-        Toast.makeText(this, "Opening file...", Toast.LENGTH_SHORT).show()
-        try {
-            val intent = Intent()
-            intent.type = "*/*"
-            intent.action = Intent.ACTION_GET_CONTENT
-            startActivityForResult(Intent.createChooser(intent, "Select a file"), 777)
         }
         catch (e: Exception) {
             Toast.makeText(this, "Nothing selected!", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    fun openFile(view: View) {
+        Toast.makeText(this, "Opening file...", Toast.LENGTH_SHORT).show()
+        val intent = Intent()
+        intent.type = "*/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+        startActivityForResult(Intent.createChooser(intent, "Select a file"), 777)
     }
 }
