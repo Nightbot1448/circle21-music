@@ -1,6 +1,5 @@
 package com.bigri239.easymusic
 
-import android.app.AlertDialog
 import android.app.Dialog
 import android.content.ContentValues.TAG
 import android.content.Intent
@@ -59,7 +58,7 @@ open class MainActivity : AppCompatActivity(){
     private var countTracks = 0
     private val countSounds: Array<Int> = Array(9) { -1 }
     private val sounds: Array<Array<SoundInfo>> =
-        Array(100) { Array(100) { i -> SoundInfo("", i + 1, 0, 1.0F, 0, 1.0F) } }
+        Array(100) { Array(500) { i -> SoundInfo("", i + 1, 0, 1.0F, 0, 1.0F) } }
     private val resourcesArray : Array<String> = arrayOf("bassalbane", "basscentury", "bassflowers",
         "clapchoppa", "clapforeign", "crashalect", "crashbloods", "crashvinnyx", "fxfreeze",
         "fxgunnes", "hihatcheque", "hihatmystery", "kickartillery", "kickinfinite", "percardonme",
@@ -190,13 +189,6 @@ open class MainActivity : AppCompatActivity(){
         }
     }
 
-    override fun onCreateDialog(id: Int): Dialog {
-        val activity = null
-        return activity?.let {
-            AlertDialog.Builder(it).create()
-        } ?: throw IllegalStateException("Activity cannot be null")
-    }
-
     private fun currentRecycler (i : Int) : RecyclerView {
         val recyclerCurrent : RecyclerView = when(i) {
             0 -> recyclerViewhor1
@@ -224,51 +216,60 @@ open class MainActivity : AppCompatActivity(){
     }
 
     private fun addSound (x : Int) {
-        if (state == "unready") state = "ready"
-        if (countTracks < x) countTracks = x
-        val sound = getSoundParameters(x, countSounds[x] + 1)
-        countSounds[x]++
-        sounds[x][countSounds[x]] = sound
-        var len = ((getSoundLength(sound.res) / sound.ratio) / 40).roundToInt()
-        len = if (len > 0) len else 1
-        (currentRecycler(x).adapter as SecondsListAdapter).addSound(Sound(
-            (edittextmain1.text.toString().toFloat() / 40).roundToInt(),
-            len,
-            currentColor(countSounds[x]), x, countSounds[x]))
-        Log.d(TAG, "MYMSG add: " + getSoundLength(sound.res))
-        setMusicLength()
+        if (getSoundLength(currentSound) <= 5.6 * 60000) {
+            if (isReady()) {
+                if (state == "unready") state = "ready"
+                if (countTracks < x) countTracks = x
+                val sound = getSoundParameters(x, countSounds[x] + 1)
+                countSounds[x]++
+                sounds[x][countSounds[x]] = sound
+                var len = ((getSoundLength(sound.res) / sound.ratio) / 40).roundToInt()
+                len = if (len > 0) len else 1
+                (currentRecycler(x).adapter as SecondsListAdapter).addSound(Sound(
+                    (edittextmain1.text.toString().toFloat() / 40).roundToInt(),
+                    len,
+                    currentColor(countSounds[x]), x, countSounds[x]))
+                Log.d(TAG, "MYMSG add: " + getSoundLength(sound.res))
+                setMusicLength()
+            }
+        }
+        else Toast.makeText(this, "Oops! Sound is too big!", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun isReady () : Boolean {
+        return edittextmain1.text.toString().trim().isNotEmpty() && edittextmain3.text.toString()
+            .trim().isNotEmpty() && edittextmain4.text.toString().trim().isNotEmpty()
     }
 
     private fun showProjectDialog() {
         val dialog = Dialog(this, R.style.ThemeOverlay_Material3_Dialog)
         dialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCancelable(false)
+        dialog.setCancelable(true)
         dialog.setContentView(R.layout.dialog_new_project)
         dialog.findViewById<Button>(R.id.create).setOnClickListener {
             newProject = dialog.findViewById<EditText>(R.id.newname).text.toString()
-            saveProject()
-            projectName = newProject
-            projects.add(projectName)
-            txt.text = projectName
-            Toast.makeText(applicationContext, "You created $projectName", Toast.LENGTH_SHORT).show()
-            val path = filesDir
-            val file = File(path, "projects.conf")
-            val content = file.readText() + "\n" + projectName
-            FileOutputStream(file).use {
-                it.write(content.toByteArray())
+            if (newProject != "" && !projects.contains(newProject)){
+                saveProject()
+                projectName = newProject
+                projects.add(projectName)
+                txt.text = projectName
+                Toast.makeText(applicationContext, "You created $projectName", Toast.LENGTH_SHORT).show()
+                val path = filesDir
+                val file = File(path, "projects.conf")
+                val content = file.readText() + "\n" + projectName
+                FileOutputStream(file).use {
+                    it.write(content.toByteArray())
+                }
+                clearSounds()
+                dialog.dismiss()
             }
-
-            clearSounds()
-            dialog.dismiss()
         }
         dialog.show()
     }
 
     private fun projectSelectPopupMenuClickListener(menuItem: MenuItem) {
         val itemTitle = menuItem.title.toString()
-        if (itemTitle == "New project") {
-            showProjectDialog()
-        }
+        if (itemTitle == "New project") showProjectDialog()
         else {
             saveProject()
             projectName = itemTitle
@@ -511,7 +512,6 @@ open class MainActivity : AppCompatActivity(){
             }
 
             if (state != "playing") {
-                val length = getMusicLength()
                 setTimer()
                 val start: Long = currentTimeMillis() + 100
                 state = "playing"

@@ -75,25 +75,28 @@ class AddingfilesActivity : AppCompatActivity() {
         dialog.setContentView(R.layout.dialog_sound_name)
         dialog.findViewById<Button>(R.id.save).setOnClickListener {
             filePath = dialog.findViewById<EditText>(R.id.newname).text.toString()
-            val path = filesDir
-            val file = File(path, "$filePath.wav")
-            FileOutputStream(file).use {
-                it.write(content)
+            if (filePath != "") {
+                val path = filesDir
+                val file = File(path, "$filePath.wav")
+                FileOutputStream(file).use {
+                    it.write(content)
+                }
+                val file1 = File(path, "sounds.conf")
+                var sounds: String = file1.readText()
+                if (sounds != "") sounds += "\n"
+                sounds += filePath
+                FileOutputStream(file1).use {
+                    it.write(sounds.toByteArray())
+                }
+                if (!itemsList1.contains(filePath)) itemsList1.add(filePath)
+                customAdapter1.notifyDataSetChanged()
+                dialog.dismiss()
             }
-            val file1 = File(path, "sounds.conf")
-            var sounds: String = file1.readText()
-            if (sounds != "") sounds += "\n"
-            sounds += filePath
-            FileOutputStream(file1).use {
-                it.write(sounds.toByteArray())
-            }
-            itemsList1.add(filePath)
-            customAdapter1.notifyDataSetChanged()
-            dialog.dismiss()
         }
         dialog.show()
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 777) {
@@ -107,9 +110,14 @@ class AddingfilesActivity : AppCompatActivity() {
 
     fun openFile(view: View) {
         Toast.makeText(this, "Opening file...", Toast.LENGTH_SHORT).show()
-        val intent = Intent()
-        intent.type = "*/*"
-        intent.action = Intent.ACTION_GET_CONTENT
-        startActivityForResult(Intent.createChooser(intent, "Select a file"), 777)
+        try {
+            val intent = Intent()
+            intent.type = "*/*"
+            intent.action = Intent.ACTION_GET_CONTENT
+            startActivityForResult(Intent.createChooser(intent, "Select a file"), 777)
+        }
+        catch (e: Exception) {
+            Toast.makeText(this, "Nothing selected!", Toast.LENGTH_SHORT).show()
+        }
     }
 }
