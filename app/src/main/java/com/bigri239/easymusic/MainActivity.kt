@@ -36,6 +36,7 @@ open class MainActivity : AppCompatActivity(){
 
     interface Connector {
         fun function(i : Int)
+        fun function2 (i: Int, j: Int)
     }
 
     data class SoundInfo(
@@ -70,6 +71,10 @@ open class MainActivity : AppCompatActivity(){
         override fun function(i: Int) {
             removeLastSound(i)
         }
+
+        override fun function2(i: Int, j: Int) {
+            infoAboutSelected(i, j)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,31 +98,31 @@ open class MainActivity : AppCompatActivity(){
         btnAdd9.setOnClickListener { addSound(8) }
 
         btnRem1.setOnClickListener { (currentRecycler(0).adapter as SecondsListAdapter).removeSound(
-            Sound(0,0, SoundType.SOUND1, 0))
+            Sound(0,0, SoundType.SOUND1, 0, 0))
             setMusicLength()}
         btnRem2.setOnClickListener { (currentRecycler(1).adapter as SecondsListAdapter).removeSound(
-            Sound(0,0, SoundType.SOUND1, 1))
+            Sound(0,0, SoundType.SOUND1, 1, 0))
             setMusicLength()}
         btnRem3.setOnClickListener { (currentRecycler(2).adapter as SecondsListAdapter).removeSound(
-            Sound(0,0, SoundType.SOUND1, 2))
+            Sound(0,0, SoundType.SOUND1, 2, 0))
             setMusicLength()}
         btnRem4.setOnClickListener { (currentRecycler(3).adapter as SecondsListAdapter).removeSound(
-            Sound(0,0, SoundType.SOUND1, 3))
+            Sound(0,0, SoundType.SOUND1, 3, 0))
             setMusicLength()}
         btnRem5.setOnClickListener { (currentRecycler(4).adapter as SecondsListAdapter).removeSound(
-            Sound(0,0, SoundType.SOUND1, 4))
+            Sound(0,0, SoundType.SOUND1, 4, 0))
             setMusicLength()}
         btnRem6.setOnClickListener { (currentRecycler(5).adapter as SecondsListAdapter).removeSound(
-            Sound(0,0, SoundType.SOUND1, 5))
+            Sound(0,0, SoundType.SOUND1, 5, 0))
             setMusicLength()}
         btnRem7.setOnClickListener { (currentRecycler(6).adapter as SecondsListAdapter).removeSound(
-            Sound(0,0, SoundType.SOUND1, 6))
+            Sound(0,0, SoundType.SOUND1, 6, 0))
             setMusicLength()}
         btnRem8.setOnClickListener { (currentRecycler(7).adapter as SecondsListAdapter).removeSound(
-            Sound(0,0, SoundType.SOUND1, 7))
+            Sound(0,0, SoundType.SOUND1, 7, 0))
             setMusicLength()}
         btnRem9.setOnClickListener { (currentRecycler(8).adapter as SecondsListAdapter).removeSound(
-            Sound(0,0, SoundType.SOUND1, 8))
+            Sound(0,0, SoundType.SOUND1, 8, 0))
             setMusicLength()}
 
         val path = filesDir
@@ -229,7 +234,7 @@ open class MainActivity : AppCompatActivity(){
         (currentRecycler(x).adapter as SecondsListAdapter).addSound(Sound(
             (edittextmain1.text.toString().toFloat() / 40).roundToInt(),
             len,
-            currentColor(countSounds[x]), x))
+            currentColor(countSounds[x]), x, countSounds[x]))
         Log.d(TAG, "MYMSG add: " + getSoundLength(sound.res))
         setMusicLength()
     }
@@ -367,7 +372,7 @@ open class MainActivity : AppCompatActivity(){
                     (currentRecycler(i).adapter as SecondsListAdapter).addSound(Sound(
                         (indentFloat / 40).roundToInt(),
                         len,
-                        currentColor(j), i))
+                        currentColor(j), i, j))
                 }
             }
             state = "ready"
@@ -411,6 +416,16 @@ open class MainActivity : AppCompatActivity(){
             }
             setMusicLength()
         }
+    }
+
+    fun infoAboutSelected (i : Int, j : Int) {
+        val sound = sounds[i][j]
+        currentSound = sound.res
+        txt2.text = currentSound
+        edittextmain1.setText(if (j != 0) (sound.delay - getSoundLength(sounds[i][j - 1].res) / sounds[i][j - 1].delay).toInt().toString()
+        else sound.delay.toString())
+        edittextmain3.setText((sound.volume * 100).toInt().toString())
+        edittextmain4.setText((100 / sound.ratio).toInt().toString())
     }
 
     private fun getSoundLength(name: String): Long {
