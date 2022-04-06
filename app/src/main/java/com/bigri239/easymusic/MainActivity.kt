@@ -57,8 +57,8 @@ open class MainActivity : AppCompatActivity(){
         Array(9) { SoundPool(10, AudioManager.STREAM_MUSIC, 0) }
     private var countTracks = 0
     private val countSounds: Array<Int> = Array(9) { -1 }
-    private val sounds: Array<Array<SoundInfo>> =
-        Array(100) { Array(500) { i -> SoundInfo("", i + 1, 0, 1.0F, 0, 1.0F) } }
+    private val emptySound = SoundInfo()
+    private val sounds: Array<Array<SoundInfo>> = Array(9) { Array(500) { emptySound } }
     private val resourcesArray : Array<String> = arrayOf("bassalbane", "basscentury", "bassflowers",
         "clapchoppa", "clapforeign", "crashalect", "crashbloods", "crashvinnyx", "fxfreeze",
         "fxgunnes", "hihatcheque", "hihatmystery", "kickartillery", "kickinfinite", "percardonme",
@@ -72,7 +72,7 @@ open class MainActivity : AppCompatActivity(){
         }
 
         override fun function2(i: Int, j: Int) {
-            infoAboutSelected(i, j)
+            editSelected(i, j)
         }
     }
 
@@ -278,7 +278,7 @@ open class MainActivity : AppCompatActivity(){
             openProject()
             state = "unready"
             for (i in 0..countTracks) {
-                if (sounds[i][0] != SoundInfo("", i + 1, 0, 1.0F, 0, 1.0F)) {
+                if (sounds[i][0] != emptySound) {
                     state = "ready"
                 }
             }
@@ -307,7 +307,7 @@ open class MainActivity : AppCompatActivity(){
             tracks[i].release()
             tracks[i] = SoundPool(10, AudioManager.STREAM_MUSIC, 0)
             for (j in 0..countSounds[i]) {
-                sounds[i][j] = SoundInfo("", i + 1, 0, 1.0F, 0, 1.0F)
+                sounds[i][j] = emptySound
             }
             countSounds[i] = -1
         }
@@ -320,9 +320,12 @@ open class MainActivity : AppCompatActivity(){
         return if (state != "unready") {
             val tracksLengths = mutableListOf<Long>()
             for (i in 0..countTracks) {
-                tracksLengths.add(0)
-                for (j in 0..countSounds[i]) tracksLengths[i] += sounds[i][j].delay
-                tracksLengths[i] += (getSoundLength(sounds[i][countSounds[i]].res) / sounds[i][countSounds[i]].ratio).toLong()
+                try {
+                    tracksLengths.add(0)
+                    for (j in 0..countSounds[i]) tracksLengths[i] += sounds[i][j].delay
+                    tracksLengths[i] += (getSoundLength(sounds[i][countSounds[i]].res) / sounds[i][countSounds[i]].ratio).toLong()
+                }
+                catch (e : IndexOutOfBoundsException) {}
             }
             max(tracksLengths)
         } else 0
@@ -370,10 +373,7 @@ open class MainActivity : AppCompatActivity(){
                     else params[2].toFloat()
                     var len = ((getSoundLength(sounds[i][j].res) / sounds[i][j].ratio) / 40).roundToInt()
                     len = if (len > 0) len else 1
-                    (currentRecycler(i).adapter as SecondsListAdapter).addSound(Sound(
-                        (indentFloat / 40).roundToInt(),
-                        len,
-                        currentColor(j), i, j))
+                    (currentRecycler(i).adapter as SecondsListAdapter).addSound(Sound((indentFloat / 40).roundToInt(), len, currentColor(j), i, j))
                 }
             }
             state = "ready"
@@ -389,16 +389,18 @@ open class MainActivity : AppCompatActivity(){
             val file = File(path, "$projectName.emproj")
             var content = ""
             for (i in 0..countTracks) {
-                for (j in 0..countSounds[i]) {
-                    content += sounds[i][j].res + " "
-                    content += sounds[i][j].id.toString() + " "
-                    content += sounds[i][j].delay.toString() + " "
-                    content += sounds[i][j].volume.toString() + " "
-                    content += sounds[i][j].loop.toString() + " "
-                    content += sounds[i][j].ratio.toString()
-                    if (j != countSounds[i]) content += ";"
+                if (countSounds[i] != -1) {
+                    for (j in 0..countSounds[i]) {
+                        content += sounds[i][j].res + " "
+                        content += sounds[i][j].id.toString() + " "
+                        content += sounds[i][j].delay.toString() + " "
+                        content += sounds[i][j].volume.toString() + " "
+                        content += sounds[i][j].loop.toString() + " "
+                        content += sounds[i][j].ratio.toString()
+                        if (j != countSounds[i]) content += ";"
+                    }
+                    if (i != countTracks) content += "\n"
                 }
-                if (i != countTracks) content += "\n"
             }
             FileOutputStream(file).use {
                 it.write(content.toByteArray())
@@ -408,8 +410,9 @@ open class MainActivity : AppCompatActivity(){
 
     fun removeLastSound(i : Int) {
         if (state != "unready") {
-            sounds[i][countSounds[i]] = SoundInfo("", i + 1, 0, 1.0F, 0, 1.0F)
+            sounds[i][countSounds[i]] = emptySound
             countSounds[i]--
+            Log.d(TAG, "MYMSG delete: " + countSounds[i])
             if (countSounds[i] == -1 && countTracks == i) countTracks --
             if (countTracks == -1) {
                 countTracks = 0
@@ -419,7 +422,15 @@ open class MainActivity : AppCompatActivity(){
         }
     }
 
-    fun infoAboutSelected (i : Int, j : Int) {
+    fun editSelected (i : Int, j : Int) {
+        infoAboutSelected(i, j)
+        if (countSounds[i] != -1) buttonDelete.setOnClickListener { deleteSelected(i, j) }
+        else buttonDelete.setOnClickListener {}
+        if (countSounds[i] != -1) buttonEdit.setOnClickListener { changeSelected(i, j) }
+        else buttonEdit.setOnClickListener {}
+    }
+
+    private fun infoAboutSelected (i : Int, j : Int) {
         val sound = sounds[i][j]
         currentSound = sound.res
         txt2.text = currentSound
@@ -427,6 +438,53 @@ open class MainActivity : AppCompatActivity(){
         else sound.delay.toString())
         edittextmain3.setText((sound.volume * 100).toInt().toString())
         edittextmain4.setText((100 / sound.ratio).toInt().toString())
+    }
+
+    private fun deleteSelected (i : Int, j: Int) {
+        if (countSounds[i] != -1) {
+            val sound = sounds[i][j]
+            val indent : Long =  (sounds[i][j + 1].delay - getSoundLength(sound.res) / sound.ratio).toLong()
+            val delay : Long = if (j > 0) indent + (getSoundLength(sounds[i][j - 1].res) / sounds[i][j - 1].ratio).toLong()
+            else indent
+            sounds[i][j] = sounds[i][j + 1]
+            sounds[i][j].delay = delay
+            for (k in (j + 1)..countSounds[i]) sounds[i][k] = sounds[i][k + 1]
+            countSounds[i]--
+            if (countSounds[i] == -1) {
+                if (sounds.contentEquals(Array(100) { Array(500) { emptySound } })) state = "unready"
+                if (countTracks == i && countTracks != 0) countTracks --
+            }
+            setMusicLength()
+            (currentRecycler(i).adapter as SecondsListAdapter).eraseSounds()
+            if (countSounds[i] != -1) {
+                for (y in 0..countSounds[i]) {
+                    val sound = sounds[i][y]
+                    val indentFloat : Float = if (y != 0) sound.delay - getSoundLength(sounds[i][y - 1].res) / sounds[i][y - 1].ratio
+                    else sound.delay.toFloat()
+                    var len = ((getSoundLength(sounds[i][y].res) / sounds[i][y].ratio) / 40).roundToInt()
+                    len = if (len > 0) len else 1
+                    (currentRecycler(i).adapter as SecondsListAdapter).addSound(Sound(
+                        (indentFloat / 40).roundToInt(), len, currentColor(y), i, y))
+                }
+            }
+        }
+    }
+
+    private fun changeSelected (i : Int, j: Int) {
+        if (countSounds[i] != -1) {
+            sounds[i][j] = getSoundParameters(i, j)
+            setMusicLength()
+            (currentRecycler(i).adapter as SecondsListAdapter).eraseSounds()
+            for (y in 0..countSounds[i]) {
+                val sound = sounds[i][y]
+                val indentFloat : Float = if (y != 0) sound.delay - getSoundLength(sounds[i][y - 1].res) / sounds[i][y - 1].ratio
+                else sound.delay.toFloat()
+                var len = ((getSoundLength(sounds[i][y].res) / sounds[i][y].ratio) / 40).roundToInt()
+                len = if (len > 0) len else 1
+                (currentRecycler(i).adapter as SecondsListAdapter).addSound(Sound(
+                    (indentFloat / 40).roundToInt(), len, currentColor(y), i, y))
+            }
+        }
     }
 
     private fun getSoundLength(name: String): Long {
@@ -464,8 +522,9 @@ open class MainActivity : AppCompatActivity(){
 
     private fun getSoundParameters(x : Int, y : Int): SoundInfo {
         val res : String = currentSound
-        val volume : Float = edittextmain3.text.toString().toFloat() / 100
-        val ratio : Float = 100 / (edittextmain4.text.toString().toFloat())
+        var volume : Float = abs(edittextmain3.text.toString().toFloat() / 100)
+        if (volume > 1) volume = 1.0F
+        val ratio : Float = abs(100 / (edittextmain4.text.toString().toFloat()))
         Log.d(TAG, "MYMSG param: $res")
         val delay : Long = if (y > 0) (edittextmain1.text.toString().toFloat() + getSoundLength(sounds[x][y - 1].res) / sounds[x][y - 1].ratio).toLong()
         else edittextmain1.text.toString().toLong()
