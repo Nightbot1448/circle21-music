@@ -20,10 +20,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.InputStream
+import java.io.*
+import java.lang.Exception
 import java.lang.System.currentTimeMillis
 import java.util.Collections.max
 import kotlin.math.abs
@@ -357,26 +355,31 @@ open class MainActivity : AppCompatActivity(){
             val file = File(path, "$projectName.emproj")
             val content: String = file.readText()
             val tracksContent = content.split("\n").toTypedArray()
-            countTracks = tracksContent.size - 1
-            for (i in tracksContent.indices) {
-                val soundsContent = tracksContent[i].split(";").toTypedArray()
-                countSounds[i] = soundsContent.size - 1
-                for (j in soundsContent.indices) {
-                    val params = soundsContent[j].split(" ").toTypedArray()
-                    sounds[i][j] = SoundInfo(
-                        params[0],
-                        params[1].toInt(),
-                        params[2].toLong(),
-                        params[3].toFloat(),
-                        params[4].toInt(),
-                        params[5].toFloat()
-                    )
-                    val indentFloat : Float = if (j != 0) params[2].toLong() - getSoundLength(sounds[i][j - 1].res) / sounds[i][j - 1].ratio
-                    else params[2].toFloat()
-                    var len = ((getSoundLength(sounds[i][j].res) / sounds[i][j].ratio) / 40).roundToInt()
-                    len = if (len > 0) len else 1
-                    (currentRecycler(i).adapter as SecondsListAdapter).addSound(Sound((indentFloat / 40).roundToInt(), len, currentColor(j), i, j))
+            try {
+                countTracks = tracksContent.size - 1
+                for (i in tracksContent.indices) {
+                    val soundsContent = tracksContent[i].split(";").toTypedArray()
+                    countSounds[i] = soundsContent.size - 1
+                    for (j in soundsContent.indices) {
+                        val params = soundsContent[j].split(" ").toTypedArray()
+                        sounds[i][j] = SoundInfo(
+                            params[0],
+                            params[1].toInt(),
+                            params[2].toLong(),
+                            params[3].toFloat(),
+                            params[4].toInt(),
+                            params[5].toFloat()
+                        )
+                        val indentFloat : Float = if (j != 0) params[2].toLong() - getSoundLength(sounds[i][j - 1].res) / sounds[i][j - 1].ratio
+                        else params[2].toFloat()
+                        var len = ((getSoundLength(sounds[i][j].res) / sounds[i][j].ratio) / 40).roundToInt()
+                        len = if (len > 0) len else 1
+                        (currentRecycler(i).adapter as SecondsListAdapter).addSound(Sound((indentFloat / 40).roundToInt(), len, currentColor(j), i, j))
+                    }
                 }
+            }
+            catch (e : Exception) {
+                Toast.makeText(this, "Oops! This file seems to be broken!", Toast.LENGTH_SHORT).show()
             }
             state = "ready"
             setMusicLength()
@@ -488,22 +491,42 @@ open class MainActivity : AppCompatActivity(){
         }
     }
 
+    @Throws(IOException::class)
+    fun readBytes(inputStream: InputStream): ByteArray? {
+        val byteBuffer = ByteArrayOutputStream()
+        val bufferSize = 1024
+        val buffer = ByteArray(bufferSize)
+        var len: Int
+        while (inputStream.read(buffer).also { len = it } != -1) {
+            byteBuffer.write(buffer, 0, len)
+        }
+        return byteBuffer.toByteArray()
+    }
+
     private fun getSoundLength(name: String): Long {
-        return if (isRawResource(name)) {
+        val metaRetriever = MediaMetadataRetriever()
+        if (isRawResource(name)) {
             val inStream: InputStream = resources.openRawResource(resources.getIdentifier(name, "raw", packageName))
-            val wavdata = ByteArray(45)
-            inStream.read(wavdata, 0, 45)
+            val data = inStream.let { readBytes(it) }
+            val file = File(filesDir, "sound.wav")
+            FileOutputStream(file).use {
+                it.write(data)
+            }
+            metaRetriever.setDataSource(File(filesDir, "sound.wav").absolutePath)
+            /*val wavdata = ByteArray(100)
+            inStream.read(wavdata, 0, 100)
             inStream.close()
             val byteRate = bytesArrayPart4ToInt(wavdata, 28)
-            val waveSize = bytesArrayPart4ToInt(wavdata, 40)
+            val dataArray = "data".toByteArray() // сколько бы я не пытался, но оно не работает(
+            val startData = wavdata.indexOf(dataArray[0])
+            val start = if (wavdata[startData + 1] == dataArray[1]) startData + 4
+            else wavdata.lastIndexOf(dataArray[0]) + 4
+            val waveSize = bytesArrayPart4ToInt(wavdata, start)
             if (byteRate != 0) abs((waveSize * 1000.0 / byteRate).toLong())
-            else 0
+            else 0*/
         }
-        else {
-            val metaRetriever = MediaMetadataRetriever()
-            metaRetriever.setDataSource(File(filesDir, "$name.wav").absolutePath)
-            abs(metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)!!.toLong())
-        }
+        else metaRetriever.setDataSource(File(filesDir, "$name.wav").absolutePath)
+        return abs(metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)!!.toLong() - 1)
     }
 
     private fun playTrack(i: Int, j: Int, delay: Long = 0) {

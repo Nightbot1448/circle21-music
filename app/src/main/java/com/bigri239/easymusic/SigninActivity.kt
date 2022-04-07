@@ -2,7 +2,9 @@ package com.bigri239.easymusic
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 @Suppress("DEPRECATION")
@@ -21,10 +23,22 @@ class SigninActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.signup).setOnClickListener {
             startActivity(intents2)
         }
-        val intents3 = Intent(this, RecoveryActivity::class.java)
-        findViewById<TextView>(R.id.button3).setOnClickListener {
+        if (false/*isLogged()*/) { // TODO : заменить после того, как напишу isLogged()
+            val intents3 = Intent(this, RecoveryActivity::class.java)
             startActivity(intents3)
         }
+    }
+
+    private fun isLogged() : Boolean {
+        return true // TODO : написать функцию
+    }
+
+    fun logIn (view : View) {
+        if (isLogged()) {
+            val intents3 = Intent(this, RecoveryActivity::class.java)
+            startActivity(intents3)
+        }
+        else Toast.makeText(this, "Wrong login or password!", Toast.LENGTH_SHORT).show()
     }
 
 }
