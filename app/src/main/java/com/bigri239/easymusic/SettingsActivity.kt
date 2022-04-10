@@ -2,19 +2,37 @@ package com.bigri239.easymusic
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.PopupMenu
 import kotlinx.android.synthetic.main.settings_activity.*
 import java.io.File
-import java.lang.Exception
+import java.io.FileOutputStream
 
 @Suppress("DEPRECATION")
 class SettingsActivity : AppCompatActivity() {
+    private var autosave = 10
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings_activity)
+        val file = File(filesDir, "settings.conf")
+
+        if (file.exists()) {
+            val content: String = file.readText()
+            if (content != "") autosave = content.split("\n").toTypedArray()[0].toInt()
+        }
+        else {
+            val content = "10"
+            FileOutputStream(file).use {
+                it.write(content.toByteArray())
+            }
+        }
+        textMins.text = autosave.toString()
     }
+
     override fun onStart() {
         super.onStart()
         val intent = Intent(this, MainActivity::class.java)
@@ -53,5 +71,24 @@ class SettingsActivity : AppCompatActivity() {
                 file.delete()
             }
         }
+    }
+
+    private fun autosaveTimePopupMenuClickListener(menuItem: MenuItem) {
+        val itemTitle = menuItem.title.toString()
+        autosave = itemTitle.toInt()
+        textMins.text = itemTitle
+        val file = File(filesDir, "settings.conf")
+        val content = itemTitle
+        FileOutputStream(file).use {
+            it.write(content.toByteArray())
+        }
+    }
+
+    fun createAutosaveTimePopupMenu(v: View) {
+        val variants = arrayOf(1, 2, 5, 10, 15, 20, 30, 45, 60)
+        val popupMenu = PopupMenu(this, v)
+        for (i in variants) popupMenu.menu.add(i.toString())
+        popupMenu.setOnMenuItemClickListener { autosaveTimePopupMenuClickListener(it); true }
+        popupMenu.show()
     }
 }
