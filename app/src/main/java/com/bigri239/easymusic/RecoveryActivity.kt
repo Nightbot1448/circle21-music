@@ -2,6 +2,8 @@ package com.bigri239.easymusic
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.StrictMode
+import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -39,13 +41,17 @@ class RecoveryActivity : AppCompatActivity() {
         "7",
         "8",
     )
+    private lateinit var webRequester : WebRequester
     private lateinit var customAdapter1: CustomAdapter
     private lateinit var customAdapter: CustomAdapter
     private lateinit var customAdapter2: CustomAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recovery)
-
+        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
+        webRequester = WebRequester(this@RecoveryActivity)
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         customAdapter = CustomAdapter(itemsList)
@@ -67,11 +73,17 @@ class RecoveryActivity : AppCompatActivity() {
 
     }
 
-
     override fun onStart() {
         super.onStart()
         val intent = Intent(this, MainActivity::class.java)
         findViewById<TextView>(R.id.backrec).setOnClickListener {
+            startActivity(intent)
+        }
+    }
+
+    fun logOff (view: View) {
+        if (webRequester.logOff()) {
+            val intent = Intent(this, SigninActivity::class.java)
             startActivity(intent)
         }
     }
