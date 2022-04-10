@@ -11,12 +11,12 @@
         android:id="@+id/settings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="304dp"
         android:layout_marginTop="24dp"
         android:text="Settings"
         android:textColor="@color/colorAccent"
         android:textSize="20dp"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -31,26 +31,27 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="174dp"
+        android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="45dp"
-        android:text="Save changes every"
+        android:text="Autosave projects interval (minutes)"
         android:textColor="@color/colorAccent"
         android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/backsettings"
+        app:layout_constraintStart_toStartOf="@+id/backsettings"
         app:layout_constraintTop_toBottomOf="@+id/settings" />
 
     <CheckBox
         android:id="@+id/checkBox"
         android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="16dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="56dp"
         android:text="Sounds"
         android:textColor="@color/colorAccent"
         android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/settings"
-        app:layout_constraintTop_toBottomOf="@+id/textView14" />
+        app:layout_constraintBottom_toBottomOf="@+id/textView2"
+        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintTop_toTopOf="@+id/textView2" />
 
     <CheckBox
         android:id="@+id/checkBox2"
@@ -65,38 +66,39 @@
         app:layout_constraintTop_toTopOf="@+id/checkBox" />
 
     <TextView
-        android:id="@+id/textView13"
-        android:layout_width="100dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="16dp"
-        android:text="two hours"
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:text="Reset:"
         android:textColor="@color/colorAccent"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/textView"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <Button
-        android:id="@+id/button6"
-        android:layout_width="201dp"
+        android:id="@+id/buttonReset"
+        android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:layout_marginTop="80dp"
-        android:text="Clean all changes"
-        app:layout_constraintEnd_toEndOf="@+id/checkBox2"
-        app:layout_constraintStart_toStartOf="@+id/checkBox"
-        app:layout_constraintTop_toBottomOf="@+id/textView14" />
+        android:layout_marginStart="108dp"
+        android:text="Reset selected"
+        android:clickable="true"
+        android:onClick="reset"
+        app:layout_constraintBottom_toBottomOf="@+id/checkBox2"
+        app:layout_constraintStart_toEndOf="@+id/checkBox2" />
 
     <TextView
-        android:id="@+id/textView14"
+        android:id="@+id/textMins"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="196dp"
-        android:text="Cleaning"
+        android:layout_marginStart="248dp"
+        android:text="10"
         android:textColor="@color/colorAccent"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView"
-        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="@+id/buttonReset"
         app:layout_constraintTop_toTopOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

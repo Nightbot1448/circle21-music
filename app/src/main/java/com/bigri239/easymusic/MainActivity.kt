@@ -56,7 +56,7 @@ open class MainActivity : AppCompatActivity(){
     private var countTracks = 0
     private val countSounds: Array<Int> = Array(9) { -1 }
     private val emptySound = SoundInfo()
-    private val sounds: Array<Array<SoundInfo>> = Array(9) { Array(500) { emptySound } }
+    private var sounds: Array<Array<SoundInfo>> = Array(9) { Array(500) { emptySound } }
     private val resourcesArray : Array<String> = arrayOf("bassalbane", "basscentury", "bassflowers",
         "clapchoppa", "clapforeign", "crashalect", "crashbloods", "crashvinnyx", "fxfreeze",
         "fxgunnes", "hihatcheque", "hihatmystery", "kickartillery", "kickinfinite", "percardonme",
@@ -377,12 +377,13 @@ open class MainActivity : AppCompatActivity(){
                         (currentRecycler(i).adapter as SecondsListAdapter).addSound(Sound((indentFloat / 40).roundToInt(), len, currentColor(j), i, j))
                     }
                 }
+                state = "ready"
+                setMusicLength()
             }
             catch (e : Exception) {
+                sounds = Array(9) { Array(500) { emptySound } }
                 Toast.makeText(this, "Oops! This file seems to be broken!", Toast.LENGTH_SHORT).show()
             }
-            state = "ready"
-            setMusicLength()
         } catch (e: IOException) {
             Toast.makeText(this, "No such file!", Toast.LENGTH_SHORT).show()
         }
