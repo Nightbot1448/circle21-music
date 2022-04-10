@@ -1,14 +1,13 @@
 package com.bigri239.easymusic
 
 import android.content.Context
-import android.os.AsyncTask
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import java.io.Serializable
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class WebRequester (private val context: Context) {
@@ -99,5 +98,20 @@ class WebRequester (private val context: Context) {
     fun signUp (login : String, password : String): Boolean {
         val params = mapOf("login" to login, "password" to password)
         return baseRequest("user_req.php", params)[0] == "1"
+    }
+
+    fun getInfo () : Array<List<String>> {
+        return if (!hashed.contentEquals(arrayOf("", "", ""))) {
+            val params = mapOf("user" to hashedLogin, "passw" to hashedPassword, "lid" to lid, "mac" to uuid)
+            val answer = baseRequest("get_info.php", params)
+            if (answer[0] == "1") {
+                val friends = answer[3].split(" ").toList()
+                val sounds = answer[4].split(" ").toList()
+                val projects = answer[5].split(" ").toList()
+                arrayOf(arrayListOf(answer[1]), arrayListOf(answer[2]), friends, sounds, projects)
+            }
+            else Array (5) {arrayListOf("")}
+        }
+        else Array (5) {arrayListOf("")}
     }
 }
