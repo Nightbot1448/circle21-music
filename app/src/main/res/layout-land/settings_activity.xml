@@ -80,10 +80,10 @@
         android:id="@+id/button6"
         android:layout_width="201dp"
         android:layout_height="50dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="80dp"
         android:text="Clear all changes"
-        app:layout_constraintStart_toEndOf="@+id/settings"
+        app:layout_constraintEnd_toEndOf="@+id/checkBox2"
+        app:layout_constraintStart_toStartOf="@+id/checkBox"
         app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
     <TextView
