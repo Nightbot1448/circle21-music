@@ -96,6 +96,16 @@
         app:layout_constraintEnd_toEndOf="@+id/recyclerView3"
         app:layout_constraintBottom_toBottomOf="@+id/editInfo" />
 
+    <Button
+        android:id="@+id/buttonLogOff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Log off"
+        android:clickable="true"
+        android:onClick="logOff"
+        app:layout_constraintEnd_toEndOf="@+id/recyclerView3"
+        app:layout_constraintBottom_toBottomOf="@+id/recoveryact" />
+
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
