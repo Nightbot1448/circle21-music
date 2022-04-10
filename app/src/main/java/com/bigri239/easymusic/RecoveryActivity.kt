@@ -8,39 +8,13 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.activity_recovery.*
 
 @Suppress("DEPRECATION")
 class RecoveryActivity : AppCompatActivity() {
-    private val itemsList : ArrayList<String> = arrayListOf(
-        "User 1",
-        "User 2",
-        "User 3",
-        "User 4",
-        "User 5",
-        "User 6",
-        "User 7",
-        "User 8",
-)
-    private val itemsList1 : ArrayList<String> = arrayListOf(
-        "1",
-        "2",
-        "3",
-        "4",
-        "5",
-        "6",
-        "7",
-        "8",
-        )
-    private val itemsList2 : ArrayList<String> = arrayListOf(
-        "1",
-        "2",
-        "3",
-        "4",
-        "5",
-        "6",
-        "7",
-        "8",
-    )
+    private var itemsList : List<String> = arrayListOf()
+    private var itemsList1 : List<String> = arrayListOf()
+    private var itemsList2 : List<String> = arrayListOf()
     private lateinit var webRequester : WebRequester
     private lateinit var customAdapter1: CustomAdapter
     private lateinit var customAdapter: CustomAdapter
@@ -52,6 +26,20 @@ class RecoveryActivity : AppCompatActivity() {
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
         webRequester = WebRequester(this@RecoveryActivity)
+
+        val info = webRequester.getInfo()
+        if (!info.contentEquals(Array (5) {arrayOf("")})) {
+            username.text = "Username: " + info[0][0]
+            editInfo.setText(info[1][0])
+            itemsList = info[2]
+            itemsList1 = info[3]
+            itemsList2 = info[4]
+
+        }
+        else {
+            val intent = Intent(this, SigninActivity::class.java)
+            startActivity(intent)
+        }
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         customAdapter = CustomAdapter(itemsList)
