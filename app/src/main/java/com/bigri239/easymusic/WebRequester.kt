@@ -63,6 +63,15 @@ class WebRequester (private val context: Context) {
         return answer.split("\n").toTypedArray()
     }
 
+    fun logOff () : Boolean {
+        val file = File(context.filesDir, "login.conf")
+        return if (file.exists()) {
+            file.delete()
+            true
+        }
+        else false
+    }
+
     fun logIn (login : String, password : String): Boolean {
         val params = mapOf("login" to login, "password" to password, "mac" to uuid)
         val response = baseRequest("auth.php", params)
@@ -85,5 +94,10 @@ class WebRequester (private val context: Context) {
             baseRequest("prove_login.php", params)[0] == "1"
         }
         else false
+    }
+
+    fun signUp (login : String, password : String): Boolean {
+        val params = mapOf("login" to login, "password" to password)
+        return baseRequest("user_req.php", params)[0] == "1"
     }
 }
