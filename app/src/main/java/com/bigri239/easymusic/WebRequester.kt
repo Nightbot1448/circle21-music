@@ -114,4 +114,9 @@ class WebRequester (private val context: Context) {
         }
         else Array (5) {arrayListOf("")}
     }
+
+    fun changeInfo (edit : String, value : String) : Boolean {
+        val params = mapOf("edit" to edit, "value" to value, "user" to hashedLogin, "passw" to hashedPassword, "lid" to lid, "mac" to uuid)
+        return baseRequest("change_info.php", params)[0] == "1"
+    }
 }
