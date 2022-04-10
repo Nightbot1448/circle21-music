@@ -50,11 +50,12 @@ open class MainActivity : AppCompatActivity(){
     private var played = 0
     private var projectName = "projectDefault"
     private var currentSound = "bassalbane"
+    private var autosave = 10
     private val projects = mutableListOf<String>()
     private val tracks: Array<SoundPool> =
         Array(9) { SoundPool(10, AudioManager.STREAM_MUSIC, 0) }
     private var countTracks = 0
-    private val countSounds: Array<Int> = Array(9) { -1 }
+    private var countSounds: Array<Int> = Array(9) { -1 }
     private val emptySound = SoundInfo()
     private var sounds: Array<Array<SoundInfo>> = Array(9) { Array(500) { emptySound } }
     private val resourcesArray : Array<String> = arrayOf("bassalbane", "basscentury", "bassflowers",
@@ -63,6 +64,7 @@ open class MainActivity : AppCompatActivity(){
         "percpaolla", "rimchaser", "rimstount", "snarecompas", "snarewoods", "voxanother", "voxgilens")
     private val customArray = arrayListOf<String>()
     private var timer : CountDownTimer? = null
+    private lateinit var autoSaver : CountDownTimer
     private var timeRemaining : Long = 0
     private val connector = object : Connector {
         override fun function(i: Int) {
@@ -123,16 +125,15 @@ open class MainActivity : AppCompatActivity(){
             setMusicLength()}
 
         val path = filesDir
+        var file = File(path, "projects.conf")
 
-        try {
-            val file = File(path, "projects.conf")
+        if (file.exists()) {
             val content: String = file.readText()
             projects.addAll(content.split("\n").toTypedArray())
             openProject()
         }
-        catch (e: IOException) {
+        else {
             projects.add(projectName)
-            val file = File(path, "projects.conf")
             var content = ""
             for (i in projects.indices) {
                 content += projects[i]
@@ -144,18 +145,40 @@ open class MainActivity : AppCompatActivity(){
             saveProject()
         }
 
-        try {
-            val file = File(path, "sounds.conf")
+        file = File(path, "sounds.conf")
+
+        if (file.exists()) {
             val content: String = file.readText()
             if (content != "") customArray.addAll(content.split("\n").toTypedArray())
         }
-        catch (e: IOException) {
-            val file = File(path, "sounds.conf")
+        else {
             val content = ""
             FileOutputStream(file).use {
                 it.write(content.toByteArray())
             }
         }
+
+        file = File(path, "settings.conf")
+
+        if (file.exists()) {
+            val content: String = file.readText()
+            if (content != "") autosave = content.split("\n").toTypedArray()[0].toInt()
+        }
+        else {
+            val content = "10"
+            FileOutputStream(file).use {
+                it.write(content.toByteArray())
+            }
+        }
+
+        autoSaver = object : CountDownTimer(360001, (autosave * 60000).toLong()) {
+            override fun onTick(millisUntilFinished: Long) {
+                saveProject()
+            }
+            override fun onFinish() {
+                autoSaver.start()
+            }
+        }.start()
     }
 
     // ниже создание переходов между экранами
@@ -381,6 +404,9 @@ open class MainActivity : AppCompatActivity(){
                 setMusicLength()
             }
             catch (e : Exception) {
+                countTracks = 0
+                countSounds = Array(9) { -1 }
+                state = "unready"
                 sounds = Array(9) { Array(500) { emptySound } }
                 Toast.makeText(this, "Oops! This file seems to be broken!", Toast.LENGTH_SHORT).show()
             }
