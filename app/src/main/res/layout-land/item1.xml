@@ -20,6 +20,7 @@
             android:id="@+id/itemTextView"
             android:layout_width="300dp"
             android:layout_height="33dp"
+            android:layout_marginStart="10dp"
             android:fontFamily="sans-serif-condensed-medium"
             android:textColor="#E9FFDB"
             android:textSize="16sp"
