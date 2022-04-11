@@ -4,11 +4,9 @@ import android.content.Context
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import java.lang.Exception
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class WebRequester (private val context: Context) {
@@ -31,7 +29,7 @@ class WebRequester (private val context: Context) {
     }
 
     private fun getUUID(): String {
-        var id = ""
+        var id: String
         try {
             val file = File(context.filesDir, "uuid.conf")
             id = file.readText()
@@ -55,7 +53,7 @@ class WebRequester (private val context: Context) {
                 paramsGET = paramsGET.dropLast(1)
             }
             val connection = URL(baseURL + subAddress + paramsGET).openConnection() as HttpURLConnection
-            var answer = ""
+            val answer: String
             try {
                 answer = connection.inputStream.bufferedReader().use { it.readText() }
             } finally {
@@ -124,5 +122,29 @@ class WebRequester (private val context: Context) {
     fun changeInfo (edit : String, value : String) : Boolean {
         val params = mapOf("edit" to edit, "value" to value, "user" to hashedLogin, "passw" to hashedPassword, "lid" to lid, "mac" to uuid)
         return baseRequest("change_info.php", params)[0] == "1"
+    }
+    
+    fun uploadProject (projectName : String) : Boolean {
+        var response = false
+        try {
+            val fileName = context.filesDir.toString() + "/" + "$projectName.emproj"
+            val params = mapOf("user" to hashedLogin, "passw" to hashedPassword, "lid" to lid, "mac" to uuid)
+            var paramsGET = "?"
+            for ((param, value) in params.entries) paramsGET += "$param=$value&"
+            paramsGET = paramsGET.dropLast(1)
+            val url = baseURL + "upload_project.php" + paramsGET
+            try {
+                val uploader = FilesUploadingTask(fileName, url)
+                val answer = uploader.doInBackground() as String?
+                response = answer?.dropLast(answer.length - 1) == "1"
+            }
+            catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+        catch (e : IOException) {
+            response = false
+        }
+        return response
     }
 }
