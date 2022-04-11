@@ -27,6 +27,10 @@ class AddingfilesActivity : AppCompatActivity() {
     private val itemsList1 = arrayListOf<String>()
     private lateinit var customAdapter: CustomAdapter
     private lateinit var customAdapter1: CustomAdapter
+    private val connectorSound = object : RecoveryActivity.WebConnector {
+        override fun function(string: String) {}
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_addfiles)
@@ -45,13 +49,13 @@ class AddingfilesActivity : AppCompatActivity() {
         }
 
         val recyclerView: RecyclerView = recyclerView111
-        customAdapter = CustomAdapter(itemsList)
+        customAdapter = CustomAdapter(itemsList, connectorSound)
         val layoutManager = LinearLayoutManager(applicationContext)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = customAdapter
 
         val recyclerView1: RecyclerView = recyclerView222
-        customAdapter1 = CustomAdapter(itemsList1)
+        customAdapter1 = CustomAdapter(itemsList1, connectorSound)
         val layoutManager1 = LinearLayoutManager(applicationContext)
         recyclerView1.layoutManager = layoutManager1
         recyclerView1.adapter = customAdapter1

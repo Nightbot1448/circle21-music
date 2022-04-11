@@ -21,6 +21,10 @@ import java.io.FileOutputStream
 
 @Suppress("DEPRECATION")
 class RecoveryActivity : AppCompatActivity() {
+    interface WebConnector {
+        fun function(string: String)
+    }
+
     private var itemsList : List<String> = arrayListOf()
     private var itemsList1 : List<String> = arrayListOf()
     private var itemsList2 : List<String> = arrayListOf()
@@ -30,7 +34,21 @@ class RecoveryActivity : AppCompatActivity() {
     private lateinit var customAdapter2: CustomAdapter
     private val projects = mutableListOf<String>()
     private  val customArray = mutableListOf<String>()
+    private val connectorProject = object : WebConnector {
+        override fun function(string: String) {
+            loadProject(string)
+        }
+    }
 
+    private val connectorSound = object : WebConnector {
+        override fun function(string: String) {}
+    }
+
+    private val connectorFriend = object : WebConnector {
+        override fun function(string: String) {
+            seeFriend(string)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,20 +111,20 @@ class RecoveryActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.backrec).setOnClickListener {
             startActivity(intent)
         }
-        customAdapter = if (itemsList != arrayListOf("")) CustomAdapter(itemsList)
-        else CustomAdapter(arrayListOf())
+        customAdapter = if (itemsList != arrayListOf("")) CustomAdapter(itemsList, connectorFriend)
+        else CustomAdapter(arrayListOf(), connectorFriend)
         val layoutManager = LinearLayoutManager(applicationContext)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = customAdapter
 
-        customAdapter1 = if (itemsList1 != arrayListOf("")) CustomAdapter(itemsList1)
-        else CustomAdapter(arrayListOf())
+        customAdapter1 = if (itemsList1 != arrayListOf("")) CustomAdapter(itemsList1, connectorSound)
+        else CustomAdapter(arrayListOf(), connectorSound)
         val layoutManager1 = LinearLayoutManager(applicationContext)
         recyclerView2.layoutManager = layoutManager1
         recyclerView2.adapter = customAdapter1
 
-        customAdapter2 = if (itemsList2 != arrayListOf("")) CustomAdapter(itemsList2)
-        else CustomAdapter(arrayListOf())
+        customAdapter2 = if (itemsList2 != arrayListOf("")) CustomAdapter(itemsList2, connectorProject)
+        else CustomAdapter(arrayListOf(), connectorProject)
         val layoutManager2 = LinearLayoutManager(applicationContext)
         recyclerView3.layoutManager = layoutManager2
         recyclerView3.adapter = customAdapter2
@@ -127,7 +145,7 @@ class RecoveryActivity : AppCompatActivity() {
                     if (itemsList != arrayListOf("")) friends.addAll(itemsList)
                     friends.add(newFriend)
                     itemsList = friends
-                    recyclerView.adapter =  CustomAdapter(itemsList)
+                    recyclerView.adapter =  CustomAdapter(itemsList, connectorFriend)
                     (recyclerView.adapter as CustomAdapter).notifyDataSetChanged()
                     dialog.dismiss()
                 }
@@ -156,7 +174,7 @@ class RecoveryActivity : AppCompatActivity() {
                     if (itemsList1 != arrayListOf("")) sounds.addAll(itemsList1)
                     sounds.add("$soundName $newSound")
                     itemsList1 = sounds
-                    recyclerView2.adapter =  CustomAdapter(itemsList1)
+                    recyclerView2.adapter =  CustomAdapter(itemsList1, connectorSound)
                     (recyclerView2.adapter as CustomAdapter).notifyDataSetChanged()
                     dialog.dismiss()
                 }
@@ -176,7 +194,7 @@ class RecoveryActivity : AppCompatActivity() {
             if (itemsList2 != arrayListOf("")) projects1.addAll(itemsList2)
             if (!projects1.contains(itemTitle)) projects1.add(itemTitle)
             itemsList2 = projects1
-            recyclerView3.adapter =  CustomAdapter(itemsList2)
+            recyclerView3.adapter =  CustomAdapter(itemsList2, connectorProject)
             (recyclerView3.adapter as CustomAdapter).notifyDataSetChanged()
         }
         else Toast.makeText(this, "Oops! Something went wrong!", Toast.LENGTH_SHORT).show()
@@ -192,6 +210,14 @@ class RecoveryActivity : AppCompatActivity() {
         for (i in projects.indices) popupMenu.menu.add(projects[i])
         popupMenu.setOnMenuItemClickListener { projectSelectPopupMenuClickListener(it); true }
         popupMenu.show()
+    }
+
+    private fun loadProject(string: String) {
+        Toast.makeText(this, "Here be project downloading", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun seeFriend(string: String) {
+        Toast.makeText(this, "Here be see friend", Toast.LENGTH_SHORT).show()
     }
 
     fun logOff (view: View) {
