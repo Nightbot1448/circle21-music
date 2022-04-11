@@ -4,6 +4,7 @@ import android.content.Context
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.lang.Exception
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
@@ -46,20 +47,25 @@ class WebRequester (private val context: Context) {
     }
 
     private fun baseRequest (subAddress : String, params : Map<String, String>): Array<String> {
-        var paramsGET = ""
-        if (params.isNotEmpty()) {
-            paramsGET = "?"
-            for ((param, value) in params.entries) paramsGET += "$param=$value&"
-            paramsGET = paramsGET.dropLast(1)
-        }
-        val connection = URL(baseURL + subAddress + paramsGET).openConnection() as HttpURLConnection
-        var answer = ""
         try {
-            answer = connection.inputStream.bufferedReader().use { it.readText() }
-        } finally {
-            connection.disconnect()
+            var paramsGET = ""
+            if (params.isNotEmpty()) {
+                paramsGET = "?"
+                for ((param, value) in params.entries) paramsGET += "$param=$value&"
+                paramsGET = paramsGET.dropLast(1)
+            }
+            val connection = URL(baseURL + subAddress + paramsGET).openConnection() as HttpURLConnection
+            var answer = ""
+            try {
+                answer = connection.inputStream.bufferedReader().use { it.readText() }
+            } finally {
+                connection.disconnect()
+            }
+            return answer.split("\n").toTypedArray()
         }
-        return answer.split("\n").toTypedArray()
+        catch (e: Exception) {
+            return arrayOf("")
+        }
     }
 
     fun logOff () : Boolean {

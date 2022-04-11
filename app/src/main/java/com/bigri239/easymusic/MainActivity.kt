@@ -58,6 +58,7 @@ open class MainActivity : AppCompatActivity(){
     private var countSounds: Array<Int> = Array(9) { -1 }
     private val emptySound = SoundInfo()
     private var sounds: Array<Array<SoundInfo>> = Array(9) { Array(500) { emptySound } }
+    private val areMissing : Array<Array<Boolean>> = Array(9) { Array(500) { true } }
     private val resourcesArray : Array<String> = arrayOf("bassalbane", "basscentury", "bassflowers",
         "clapchoppa", "clapforeign", "crashalect", "crashbloods", "crashvinnyx", "fxfreeze",
         "fxgunnes", "hihatcheque", "hihatmystery", "kickartillery", "kickinfinite", "percardonme",
@@ -318,9 +319,9 @@ open class MainActivity : AppCompatActivity(){
         return resourcesArray.contains(name)
     }
 
-    private fun bytesArrayPart4ToInt(arr: ByteArray, start: Int = 0): Int {
+    /*private fun bytesArrayPart4ToInt(arr: ByteArray, start: Int = 0): Int {
         return arr[start].toInt() + arr[start + 1].toInt() * 256 + arr[start + 2].toInt() * 256 * 256 + arr[start + 3].toInt() * 256 * 256 * 256
-    }
+    }*/
 
     private fun clearSounds () {
         for (i in 0..8) { // очистка recycler
@@ -378,37 +379,39 @@ open class MainActivity : AppCompatActivity(){
             val file = File(path, "$projectName.emproj")
             val content: String = file.readText()
             val tracksContent = content.split("\n").toTypedArray()
-            try {
-                countTracks = tracksContent.size - 1
-                for (i in tracksContent.indices) {
-                    val soundsContent = tracksContent[i].split(";").toTypedArray()
-                    countSounds[i] = soundsContent.size - 1
-                    for (j in soundsContent.indices) {
-                        val params = soundsContent[j].split(" ").toTypedArray()
-                        sounds[i][j] = SoundInfo(
-                            params[0],
-                            params[1].toInt(),
-                            params[2].toLong(),
-                            params[3].toFloat(),
-                            params[4].toInt(),
-                            params[5].toFloat()
-                        )
-                        val indentFloat : Float = if (j != 0) params[2].toLong() - getSoundLength(sounds[i][j - 1].res) / sounds[i][j - 1].ratio
-                        else params[2].toFloat()
-                        var len = ((getSoundLength(sounds[i][j].res) / sounds[i][j].ratio) / 40).roundToInt()
-                        len = if (len > 0) len else 1
-                        (currentRecycler(i).adapter as SecondsListAdapter).addSound(Sound((indentFloat / 40).roundToInt(), len, currentColor(j), i, j))
-                    }
+            countTracks = tracksContent.size - 1
+            val missingSounds = mutableListOf<String>()
+            for (i in tracksContent.indices) {
+                val soundsContent = tracksContent[i].split(";").toTypedArray()
+                countSounds[i] = soundsContent.size - 1
+                for (j in soundsContent.indices) {
+                    val params = soundsContent[j].split(" ").toTypedArray()
+                    sounds[i][j] = SoundInfo(
+                        params[0],
+                        params[1].toInt(),
+                        params[2].toLong(),
+                        params[3].toFloat(),
+                        params[4].toInt(),
+                        params[5].toFloat()
+                    )
+                    val indentFloat : Float = if (j != 0) params[2].toLong() - getSoundLength(sounds[i][j - 1].res) / sounds[i][j - 1].ratio
+                    else params[2].toFloat()
+                    var len = ((getSoundLength(sounds[i][j].res) / sounds[i][j].ratio) / 40).roundToInt()
+                    len = if (len > 0) len else 1
+                    (currentRecycler(i).adapter as SecondsListAdapter).addSound(Sound((indentFloat / 40).roundToInt(), len, currentColor(j), i, j))
+                    if (getSoundLength(params[0]) == 0.toLong() && !missingSounds.contains(params[0])) missingSounds.add(params[0])
                 }
-                state = "ready"
-                setMusicLength()
             }
-            catch (e : Exception) {
-                countTracks = 0
-                countSounds = Array(9) { -1 }
-                state = "unready"
-                sounds = Array(9) { Array(500) { emptySound } }
-                Toast.makeText(this, "Oops! This file seems to be broken!", Toast.LENGTH_SHORT).show()
+            state = "ready"
+            setMusicLength()
+            if (missingSounds.size != 0) {
+                var message = "This project contains sounds not present on this device: "
+                for (i in missingSounds.indices) {
+                    message += missingSounds[i]
+                    if (i != missingSounds.size - 1) message += ", "
+                    else message += "."
+                }
+                Toast.makeText(this, message, Toast.LENGTH_LONG).show()
             }
         } catch (e: IOException) {
             Toast.makeText(this, "No such file!", Toast.LENGTH_SHORT).show()
@@ -531,29 +534,34 @@ open class MainActivity : AppCompatActivity(){
     }
 
     private fun getSoundLength(name: String): Long {
-        val metaRetriever = MediaMetadataRetriever()
-        if (isRawResource(name)) {
-            val inStream: InputStream = resources.openRawResource(resources.getIdentifier(name, "raw", packageName))
-            val data = inStream.let { readBytes(it) }
-            val file = File(filesDir, "sound.wav")
-            FileOutputStream(file).use {
-                it.write(data)
+        try {
+            val metaRetriever = MediaMetadataRetriever()
+            if (isRawResource(name)) {
+                val inStream: InputStream = resources.openRawResource(resources.getIdentifier(name, "raw", packageName))
+                val data = inStream.let { readBytes(it) }
+                val file = File(filesDir, "sound.wav")
+                FileOutputStream(file).use {
+                    it.write(data)
+                }
+                metaRetriever.setDataSource(File(filesDir, "sound.wav").absolutePath)
+                /*val wavdata = ByteArray(100)
+                inStream.read(wavdata, 0, 100)
+                inStream.close()
+                val byteRate = bytesArrayPart4ToInt(wavdata, 28)
+                val dataArray = "data".toByteArray() // сколько бы я не пытался, но оно не работает(
+                val startData = wavdata.indexOf(dataArray[0])
+                val start = if (wavdata[startData + 1] == dataArray[1]) startData + 4
+                else wavdata.lastIndexOf(dataArray[0]) + 4
+                val waveSize = bytesArrayPart4ToInt(wavdata, start)
+                if (byteRate != 0) abs((waveSize * 1000.0 / byteRate).toLong())
+                else 0*/
             }
-            metaRetriever.setDataSource(File(filesDir, "sound.wav").absolutePath)
-            /*val wavdata = ByteArray(100)
-            inStream.read(wavdata, 0, 100)
-            inStream.close()
-            val byteRate = bytesArrayPart4ToInt(wavdata, 28)
-            val dataArray = "data".toByteArray() // сколько бы я не пытался, но оно не работает(
-            val startData = wavdata.indexOf(dataArray[0])
-            val start = if (wavdata[startData + 1] == dataArray[1]) startData + 4
-            else wavdata.lastIndexOf(dataArray[0]) + 4
-            val waveSize = bytesArrayPart4ToInt(wavdata, start)
-            if (byteRate != 0) abs((waveSize * 1000.0 / byteRate).toLong())
-            else 0*/
+            else metaRetriever.setDataSource(File(filesDir, "$name.wav").absolutePath)
+            return abs(metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)!!.toLong() - 1)
         }
-        else metaRetriever.setDataSource(File(filesDir, "$name.wav").absolutePath)
-        return abs(metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)!!.toLong() - 1)
+        catch (e: Exception) {
+            return 0
+        }
     }
 
     private fun playTrack(i: Int, j: Int, delay: Long = 0) {
@@ -619,7 +627,10 @@ open class MainActivity : AppCompatActivity(){
                         resources.getIdentifier(res, "raw", packageName),
                         0
                     ) // загрузить i трек, j звук, если это ресурс
-                    else sounds[i][j].id = tracks[i].load("$filesDir/$res.wav",0) // загрузить i трек, j звук, если это пользовательский звук
+                    else try {
+                        sounds[i][j].id = tracks[i].load("$filesDir/$res.wav",0)
+                    } // загрузить i трек, j звук, если это пользовательский звук
+                    catch (e: Exception) {}
                 }
             }
 
