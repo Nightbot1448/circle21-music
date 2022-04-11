@@ -29,6 +29,7 @@ class RecoveryActivity : AppCompatActivity() {
     private lateinit var customAdapter: CustomAdapter
     private lateinit var customAdapter2: CustomAdapter
     private val projects = mutableListOf<String>()
+    private  val customArray = mutableListOf<String>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,7 +58,7 @@ class RecoveryActivity : AppCompatActivity() {
             startActivity(intent)
         }
         val path = filesDir
-        val file = File(path, "projects.conf")
+        var file = File(path, "projects.conf")
 
         if (file.exists()) {
             val content: String = file.readText()
@@ -70,6 +71,19 @@ class RecoveryActivity : AppCompatActivity() {
                 content += projects[i]
                 if (i != projects.size - 1) content += "\n"
             }
+            FileOutputStream(file).use {
+                it.write(content.toByteArray())
+            }
+        }
+
+        file = File(path, "sounds.conf")
+
+        if (file.exists()) {
+            val content: String = file.readText()
+            if (content != "") customArray.addAll(content.split("\n").toTypedArray())
+        }
+        else {
+            val content = ""
             FileOutputStream(file).use {
                 it.write(content.toByteArray())
             }
@@ -126,28 +140,28 @@ class RecoveryActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    private fun showSoundDialog() {
+    private fun showSoundDialog(soundName : String) {
         val dialog = Dialog(this, R.style.ThemeOverlay_Material3_Dialog)
         dialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(true)
         dialog.setContentView(R.layout.dialog_new_project)
-        dialog.findViewById<EditText>(R.id.newname).setHint("New sound name")
+        dialog.findViewById<EditText>(R.id.newname).setHint("Link to sound")
         dialog.findViewById<Button>(R.id.create).text = "Add sound"
         dialog.findViewById<Button>(R.id.create).setOnClickListener {
             val newSound = dialog.findViewById<EditText>(R.id.newname).text.toString()
             if (newSound != "" && !itemsList1.contains(newSound) && newSound.contains("http")) {
                 newSound.replace("&", "AMPERSAND")
-                if (webRequester.changeInfo("sounds", newSound)) {
+                if (webRequester.changeInfo("sounds", "$soundName $newSound")) {
                     val sounds = mutableListOf<String>()
                     if (itemsList1 != arrayListOf("")) sounds.addAll(itemsList1)
-                    sounds.add(newSound)
+                    sounds.add("$soundName $newSound")
                     itemsList1 = sounds
                     recyclerView2.adapter =  CustomAdapter(itemsList1)
                     (recyclerView2.adapter as CustomAdapter).notifyDataSetChanged()
                     dialog.dismiss()
                 }
                 else {
-                    Toast.makeText(this, "No such user!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Invalid input!", Toast.LENGTH_SHORT).show()
                     dialog.dismiss()
                 }
             }
@@ -166,6 +180,11 @@ class RecoveryActivity : AppCompatActivity() {
             (recyclerView3.adapter as CustomAdapter).notifyDataSetChanged()
         }
         else Toast.makeText(this, "Oops! Something went wrong!", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun soundSelectPopupMenuClickListener(menuItem: MenuItem) {
+        val itemTitle = menuItem.title.toString()
+        showSoundDialog(itemTitle)
     }
 
     private fun createSelectProjectPopupMenu(v : View) {
@@ -193,7 +212,10 @@ class RecoveryActivity : AppCompatActivity() {
     }
 
     fun addSound (view: View) {
-        showSoundDialog()
+        val popupMenu = PopupMenu(this, view)
+        for (i in customArray.indices) popupMenu.menu.add(customArray[i])
+        popupMenu.setOnMenuItemClickListener { soundSelectPopupMenuClickListener(it); true }
+        popupMenu.show()
     }
 
     fun uploadProject (view: View) {

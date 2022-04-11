@@ -98,9 +98,9 @@ class WebRequester (private val context: Context) {
             val params = mapOf("user" to hashedLogin, "passw" to hashedPassword, "lid" to lid, "mac" to uuid)
             val answer = baseRequest("get_info.php", params)
             if (answer[0] == "1") {
-                val friends = answer[3].split(" ").toList()
-                val sounds = answer[4].split(" ").toList()
-                val projects = answer[5].split(" ").toList()
+                val friends = answer[3].split(";").toList()
+                val sounds = answer[4].split(";").toList()
+                val projects = answer[5].split(";").toList()
                 arrayOf(arrayListOf(answer[1]), arrayListOf(answer[2]), friends, sounds, projects)
             }
             else Array (5) {arrayListOf("")}
@@ -168,9 +168,9 @@ class WebRequester (private val context: Context) {
             val params = mapOf("owner" to owner, "user" to hashedLogin, "passw" to hashedPassword, "lid" to lid, "mac" to uuid)
             val answer = baseRequest("get_friend_info.php", params)
             if (answer[0] == "1") {
-                val friends = answer[3].split(" ").toList()
-                val sounds = answer[4].split(" ").toList()
-                val projects = answer[5].split(" ").toList()
+                val friends = answer[3].split(";").toList()
+                val sounds = answer[4].split(";").toList()
+                val projects = answer[5].split(";").toList()
                 arrayOf(arrayListOf(answer[1]), arrayListOf(answer[2]), friends, sounds, projects)
             }
             else Array (5) {arrayListOf("")}
