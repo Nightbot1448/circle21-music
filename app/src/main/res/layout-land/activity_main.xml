@@ -277,7 +277,7 @@
         android:layout_marginStart="50dp"
         android:text="Account"
         android:textColor="@color/colorAccent"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/settings"
         app:layout_constraintStart_toEndOf="@+id/settings"
         app:layout_constraintTop_toTopOf="@+id/settings"

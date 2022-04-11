@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cardView"
     android:layout_width="match_parent"
-    android:layout_height="30dp"
+    android:layout_height="35dp"
     app:cardBackgroundColor="@color/colorAccent"
     app:cardCornerRadius="8dp"
     app:cardElevation="5dp"
@@ -14,21 +14,25 @@
     tools:ignore="MissingDefaultResource">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
 
         <TextView
             android:id="@+id/itemTextView"
-            android:layout_width="300dp"
-            android:layout_height="33dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
             android:fontFamily="sans-serif-condensed-medium"
             android:textColor="#E9FFDB"
+            android:autoLink="web"
+            android:linksClickable="true"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
             tools:text="item" />
     </LinearLayout>
