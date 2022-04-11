@@ -84,9 +84,10 @@
         android:layout_marginBottom="-10dp"
         android:hint="Write some information about you"
         android:inputType="text"
+        android:textColor="@color/colorAccent"
         android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/aboutme"
-        app:layout_constraintBottom_toBottomOf="@+id/aboutme" />
+        app:layout_constraintBottom_toBottomOf="@+id/aboutme"
+        app:layout_constraintStart_toEndOf="@+id/aboutme" />
 
     <Button
         android:id="@+id/buttonInfo"
