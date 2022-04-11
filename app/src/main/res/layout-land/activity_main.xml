@@ -8,34 +8,16 @@
     android:orientation="horizontal"
     tools:ignore="MissingDefaultResource">
 
-    <!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/recyclerView"-->
-<!--        android:layout_width="150dp"-->
-<!--        android:layout_height="214dp"-->
-<!--        android:layout_marginTop="40dp"-->
-<!--        android:layout_marginEnd="116dp"-->
-<!--        app:layout_constraintEnd_toStartOf="@+id/floatingActionButton3"-->
-<!--        app:layout_constraintTop_toTopOf="@+id/file" />-->
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
-        android:layout_width="530dp"
-        android:layout_height="247dp"
+        android:layout_width="480dp"
+        android:layout_height="245dp"
         android:layout_marginTop="16dp"
         android:background="#444444"
         app:layout_constraintStart_toStartOf="@+id/file"
         app:layout_constraintTop_toBottomOf="@+id/file"
         tools:context=".MainActivity"
         tools:ignore="MissingConstraints">
-
-        <!--<androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView1"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-
-            app:layout_constraintHorizontal_bias="1.0"
-
-            app:layout_constraintVertical_bias="1.0" />-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewhor1"
@@ -141,11 +123,11 @@
 
     <TextView
         android:id="@+id/file"
-        android:layout_width="70dp"
-        android:layout_height="27dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Sounds"
         android:textColor="@color/colorAccent"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.03"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -154,50 +136,37 @@
         app:layout_constraintVertical_bias="0.016" />
 
     <TextView
-        android:id="@+id/instruments"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:text="Instruments"
-        android:textColor="@color/colorAccent"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/file"
-        app:layout_constraintStart_toEndOf="@+id/file"
-        app:layout_constraintTop_toTopOf="@+id/file" />
-
-    <TextView
         android:id="@+id/settings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
+        android:layout_marginStart="50dp"
         android:text="Settings"
         android:textColor="@color/colorAccent"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/instruments"
-        app:layout_constraintStart_toEndOf="@+id/instruments"
-        app:layout_constraintTop_toTopOf="@+id/instruments" />
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@id/file"
+        app:layout_constraintStart_toEndOf="@id/file"/>
 
     <TextView
         android:id="@+id/tutorial"
-        android:layout_width="69dp"
-        android:layout_height="29dp"
-        android:layout_marginStart="136dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
         android:text="Tutorial"
         android:textColor="@color/colorAccent"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/settings"
-        app:layout_constraintStart_toEndOf="@+id/settings"
+        app:layout_constraintStart_toEndOf="@+id/account"
         app:layout_constraintTop_toTopOf="@+id/settings"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/help"
-        android:layout_width="56dp"
-        android:layout_height="28dp"
-        android:layout_marginStart="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
         android:text="Help"
         android:textColor="@color/colorAccent"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/tutorial"
         app:layout_constraintStart_toEndOf="@+id/tutorial"
         app:layout_constraintTop_toTopOf="@+id/tutorial" />
@@ -210,10 +179,10 @@
         android:layout_height="wrap_content"
         android:backgroundTint="#D98B25"
         android:clickable="true"
-        android:contentDescription="Enter How Much Cookies You Want"
+        android:contentDescription="Play Sound"
         android:onClick="playSound"
         app:borderWidth="0dp"
-        app:layout_constraintEnd_toStartOf="@+id/help"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="@+id/stop"
         app:srcCompat="@android:drawable/ic_media_play" />
 
@@ -225,7 +194,7 @@
         android:layout_marginEnd="20dp"
         android:backgroundTint="#D98B25"
         android:clickable="true"
-        android:contentDescription="Enter How Much Cookies You Want"
+        android:contentDescription="Reset Playing"
         android:onClick="resetPlaying"
         app:borderWidth="0dp"
         app:layout_constraintEnd_toStartOf="@+id/floatingActionButton2"
@@ -237,26 +206,25 @@
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="160dp"
         android:text="00:00.000"
         android:textColor="@color/colorAccent"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/floatingActionButton3"
-        app:layout_constraintEnd_toStartOf="@+id/floatingActionButton3"
+        app:layout_constraintStart_toStartOf="@+id/constraintLayout"
         app:layout_constraintTop_toTopOf="@+id/floatingActionButton3" />
 
     <TextView
         android:id="@+id/txt"
-        android:layout_width="100dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="4dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="3dp"
         android:layout_marginTop="12dp"
         android:clickable="true"
         android:onClick="createSelectProjectPopupMenu"
         android:text="projectDefault"
         android:textColor="@color/colorAccent"
         android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@+id/help"
+        app:layout_constraintEnd_toEndOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="TouchTargetSizeCheck" />
 
@@ -264,12 +232,12 @@
         android:id="@+id/imageView"
         android:layout_width="102dp"
         android:layout_height="270dp"
-        android:layout_marginStart="570dp"
+        android:layout_marginStart="3dp"
         android:layout_marginTop="4dp"
         android:contentDescription="@string/app_name"
         android:scaleType="center"
         android:src="@drawable/soundmenunew"
-        app:layout_constraintStart_toEndOf="@+id/file"
+        app:layout_constraintStart_toEndOf="@+id/btnAdd1"
         app:layout_constraintTop_toBottomOf="@+id/txt" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -292,12 +260,12 @@
         android:id="@+id/floatingActionButton3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="70dp"
+        android:layout_marginStart="20dp"
         android:backgroundTint="#D98B25"
         android:clickable="true"
         android:onClick="saveProjectUI"
         app:borderWidth="0dp"
-        app:layout_constraintEnd_toStartOf="@+id/stop"
+        app:layout_constraintStart_toEndOf="@+id/time"
         app:layout_constraintTop_toTopOf="@+id/stop"
         app:srcCompat="@android:drawable/ic_menu_upload"
         tools:ignore="SpeakableTextPresentCheck" />
@@ -306,7 +274,7 @@
         android:id="@+id/account"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="50dp"
         android:text="Account"
         android:textColor="@color/colorAccent"
         android:textSize="20dp"
@@ -330,7 +298,7 @@
         android:id="@+id/textView20"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="7dp"
         android:text="2"
         android:textColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="@+id/textView19"
@@ -340,7 +308,7 @@
         android:id="@+id/textView21"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="7dp"
         android:text="3"
         android:textColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="@+id/textView20"
@@ -350,7 +318,7 @@
         android:id="@+id/textView22"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="7dp"
         android:text="4"
         android:textColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="@+id/textView21"
@@ -360,7 +328,7 @@
         android:id="@+id/textView23"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="7dp"
         android:text="5"
         android:textColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="@+id/textView22"
@@ -370,7 +338,7 @@
         android:id="@+id/textView24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="7dp"
         android:text="6"
         android:textColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="@+id/textView23"
@@ -380,7 +348,7 @@
         android:id="@+id/textView25"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="7dp"
         android:text="7"
         android:textColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="@+id/textView24"
@@ -390,7 +358,7 @@
         android:id="@+id/textView26"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="7dp"
         android:text="8"
         android:textColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="@+id/textView25"
@@ -400,7 +368,7 @@
         android:id="@+id/textView27"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="7dp"
         android:text="9"
         android:textColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="@+id/textView26"
@@ -473,12 +441,11 @@
         android:id="@+id/btnAdd1"
         android:layout_width="50dp"
         android:layout_height="28dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="5dp"
         android:text="add"
         android:textSize="7sp"
-        app:layout_constraintEnd_toStartOf="@+id/txt"
-        app:layout_constraintTop_toBottomOf="@+id/help" />
+        app:layout_constraintStart_toEndOf="@+id/btnRem1"
+        app:layout_constraintTop_toTopOf="@+id/btnRem1" />
 
     <Button
         android:id="@+id/btnAdd2"
@@ -557,12 +524,11 @@
         android:id="@+id/btnRem1"
         android:layout_width="50dp"
         android:layout_height="28dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="5dp"
         android:text="del"
         android:textSize="7sp"
         app:layout_constraintStart_toEndOf="@+id/constraintLayout"
-        app:layout_constraintTop_toBottomOf="@+id/help" />
+        app:layout_constraintTop_toTopOf="@+id/constraintLayout" />
 
     <Button
         android:id="@+id/btnRem2"
@@ -577,11 +543,11 @@
         android:id="@+id/edittextmain1"
         android:layout_width="84dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="4dp"
         android:hint="Indent"
         android:inputType="number"
         android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@+id/btnAdd1"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/txt2" />
 
     <TextView
