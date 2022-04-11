@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.StrictMode
+import android.view.MenuItem
 import android.view.View
 import android.view.Window
 import android.widget.Button
@@ -11,8 +12,12 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_recovery.*
+import java.io.File
+import java.io.FileOutputStream
 
 @Suppress("DEPRECATION")
 class RecoveryActivity : AppCompatActivity() {
@@ -23,6 +28,7 @@ class RecoveryActivity : AppCompatActivity() {
     private lateinit var customAdapter1: CustomAdapter
     private lateinit var customAdapter: CustomAdapter
     private lateinit var customAdapter2: CustomAdapter
+    private val projects = mutableListOf<String>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,6 +55,25 @@ class RecoveryActivity : AppCompatActivity() {
             val intent = Intent(this, SigninActivity::class.java)
             startActivity(intent)
         }
+        val path = filesDir
+        val file = File(path, "projects.conf")
+
+        if (file.exists()) {
+            val content: String = file.readText()
+            projects.addAll(content.split("\n").toTypedArray())
+        }
+        else {
+            projects.add("projectDefault")
+            var content = ""
+            for (i in projects.indices) {
+                content += projects[i]
+                if (i != projects.size - 1) content += "\n"
+            }
+            FileOutputStream(file).use {
+                it.write(content.toByteArray())
+            }
+        }
+
         val intent = Intent(this, MainActivity::class.java)
         findViewById<TextView>(R.id.backrec).setOnClickListener {
             startActivity(intent)
@@ -129,6 +154,26 @@ class RecoveryActivity : AppCompatActivity() {
         dialog.show()
     }
 
+    private fun projectSelectPopupMenuClickListener(menuItem: MenuItem) {
+        val itemTitle = menuItem.title.toString()
+        if (webRequester.uploadProject(itemTitle)) {
+            val projects1 = mutableListOf<String>()
+            if (itemsList2 != arrayListOf("")) projects1.addAll(itemsList2)
+            if (!projects1.contains(itemTitle)) projects1.add(itemTitle)
+            itemsList2 = projects1
+            recyclerView3.adapter =  CustomAdapter(itemsList2)
+            (recyclerView3.adapter as CustomAdapter).notifyDataSetChanged()
+        }
+        else Toast.makeText(this, "Oops! Something went wrong!", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun createSelectProjectPopupMenu(v : View) {
+        val popupMenu = PopupMenu(this, v)
+        for (i in projects.indices) popupMenu.menu.add(projects[i])
+        popupMenu.setOnMenuItemClickListener { projectSelectPopupMenuClickListener(it); true }
+        popupMenu.show()
+    }
+
     fun logOff (view: View) {
         if (webRequester.logOff()) {
             val intent = Intent(this, SigninActivity::class.java)
@@ -138,7 +183,8 @@ class RecoveryActivity : AppCompatActivity() {
 
     fun changeAbout (view: View) {
         val newInfo = editInfo.text.toString()
-        webRequester.changeInfo("about", newInfo)
+        if (webRequester.changeInfo("about", newInfo)) Toast.makeText(this, "Edited successfully", Toast.LENGTH_SHORT).show()
+        else Toast.makeText(this, "Oops! Something went wrong!", Toast.LENGTH_SHORT).show()
     }
 
     fun addFriend (view: View) {
@@ -150,6 +196,6 @@ class RecoveryActivity : AppCompatActivity() {
     }
 
     fun uploadProject (view: View) {
-
+        createSelectProjectPopupMenu(view)
     }
 }
