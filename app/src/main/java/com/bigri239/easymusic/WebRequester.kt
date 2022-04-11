@@ -137,10 +137,10 @@ class WebRequester (private val context: Context) {
         return response
     }
 
-    fun getProject (owner : String, projectName: String){
+    fun getProject (owner : String, projectName: String) : Boolean{
         val params = mapOf("owner" to owner, "name" to projectName, "user" to hashedLogin, "passw" to hashedPassword, "lid" to lid, "mac" to uuid)
         val answer = baseRequest("get_project.php", params)
-        if (answer[0] == "1") {
+        return if (answer[0] == "1") {
             val content = answer.slice(1 until answer.size).joinToString("\n")
             var file = File(context.filesDir, "$projectName.emproj")
             FileOutputStream(file).use {
@@ -160,7 +160,9 @@ class WebRequester (private val context: Context) {
                     it.write("projectDefault.emproj\n$projectName.emproj".toByteArray())
                 }
             }
+            true
         }
+        else false
     }
 
     fun getFriendInfo (owner: String) : Array<List<String>> {

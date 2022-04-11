@@ -33,7 +33,8 @@ class RecoveryActivity : AppCompatActivity() {
     private lateinit var customAdapter: CustomAdapter
     private lateinit var customAdapter2: CustomAdapter
     private val projects = mutableListOf<String>()
-    private  val customArray = mutableListOf<String>()
+    private val customArray = mutableListOf<String>()
+    private lateinit var email : String
     private val connectorProject = object : WebConnector {
         override fun function(string: String) {
             loadProject(string)
@@ -57,13 +58,13 @@ class RecoveryActivity : AppCompatActivity() {
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
         webRequester = WebRequester(this@RecoveryActivity)
-
     }
 
     override fun onStart() {
         super.onStart()
         val info = webRequester.getInfo()
         if (!info.contentEquals(Array (5) {arrayOf("")})) {
+            email = info[0][0]
             username.text = "Username: " + info[0][0]
             editInfo.setText(info[1][0])
             itemsList = info[2]
@@ -75,6 +76,7 @@ class RecoveryActivity : AppCompatActivity() {
             val intent = Intent(this, SigninActivity::class.java)
             startActivity(intent)
         }
+
         val path = filesDir
         var file = File(path, "projects.conf")
 
@@ -213,7 +215,11 @@ class RecoveryActivity : AppCompatActivity() {
     }
 
     private fun loadProject(string: String) {
-        Toast.makeText(this, "Here be project downloading", Toast.LENGTH_SHORT).show()
+        if (webRequester.getProject(email, string)) {
+            Toast.makeText(this, "Project $string downloaded", Toast.LENGTH_SHORT).show()
+        }
+        else Toast.makeText(this, "Oops! Something went wrong", Toast.LENGTH_SHORT).show()
+
     }
 
     private fun seeFriend(string: String) {
