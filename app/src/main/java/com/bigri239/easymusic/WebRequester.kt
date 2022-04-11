@@ -19,33 +19,27 @@ class WebRequester (private val context: Context) {
     private var uuid = getUUID()
 
     private fun checkHashed(): Array<String> {
-        var res = arrayOf("", "", "")
-        try {
-            val file = File(context.filesDir, "login.conf")
-            res = file.readText().split("\n").toTypedArray()
+        val file = File(context.filesDir, "login.conf")
+        return if (file.exists()) {
+            file.readText().split("\n").toTypedArray()
         }
-        catch (e : IOException) {}
-        return res
+        else arrayOf("", "", "")
     }
 
     private fun getUUID(): String {
-        var id: String
-        try {
-            val file = File(context.filesDir, "uuid.conf")
-            id = file.readText()
-        }
-        catch (e : IOException) {
-            id = UUID.randomUUID().toString()
-            val file = File(context.filesDir, "uuid.conf")
+        val file = File(context.filesDir, "uuid.conf")
+         return if (file.exists()) file.readText()
+        else {
+            val id = UUID.randomUUID().toString()
             FileOutputStream(file).use {
                 it.write(id.toByteArray())
             }
+             id
         }
-        return id
     }
 
     private fun baseRequest (subAddress : String, params : Map<String, String>): Array<String> {
-        //try {
+        try {
             var paramsGET = ""
             if (params.isNotEmpty()) {
                 paramsGET = "?"
@@ -55,10 +49,10 @@ class WebRequester (private val context: Context) {
             val requester = HTTPRequestTask(baseURL + subAddress + paramsGET)
             val answer = requester.execute()
             return answer.split("\n").toTypedArray()
-        /*}
+        }
         catch (e: Exception) {
             return arrayOf("")
-        }*/
+        }
     }
 
     fun logOff () : Boolean {
