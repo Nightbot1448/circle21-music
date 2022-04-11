@@ -17,6 +17,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -80,6 +81,7 @@ open class MainActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 
         for (i in 0..8) {
@@ -197,17 +199,13 @@ open class MainActivity : AppCompatActivity(){
         settings.setOnClickListener {
             startActivity(intent2)
         }
-        val intent3 = Intent(this, InstrumentsActivity::class.java)
-        instruments.setOnClickListener {
+        val intent3 = Intent(this, TutorialActivity::class.java)
+        tutorial.setOnClickListener {
             startActivity(intent3)
         }
-        val intent4 = Intent(this, TutorialActivity::class.java)
-        tutorial.setOnClickListener {
-            startActivity(intent4)
-        }
-        val intent5 = Intent(this, SigninActivity::class.java)
+        val intent4 = Intent(this, SigninActivity::class.java)
         account.setOnClickListener {
-            startActivity(intent5)
+            startActivity(intent4)
         }
     }
 

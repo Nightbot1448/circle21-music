@@ -12,36 +12,30 @@ import java.util.*
 class WebRequester (private val context: Context) {
 
     private val baseURL = "https://bialger.com/easymusic/"
-    var hashed = checkHashed()
-    var hashedLogin = hashed[0]
-    var hashedPassword = hashed[1]
-    var lid = hashed[2]
+    private var hashed = checkHashed()
+    private var hashedLogin = hashed[0]
+    private var hashedPassword = hashed[1]
+    private var lid = hashed[2]
     private var uuid = getUUID()
 
     private fun checkHashed(): Array<String> {
-        var res = arrayOf("", "", "")
-        try {
-            val file = File(context.filesDir, "login.conf")
-            res = file.readText().split("\n").toTypedArray()
+        val file = File(context.filesDir, "login.conf")
+        return if (file.exists()) {
+            file.readText().split("\n").toTypedArray()
         }
-        catch (e : IOException) {}
-        return res
+        else arrayOf("", "", "")
     }
 
     private fun getUUID(): String {
-        var id: String
-        try {
-            val file = File(context.filesDir, "uuid.conf")
-            id = file.readText()
-        }
-        catch (e : IOException) {
-            id = UUID.randomUUID().toString()
-            val file = File(context.filesDir, "uuid.conf")
+        val file = File(context.filesDir, "uuid.conf")
+         return if (file.exists()) file.readText()
+        else {
+            val id = UUID.randomUUID().toString()
             FileOutputStream(file).use {
                 it.write(id.toByteArray())
             }
+             id
         }
-        return id
     }
 
     private fun baseRequest (subAddress : String, params : Map<String, String>): Array<String> {
@@ -52,13 +46,8 @@ class WebRequester (private val context: Context) {
                 for ((param, value) in params.entries) paramsGET += "$param=$value&"
                 paramsGET = paramsGET.dropLast(1)
             }
-            val connection = URL(baseURL + subAddress + paramsGET).openConnection() as HttpURLConnection
-            val answer: String
-            try {
-                answer = connection.inputStream.bufferedReader().use { it.readText() }
-            } finally {
-                connection.disconnect()
-            }
+            val requester = HTTPRequestTask(baseURL + subAddress + paramsGET)
+            val answer = requester.execute()
             return answer.split("\n").toTypedArray()
         }
         catch (e: Exception) {
@@ -135,8 +124,8 @@ class WebRequester (private val context: Context) {
             val url = baseURL + "upload_project.php" + paramsGET
             try {
                 val uploader = FilesUploadingTask(fileName, url)
-                val answer = uploader.doInBackground() as String?
-                response = answer?.dropLast(answer.length - 1) == "1"
+                val answer = uploader.execute()
+                response = answer.dropLast(answer.length - 1) == "1"
             }
             catch (e: Exception) {
                 e.printStackTrace()
@@ -146,5 +135,46 @@ class WebRequester (private val context: Context) {
             response = false
         }
         return response
+    }
+
+    fun getProject (owner : String, projectName: String){
+        val params = mapOf("owner" to owner, "name" to projectName, "user" to hashedLogin, "passw" to hashedPassword, "lid" to lid, "mac" to uuid)
+        val answer = baseRequest("get_project.php", params)
+        if (answer[0] == "1") {
+            val content = answer.slice(1 until answer.size).joinToString("\n")
+            var file = File(context.filesDir, "$projectName.emproj")
+            FileOutputStream(file).use {
+                it.write(content.toByteArray())
+            }
+            file = File(context.filesDir, "projects.conf")
+            if (file.exists()) {
+                if (file.readText() != "") {
+                    val projects = mutableListOf<String>()
+                    projects.addAll(file.readText().split("\n").toTypedArray())
+                    if (!projects.contains(projectName)) file.appendText("\n$projectName.emproj")
+                }
+                else file.appendText("projectDefault.emproj\n$projectName.emproj")
+            }
+            else {
+                FileOutputStream(file).use {
+                    it.write("projectDefault.emproj\n$projectName.emproj".toByteArray())
+                }
+            }
+        }
+    }
+
+    fun getFriendInfo (owner: String) : Array<List<String>> {
+        return if (!hashed.contentEquals(arrayOf("", "", ""))) {
+            val params = mapOf("owner" to owner, "user" to hashedLogin, "passw" to hashedPassword, "lid" to lid, "mac" to uuid)
+            val answer = baseRequest("get_friend_info.php", params)
+            if (answer[0] == "1") {
+                val friends = answer[3].split(" ").toList()
+                val sounds = answer[4].split(" ").toList()
+                val projects = answer[5].split(" ").toList()
+                arrayOf(arrayListOf(answer[1]), arrayListOf(answer[2]), friends, sounds, projects)
+            }
+            else Array (5) {arrayListOf("")}
+        }
+        else Array (5) {arrayListOf("")}
     }
 }

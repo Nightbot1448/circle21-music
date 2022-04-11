@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_addfiles.*
@@ -29,18 +30,17 @@ class AddingfilesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_addfiles)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         val path = filesDir
+        val file = File(path, "sounds.conf")
 
-        try {
-            val file = File(path, "sounds.conf")
+        if (file.exists()) {
             val content: String = file.readText()
             if (content != "") itemsList1.addAll(content.split("\n").toTypedArray())
         }
-        catch (e: IOException) {
-            val file = File(path, "sounds.conf")
-            val content = ""
+        else {
             FileOutputStream(file).use {
-                it.write(content.toByteArray())
+                it.write("".toByteArray())
             }
         }
 
