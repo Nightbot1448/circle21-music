@@ -7,10 +7,15 @@ import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 
-internal class CustomAdapter(private var itemsList: List<String>) :
+internal class CustomAdapter(private var itemsList: List<String>, val connector: RecoveryActivity.WebConnector) :
     RecyclerView.Adapter<CustomAdapter.MyViewHolder>() {
-    internal inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var itemTextView: TextView = view.findViewById(R.id.itemTextView)
+        fun bind(string: String) {
+            itemTextView.setOnClickListener {
+                connector.function(string)
+            }
+        }
     }
     @NonNull
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -21,8 +26,13 @@ internal class CustomAdapter(private var itemsList: List<String>) :
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val item = itemsList[position]
         holder.itemTextView.text = item
+        holder.bind(itemsList[position])
     }
     override fun getItemCount(): Int {
         return itemsList.size
+    }
+
+    inner class CustomListViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+
     }
 }
