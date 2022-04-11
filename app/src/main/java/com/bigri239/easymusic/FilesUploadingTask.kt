@@ -7,7 +7,6 @@ import java.net.MalformedURLException
 import java.net.ProtocolException
 import java.net.URL
 
-@Suppress("DEPRECATION")
 open class FilesUploadingTask (private val filePath: String, private val url : String) : AsyncTask<Void?, Void?, String?>() {
     // Конец строки
     private val lineEnd = "\r\n"
@@ -44,9 +43,9 @@ open class FilesUploadingTask (private val filePath: String, private val url : S
         }
     }
 
-    public override fun doInBackground(vararg params: Void?): String? {
+    override fun doInBackground(vararg params: Void?): String {
         // Результат выполнения запроса, полученный от сервера
-        var result: String? = null
+        lateinit var result: String
         try {
             // Создание ссылки для отправки файла
             val uploadUrl = URL(url)
@@ -126,5 +125,9 @@ open class FilesUploadingTask (private val filePath: String, private val url : S
             e.printStackTrace()
         }
         return result
+    }
+
+    fun execute () : String {
+        return doInBackground()
     }
 }

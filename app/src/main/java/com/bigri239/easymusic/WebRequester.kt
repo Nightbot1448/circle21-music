@@ -12,10 +12,10 @@ import java.util.*
 class WebRequester (private val context: Context) {
 
     private val baseURL = "https://bialger.com/easymusic/"
-    var hashed = checkHashed()
-    var hashedLogin = hashed[0]
-    var hashedPassword = hashed[1]
-    var lid = hashed[2]
+    private var hashed = checkHashed()
+    private var hashedLogin = hashed[0]
+    private var hashedPassword = hashed[1]
+    private var lid = hashed[2]
     private var uuid = getUUID()
 
     private fun checkHashed(): Array<String> {
@@ -45,25 +45,20 @@ class WebRequester (private val context: Context) {
     }
 
     private fun baseRequest (subAddress : String, params : Map<String, String>): Array<String> {
-        try {
+        //try {
             var paramsGET = ""
             if (params.isNotEmpty()) {
                 paramsGET = "?"
                 for ((param, value) in params.entries) paramsGET += "$param=$value&"
                 paramsGET = paramsGET.dropLast(1)
             }
-            val connection = URL(baseURL + subAddress + paramsGET).openConnection() as HttpURLConnection
-            val answer: String
-            try {
-                answer = connection.inputStream.bufferedReader().use { it.readText() }
-            } finally {
-                connection.disconnect()
-            }
+            val requester = HTTPRequestTask(baseURL + subAddress + paramsGET)
+            val answer = requester.execute()
             return answer.split("\n").toTypedArray()
-        }
+        /*}
         catch (e: Exception) {
             return arrayOf("")
-        }
+        }*/
     }
 
     fun logOff () : Boolean {
@@ -135,8 +130,8 @@ class WebRequester (private val context: Context) {
             val url = baseURL + "upload_project.php" + paramsGET
             try {
                 val uploader = FilesUploadingTask(fileName, url)
-                val answer = uploader.doInBackground() as String?
-                response = answer?.dropLast(answer.length - 1) == "1"
+                val answer = uploader.execute()
+                response = answer.dropLast(answer.length - 1) == "1"
             }
             catch (e: Exception) {
                 e.printStackTrace()
