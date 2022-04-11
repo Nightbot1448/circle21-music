@@ -40,6 +40,10 @@
             android:exported="true"
             android:screenOrientation="landscape">
         </activity>
+        <activity android:name="com.bigri239.easymusic.FriendActivity"
+            android:exported="true"
+            android:screenOrientation="landscape">
+        </activity>
         <activity android:name="com.bigri239.easymusic.RecoveryActivity"
             android:exported="true"
             android:screenOrientation="landscape">

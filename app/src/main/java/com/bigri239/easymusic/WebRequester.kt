@@ -151,13 +151,13 @@ class WebRequester (private val context: Context) {
                 if (file.readText() != "") {
                     val projects = mutableListOf<String>()
                     projects.addAll(file.readText().split("\n").toTypedArray())
-                    if (!projects.contains(projectName)) file.appendText("\n$projectName.emproj")
+                    if (!projects.contains(projectName)) file.appendText("\n$projectName")
                 }
-                else file.appendText("projectDefault.emproj\n$projectName.emproj")
+                else file.appendText("projectDefault\n$projectName")
             }
             else {
                 FileOutputStream(file).use {
-                    it.write("projectDefault.emproj\n$projectName.emproj".toByteArray())
+                    it.write("projectDefault\n$projectName".toByteArray())
                 }
             }
             true
