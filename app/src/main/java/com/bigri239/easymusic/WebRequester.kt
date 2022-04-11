@@ -136,4 +136,45 @@ class WebRequester (private val context: Context) {
         }
         return response
     }
+
+    fun getProject (owner : String, projectName: String){
+        val params = mapOf("owner" to owner, "name" to projectName, "user" to hashedLogin, "passw" to hashedPassword, "lid" to lid, "mac" to uuid)
+        val answer = baseRequest("get_project.php", params)
+        if (answer[0] == "1") {
+            val content = answer.slice(1 until answer.size).joinToString("\n")
+            var file = File(context.filesDir, "$projectName.emproj")
+            FileOutputStream(file).use {
+                it.write(content.toByteArray())
+            }
+            file = File(context.filesDir, "projects.conf")
+            if (file.exists()) {
+                if (file.readText() != "") {
+                    val projects = mutableListOf<String>()
+                    projects.addAll(file.readText().split("\n").toTypedArray())
+                    if (!projects.contains(projectName)) file.appendText("\n$projectName.emproj")
+                }
+                else file.appendText("projectDefault.emproj\n$projectName.emproj")
+            }
+            else {
+                FileOutputStream(file).use {
+                    it.write("projectDefault.emproj\n$projectName.emproj".toByteArray())
+                }
+            }
+        }
+    }
+
+    fun getFriendInfo (owner: String) : Array<List<String>> {
+        return if (!hashed.contentEquals(arrayOf("", "", ""))) {
+            val params = mapOf("owner" to owner, "user" to hashedLogin, "passw" to hashedPassword, "lid" to lid, "mac" to uuid)
+            val answer = baseRequest("get_friend_info.php", params)
+            if (answer[0] == "1") {
+                val friends = answer[3].split(" ").toList()
+                val sounds = answer[4].split(" ").toList()
+                val projects = answer[5].split(" ").toList()
+                arrayOf(arrayListOf(answer[1]), arrayListOf(answer[2]), friends, sounds, projects)
+            }
+            else Array (5) {arrayListOf("")}
+        }
+        else Array (5) {arrayListOf("")}
+    }
 }
