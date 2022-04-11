@@ -223,7 +223,9 @@ class RecoveryActivity : AppCompatActivity() {
     }
 
     private fun seeFriend(string: String) {
-        Toast.makeText(this, "Here be see friend", Toast.LENGTH_SHORT).show()
+        val intent = Intent(this, FriendActivity::class.java)
+        intent.putExtra("owner", string)
+        startActivity(intent)
     }
 
     fun logOff (view: View) {
