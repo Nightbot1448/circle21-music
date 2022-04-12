@@ -32,9 +32,7 @@
         app:layout_constraintHorizontal_bias="0.025"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintVertical_bias="0.6"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@id/button" />
 
     <TextView
         android:id="@+id/recoveryact"
@@ -75,6 +73,7 @@
         android:id="@+id/aboutme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:text="About me: "
         android:textColor="@color/colorAccent"
         android:textSize="20sp"
@@ -132,9 +131,8 @@
         android:clickable="true"
         android:onClick="addFriend"
         app:layout_constraintEnd_toEndOf="@+id/recyclerView"
-        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="@+id/recyclerView"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <Button
         android:id="@+id/button2"
