@@ -11,21 +11,28 @@
         android:id="@+id/recyclerView2"
         android:layout_width="300dp"
         android:layout_height="200dp"
-        app:layout_constraintEnd_toStartOf="@id/recoveryact"
-        app:layout_constraintTop_toBottomOf="@id/textView11"  />
+        app:layout_constraintHorizontal_bias="0.025"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="0.65"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"  />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView3"
         android:layout_width="300dp"
         android:layout_height="200dp"
-        app:layout_constraintStart_toEndOf="@+id/recoveryact"
-        app:layout_constraintTop_toTopOf="@+id/recyclerView2" />
+        app:layout_constraintHorizontal_bias="0.975"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="0.65"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/recoveryact"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
         android:text="Friend"
         android:textColor="@color/colorAccent"
         android:textSize="20sp"
@@ -38,10 +45,11 @@
         android:id="@+id/backrec"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="230dp"
         android:text="BACK"
         android:textColor="@color/colorAccent"
-        app:layout_constraintEnd_toStartOf="@+id/recoveryact"
+        app:layout_constraintHorizontal_bias="0.025"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/recoveryact" />
 
     <TextView
@@ -51,14 +59,15 @@
         android:text="Username: "
         android:textColor="@color/colorAccent"
         android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/recoveryact"  />
+        app:layout_constraintVertical_bias="0.1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="@id/backrec"  />
 
     <TextView
         android:id="@+id/aboutme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         android:text="About me: "
         android:textColor="@color/colorAccent"
         android:textSize="20sp"
@@ -69,11 +78,11 @@
         android:id="@+id/textView11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
         android:text="Sounds"
         android:textColor="@color/colorAccent"
         android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@+id/aboutme"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerView2"
         app:layout_constraintEnd_toEndOf="@+id/recyclerView2"
         app:layout_constraintStart_toStartOf="@+id/recyclerView2" />
 
@@ -81,7 +90,7 @@
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="10dp"
         android:text="Projects"
         android:textColor="@color/colorAccent"
         android:textSize="16sp"
