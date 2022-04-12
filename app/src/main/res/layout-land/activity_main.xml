@@ -226,7 +226,7 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="102dp"
+        android:layout_width="107dp"
         android:layout_height="270dp"
         android:layout_marginEnd="5dp"
         android:layout_marginTop="4dp"
@@ -372,7 +372,7 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="120dp"
+        android:layout_width="115dp"
         android:layout_height="245dp"
         android:contentDescription="@string/app_name"
         android:scaleType="center"
