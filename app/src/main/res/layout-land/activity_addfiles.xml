@@ -9,11 +9,9 @@
 
     <TextView
         android:id="@+id/file"
-        android:layout_width="199dp"
-        android:layout_height="32dp"
-        android:layout_marginStart="321dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="250dp"
         android:text="Adding sounds"
         android:textColor="@color/colorAccent"
         android:textSize="20dp"
@@ -23,20 +21,24 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView111"
-        android:layout_width="350dp"
+        android:layout_width="300dp"
         android:layout_height="201dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="70dp"
-        app:layout_constraintEnd_toStartOf="@+id/recyclerView222"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.075"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/from" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView222"
-        android:layout_width="350dp"
+        android:layout_width="300dp"
         android:layout_height="201dp"
-        android:layout_marginStart="350dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintStart_toEndOf="@+id/back_A"
+        app:layout_constraintHorizontal_bias="0.925"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_weight="2"
         app:layout_constraintTop_toBottomOf="@+id/to" />
 
     <TextView
@@ -44,41 +46,42 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="150dp"
         android:text="OFFICIAL"
         android:textColor="@color/colorAccent"
         android:textSize="15dp"
-        app:layout_constraintEnd_toStartOf="@+id/file"
+        app:layout_constraintEnd_toEndOf="@+id/recyclerView111"
+        app:layout_constraintStart_toStartOf="@+id/recyclerView111"
         app:layout_constraintTop_toBottomOf="@+id/file" />
 
     <TextView
         android:id="@+id/to"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
         android:layout_marginTop="8dp"
         android:text="CUSTOM"
         android:textColor="@color/colorAccent"
         android:textSize="15dp"
-        app:layout_constraintStart_toEndOf="@+id/file"
+        app:layout_constraintEnd_toEndOf="@+id/recyclerView222"
+        app:layout_constraintStart_toStartOf="@+id/recyclerView222"
         app:layout_constraintTop_toBottomOf="@+id/file" />
 
     <TextView
         android:id="@+id/back_A"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="250dp"
         android:text="BACK"
         android:textColor="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="@+id/file"
-        app:layout_constraintEnd_toStartOf="@+id/file"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/file" />
 
     <Button
         android:id="@+id/button5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="15dp"
         android:text="ADD"
         android:clickable="true"
         android:onClick="openFile"
