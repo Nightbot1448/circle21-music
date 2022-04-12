@@ -242,12 +242,12 @@ open class MainActivity : AppCompatActivity(){
                 val sound = getSoundParameters(x, countSounds[x] + 1)
                 countSounds[x]++
                 sounds[x][countSounds[x]] = sound
-                var len = ((getSoundLength(sound.res) / sound.ratio) / 40).roundToInt()
+                var len = ((getSoundLength(sound.res) / sound.ratio) / 20).roundToInt()
                 len = if (len > 0) len else 1
                 val indent = if (countSounds[x] > 0) (sound.delay - getSoundLength(sounds[x][countSounds[x] - 1].res) / sounds[x][countSounds[x] - 1].ratio).toLong()
                 else sound.delay
                 (currentRecycler(x).adapter as SecondsListAdapter).addSound(Sound(
-                    (indent.toFloat() / 40).roundToInt(),
+                    (indent.toFloat() / 20).roundToInt(),
                     len,
                     currentColor(countSounds[x]), x, countSounds[x]))
                 Log.d(TAG, "MYMSG add: " + getSoundLength(sound.res))
@@ -397,9 +397,9 @@ open class MainActivity : AppCompatActivity(){
                         )
                         val indentFloat : Float = if (j != 0) params[2].toLong() - getSoundLength(sounds[i][j - 1].res) / sounds[i][j - 1].ratio
                         else params[2].toFloat()
-                        var len = ((getSoundLength(sounds[i][j].res) / sounds[i][j].ratio) / 40).roundToInt()
+                        var len = ((getSoundLength(sounds[i][j].res) / sounds[i][j].ratio) / 20).roundToInt()
                         len = if (len > 0) len else 1
-                        (currentRecycler(i).adapter as SecondsListAdapter).addSound(Sound((indentFloat / 40).roundToInt(), len, currentColor(j), i, j))
+                        (currentRecycler(i).adapter as SecondsListAdapter).addSound(Sound((indentFloat / 20).roundToInt(), len, currentColor(j), i, j))
                         if (getSoundLength(params[0]) == 0.toLong() && !missingSounds.contains(params[0])) missingSounds.add(params[0])
                     }
                 }
@@ -500,10 +500,10 @@ open class MainActivity : AppCompatActivity(){
                     val sound = sounds[i][y]
                     val indentFloat : Float = if (y != 0) sound.delay - getSoundLength(sounds[i][y - 1].res) / sounds[i][y - 1].ratio
                     else sound.delay.toFloat()
-                    var len = ((getSoundLength(sounds[i][y].res) / sounds[i][y].ratio) / 40).roundToInt()
+                    var len = ((getSoundLength(sounds[i][y].res) / sounds[i][y].ratio) / 20).roundToInt()
                     len = if (len > 0) len else 1
                     (currentRecycler(i).adapter as SecondsListAdapter).addSound(Sound(
-                        (indentFloat / 40).roundToInt(), len, currentColor(y), i, y))
+                        (indentFloat / 20).roundToInt(), len, currentColor(y), i, y))
                 }
             }
         }
@@ -518,10 +518,10 @@ open class MainActivity : AppCompatActivity(){
                 val sound = sounds[i][y]
                 val indentFloat : Float = if (y != 0) sound.delay - getSoundLength(sounds[i][y - 1].res) / sounds[i][y - 1].ratio
                 else sound.delay.toFloat()
-                var len = ((getSoundLength(sounds[i][y].res) / sounds[i][y].ratio) / 40).roundToInt()
+                var len = ((getSoundLength(sounds[i][y].res) / sounds[i][y].ratio) / 20).roundToInt()
                 len = if (len > 0) len else 1
                 (currentRecycler(i).adapter as SecondsListAdapter).addSound(Sound(
-                    (indentFloat / 40).roundToInt(), len, currentColor(y), i, y))
+                    (indentFloat / 20).roundToInt(), len, currentColor(y), i, y))
             }
         }
     }
