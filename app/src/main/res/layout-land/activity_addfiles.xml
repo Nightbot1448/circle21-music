@@ -11,7 +11,6 @@
         android:id="@+id/file"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:text="Adding sounds"
         android:textColor="@color/colorAccent"
         android:textSize="20dp"
@@ -71,11 +70,10 @@
         android:layout_height="wrap_content"
         android:text="BACK"
         android:textColor="@color/colorAccent"
-        app:layout_constraintBottom_toBottomOf="@+id/file"
         app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/file" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/button5"

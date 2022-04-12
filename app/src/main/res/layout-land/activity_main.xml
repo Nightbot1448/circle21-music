@@ -13,6 +13,7 @@
         android:layout_width="650dp"
         android:layout_height="245dp"
         android:layout_marginTop="10dp"
+        android:layout_marginStart="4dp"
         android:background="#444444"
         app:layout_constraintStart_toEndOf="@+id/textView19"
         app:layout_constraintTop_toBottomOf="@+id/file"

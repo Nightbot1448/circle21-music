@@ -11,11 +11,9 @@
         android:id="@+id/help"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="335dp"
-        android:layout_marginEnd="346dp"
         android:text="HELP"
         android:textColor="@color/colorAccent"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,14 +22,13 @@
         android:id="@+id/frequently"
         android:layout_width="500dp"
         android:layout_height="70dp"
-        android:layout_marginStart="120dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="128dp"
         android:backgroundTint="#D98B25"
         android:text="frequently asked Questions "
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/help" />
+        app:layout_constraintVertical_bias="0.2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/terms"
@@ -59,10 +56,10 @@
         android:id="@+id/back_H"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="70dp"
         android:text="BACK"
         android:textColor="@color/colorAccent"
-        app:layout_constraintBottom_toBottomOf="@+id/help"
-        app:layout_constraintEnd_toStartOf="@+id/frequently"
-        app:layout_constraintTop_toTopOf="@+id/help" />
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
