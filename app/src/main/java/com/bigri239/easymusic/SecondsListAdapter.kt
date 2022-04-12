@@ -43,7 +43,7 @@ class SecondsListAdapter(val connector : MainActivity.Connector) : RecyclerView.
                 soundSeconds.add(SoundSecond(getColor(sound.type), sound))
             }
         }
-        for (i in 0..400) {
+        for (i in 0..800) {
             soundSeconds.add(SoundSecond())
         }
         notifyDataSetChanged()
