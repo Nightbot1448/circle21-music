@@ -59,7 +59,6 @@ open class MainActivity : AppCompatActivity(){
     private var countSounds: Array<Int> = Array(9) { -1 }
     private val emptySound = SoundInfo()
     private var sounds: Array<Array<SoundInfo>> = Array(9) { Array(500) { emptySound } }
-    private val areMissing : Array<Array<Boolean>> = Array(9) { Array(500) { true } }
     private val resourcesArray : Array<String> = arrayOf("bassalbane", "basscentury", "bassflowers",
         "clapchoppa", "clapforeign", "crashalect", "crashbloods", "crashvinnyx", "fxfreeze",
         "fxgunnes", "hihatcheque", "hihatmystery", "kickartillery", "kickinfinite", "percardonme",
@@ -245,8 +244,10 @@ open class MainActivity : AppCompatActivity(){
                 sounds[x][countSounds[x]] = sound
                 var len = ((getSoundLength(sound.res) / sound.ratio) / 40).roundToInt()
                 len = if (len > 0) len else 1
+                val indent = if (countSounds[x] > 0) (sound.delay - getSoundLength(sounds[x][countSounds[x] - 1].res) / sounds[x][countSounds[x] - 1].ratio).toLong()
+                else sound.delay
                 (currentRecycler(x).adapter as SecondsListAdapter).addSound(Sound(
-                    (edittextmain1.text.toString().toFloat() / 40).roundToInt(),
+                    (indent.toFloat() / 40).roundToInt(),
                     len,
                     currentColor(countSounds[x]), x, countSounds[x]))
                 Log.d(TAG, "MYMSG add: " + getSoundLength(sound.res))
@@ -311,6 +312,7 @@ open class MainActivity : AppCompatActivity(){
         val itemTitle = menuItem.title.toString()
         currentSound = itemTitle
         txt2.text = currentSound
+        txtLen.text = getSoundLength(currentSound).toString()
     }
 
     private fun isRawResource (name : String): Boolean {
@@ -379,26 +381,31 @@ open class MainActivity : AppCompatActivity(){
             val tracksContent = content.split("\n").toTypedArray()
             countTracks = tracksContent.size - 1
             val missingSounds = mutableListOf<String>()
-            for (i in tracksContent.indices) {
-                val soundsContent = tracksContent[i].split(";").toTypedArray()
-                countSounds[i] = soundsContent.size - 1
-                for (j in soundsContent.indices) {
-                    val params = soundsContent[j].split(" ").toTypedArray()
-                    sounds[i][j] = SoundInfo(
-                        params[0],
-                        params[1].toInt(),
-                        params[2].toLong(),
-                        params[3].toFloat(),
-                        params[4].toInt(),
-                        params[5].toFloat()
-                    )
-                    val indentFloat : Float = if (j != 0) params[2].toLong() - getSoundLength(sounds[i][j - 1].res) / sounds[i][j - 1].ratio
-                    else params[2].toFloat()
-                    var len = ((getSoundLength(sounds[i][j].res) / sounds[i][j].ratio) / 40).roundToInt()
-                    len = if (len > 0) len else 1
-                    (currentRecycler(i).adapter as SecondsListAdapter).addSound(Sound((indentFloat / 40).roundToInt(), len, currentColor(j), i, j))
-                    if (getSoundLength(params[0]) == 0.toLong() && !missingSounds.contains(params[0])) missingSounds.add(params[0])
+            try {
+                for (i in tracksContent.indices) {
+                    val soundsContent = tracksContent[i].split(";").toTypedArray()
+                    countSounds[i] = soundsContent.size - 1
+                    for (j in soundsContent.indices) {
+                        val params = soundsContent[j].split(" ").toTypedArray()
+                        sounds[i][j] = SoundInfo(
+                            params[0],
+                            params[1].toInt(),
+                            params[2].toLong(),
+                            params[3].toFloat(),
+                            params[4].toInt(),
+                            params[5].toFloat()
+                        )
+                        val indentFloat : Float = if (j != 0) params[2].toLong() - getSoundLength(sounds[i][j - 1].res) / sounds[i][j - 1].ratio
+                        else params[2].toFloat()
+                        var len = ((getSoundLength(sounds[i][j].res) / sounds[i][j].ratio) / 40).roundToInt()
+                        len = if (len > 0) len else 1
+                        (currentRecycler(i).adapter as SecondsListAdapter).addSound(Sound((indentFloat / 40).roundToInt(), len, currentColor(j), i, j))
+                        if (getSoundLength(params[0]) == 0.toLong() && !missingSounds.contains(params[0])) missingSounds.add(params[0])
+                    }
                 }
+            }
+            catch (e : ArrayIndexOutOfBoundsException) {
+                Toast.makeText(this, "Oops! This file seems to be broken!", Toast.LENGTH_SHORT).show()
             }
             state = "ready"
             setMusicLength()
@@ -469,8 +476,8 @@ open class MainActivity : AppCompatActivity(){
         val sound = sounds[i][j]
         currentSound = sound.res
         txt2.text = currentSound
-        edittextmain1.setText(if (j != 0) (sound.delay - getSoundLength(sounds[i][j - 1].res) / sounds[i][j - 1].ratio).toInt().toString()
-        else sound.delay.toString())
+        txtLen.text = getSoundLength(currentSound).toString()
+        edittextmain1.setText(sound.delay.toString())
         edittextmain3.setText((sound.volume * 100).toInt().toString())
         edittextmain4.setText((100 / sound.ratio).toString())
     }
@@ -536,7 +543,7 @@ open class MainActivity : AppCompatActivity(){
             val metaRetriever = MediaMetadataRetriever()
             if (isRawResource(name)) {
                 val inStream: InputStream = resources.openRawResource(resources.getIdentifier(name, "raw", packageName))
-                val data = inStream.let { readBytes(it) }
+                val data = readBytes(inStream)
                 val file = File(filesDir, "sound.wav")
                 FileOutputStream(file).use {
                     it.write(data)
@@ -585,8 +592,12 @@ open class MainActivity : AppCompatActivity(){
         else if (edittextmain4.text.toString().toFloat() > 800) edittextmain4.setText(800.toString())
         val ratio : Float = abs(100 / (edittextmain4.text.toString().toFloat()))
         Log.d(TAG, "MYMSG param: $res")
-        val delay : Long = if (y > 0) (edittextmain1.text.toString().toFloat() + getSoundLength(sounds[x][y - 1].res) / sounds[x][y - 1].ratio).toLong()
-        else edittextmain1.text.toString().toLong()
+        if (y > 0) {
+            val soundPrev = sounds[x][y - 1]
+            if (edittextmain1.text.toString().toLong() < getSoundLength(soundPrev.res) / soundPrev.ratio)
+                edittextmain1.setText((getSoundLength(soundPrev.res) / soundPrev.ratio).toLong().toString())
+        }
+        val delay : Long = edittextmain1.text.toString().toLong()
         return SoundInfo(res, 0, delay, volume, 0, ratio)
     }
 
@@ -636,7 +647,15 @@ open class MainActivity : AppCompatActivity(){
                 setTimer()
                 val start: Long = currentTimeMillis() + 100
                 state = "playing"
-                for (i in 0..countTracks) if (countSounds[i] != -1) playTrack(i, 0, start - currentTimeMillis())
+                if (countSounds[0] != -1) playTrack(0, 0, start - currentTimeMillis())
+                if (countSounds[1] != -1) playTrack(1, 0, start - currentTimeMillis())
+                if (countSounds[2] != -1) playTrack(2, 0, start - currentTimeMillis())
+                if (countSounds[3] != -1) playTrack(3, 0, start - currentTimeMillis())
+                if (countSounds[4] != -1) playTrack(4, 0, start - currentTimeMillis())
+                if (countSounds[5] != -1) playTrack(5, 0, start - currentTimeMillis())
+                if (countSounds[6] != -1) playTrack(6, 0, start - currentTimeMillis())
+                if (countSounds[7] != -1) playTrack(7, 0, start - currentTimeMillis())
+                if (countSounds[8] != -1) playTrack(8, 0, start - currentTimeMillis())
             }
         }
         else if (state == "pause") {
