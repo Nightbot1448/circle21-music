@@ -56,7 +56,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:autoLink="all"
-        android:text="admin@bialger.com"
+        android:text="no-reply@bialger.com"
         android:textColor="@color/colorAccent"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/textView8"
