@@ -12,11 +12,11 @@
         android:id="@+id/constraintLayout"
         android:layout_width="650dp"
         android:layout_height="245dp"
-        android:layout_marginTop="10dp"
         android:layout_marginStart="4dp"
         android:background="#444444"
         app:layout_constraintStart_toEndOf="@+id/textView19"
         app:layout_constraintBottom_toTopOf="@+id/stop"
+        app:layout_constraintTop_toBottomOf="@+id/file"
         tools:context=".MainActivity"
         tools:ignore="MissingConstraints">
 
@@ -228,9 +228,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="113dp"
+        android:layout_width="110dp"
         android:layout_height="270dp"
-        android:layout_marginTop="4dp"
         android:contentDescription="@string/app_name"
         android:scaleType="center"
         android:src="@drawable/soundmenunew"
@@ -375,7 +374,6 @@
         android:id="@+id/imageView2"
         android:layout_width="114dp"
         android:layout_height="245dp"
-        android:layout_marginEnd="-2dp"
         android:contentDescription="@string/app_name"
         android:scaleType="center"
         android:src="@drawable/fone"
