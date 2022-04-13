@@ -2,7 +2,11 @@ package com.bigri239.easymusic
 
 import android.app.Dialog
 import android.content.Intent
+import android.media.AudioManager
+import android.media.MediaMetadataRetriever
+import android.media.SoundPool
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.view.View
 import android.view.Window
 import android.widget.Button
@@ -15,11 +19,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_addfiles.*
 import java.io.*
+import kotlin.math.abs
 
 
 @Suppress("DEPRECATION")
 class AddingfilesActivity : AppCompatActivity() {
     private var filePath = ""
+    private var isPlaying = false
+    private var id = 0
+    private var len : Long = 3615
+    var track = SoundPool(1, AudioManager.STREAM_MUSIC, 0)
     private val itemsList : ArrayList<String> = arrayListOf("bassalbane", "basscentury", "bassflowers",
         "clapchoppa", "clapforeign", "crashalect", "crashbloods", "crashvinnyx", "fxfreeze",
         "fxgunnes", "hihatcheque", "hihatmystery", "kickartillery", "kickinfinite", "percardonme",
@@ -28,7 +37,9 @@ class AddingfilesActivity : AppCompatActivity() {
     private lateinit var customAdapter: CustomAdapter
     private lateinit var customAdapter1: CustomAdapter
     private val connectorSound = object : RecoveryActivity.WebConnector {
-        override fun function(string: String) {}
+        override fun function(string: String) {
+            playSound(string)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -108,6 +119,59 @@ class AddingfilesActivity : AppCompatActivity() {
             }
         }
         dialog.show()
+    }
+
+    private fun getSoundLength(name: String): Long {
+        try {
+            val metaRetriever = MediaMetadataRetriever()
+            if (itemsList.contains(name)) {
+                val inStream: InputStream = resources.openRawResource(resources.getIdentifier(name, "raw", packageName))
+                val data = readBytes(inStream)
+                val file = File(filesDir, "sound.wav")
+                FileOutputStream(file).use {
+                    it.write(data)
+                }
+                metaRetriever.setDataSource(File(filesDir, "sound.wav").absolutePath)
+            }
+            else metaRetriever.setDataSource(File(filesDir, "$name.wav").absolutePath)
+            return abs(metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)!!.toLong() - 1)
+        }
+        catch (e: java.lang.Exception) {
+            return 0
+        }
+    }
+
+    private fun playSound (soundName : String) {
+        len = getSoundLength(soundName)
+        if (len != 0.toLong()) {
+            name.text = "Sound name: $soundName"
+            length.text = "Sound length: $len"
+            if (!isPlaying) {
+                isPlaying = true
+                track = SoundPool(1, AudioManager.STREAM_MUSIC, 0)
+                id = if (itemsList.contains(soundName)) track.load(
+                    baseContext,
+                    resources.getIdentifier(soundName, "raw", packageName),
+                    0
+                )
+                else track.load("$filesDir/$soundName.wav",0)
+                play()
+                object : CountDownTimer(len, 1000) {
+                    override fun onTick(millisUntilFinished: Long) {}
+                    override fun onFinish() {
+                        track.release()
+                        isPlaying = false
+                    }
+                }.start()
+           }
+        }
+        else Toast.makeText(this, "Oops! This sound does not exist!", Toast.LENGTH_SHORT).show()
+    }
+
+    fun play() {
+        track.setOnLoadCompleteListener { _, _, _ ->
+            track.play(id, 1.0F, 1.0F, 0, 0, 1.0F)
+        }
     }
 
     @Deprecated("Deprecated in Java")
