@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_tutorial.*
 
 @Suppress("DEPRECATION")
 class TutorialActivity : AppCompatActivity() {
@@ -16,6 +17,7 @@ class TutorialActivity : AppCompatActivity() {
         val intent = Intent(this, MainActivity::class.java)
         findViewById<TextView>(R.id.backtut).setOnClickListener {
             startActivity(intent)
+            backtut.setOnClickListener {}
         }
     }
 }

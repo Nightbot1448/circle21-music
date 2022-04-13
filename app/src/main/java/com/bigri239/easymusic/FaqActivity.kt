@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_faq.*
 
 @Suppress("DEPRECATION")
 class FaqActivity : AppCompatActivity() {
@@ -16,6 +17,7 @@ class FaqActivity : AppCompatActivity() {
         val intent = Intent(this, MainActivity::class.java)
         findViewById<TextView>(R.id.backfaq).setOnClickListener {
             startActivity(intent)
+            backfaq.setOnClickListener {}
         }
     }
 }

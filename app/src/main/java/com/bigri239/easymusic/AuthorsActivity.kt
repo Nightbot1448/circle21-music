@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_authors.*
 
 @Suppress("DEPRECATION")
 class AuthorsActivity : AppCompatActivity() {
@@ -16,6 +17,7 @@ class AuthorsActivity : AppCompatActivity() {
         val intent = Intent(this, MainActivity::class.java)
         findViewById<TextView>(R.id.backauth).setOnClickListener {
             startActivity(intent)
+            backauth.setOnClickListener {}
         }
     }
 }

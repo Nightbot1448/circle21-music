@@ -31,6 +31,7 @@ class SignupActivity : AppCompatActivity() {
         val intent = Intent(this, SigninActivity::class.java)
         findViewById<TextView>(R.id.backsu).setOnClickListener {
             startActivity(intent)
+            backsu.setOnClickListener {}
         }
     }
 

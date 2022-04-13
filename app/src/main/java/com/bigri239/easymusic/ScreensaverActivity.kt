@@ -19,6 +19,6 @@ class ScreensaverActivity : AppCompatActivity() {
             val mainIntent = Intent(this@ScreensaverActivity, MainActivity::class.java)
             this@ScreensaverActivity.startActivity(mainIntent)
             this@ScreensaverActivity.finish()
-        }, 500)
+        }, 2000)
     }
 }

@@ -9,6 +9,7 @@ import android.media.MediaMetadataRetriever
 import android.media.SoundPool
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.Handler
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
@@ -189,22 +190,27 @@ open class MainActivity : AppCompatActivity(){
         val intent = Intent(this, HelpActivity::class.java)
         help.setOnClickListener {
             startActivity(intent)
+            //help.setOnClickListener {}
         }
         val intent1 = Intent(this, AddingfilesActivity::class.java)
         file.setOnClickListener {
             startActivity(intent1)
+            //file.setOnClickListener {}
         }
         val intent2 = Intent(this, SettingsActivity::class.java)
         settings.setOnClickListener {
             startActivity(intent2)
+            //settings.setOnClickListener {}
         }
         val intent3 = Intent(this, TutorialActivity::class.java)
         tutorial.setOnClickListener {
             startActivity(intent3)
+            //tutorial.setOnClickListener {}
         }
         val intent4 = Intent(this, SigninActivity::class.java)
         account.setOnClickListener {
             startActivity(intent4)
+            account.setOnClickListener {}
         }
     }
 
@@ -385,9 +391,10 @@ open class MainActivity : AppCompatActivity(){
                 for (i in tracksContent.indices) {
                     val soundsContent = tracksContent[i].split(";").toTypedArray()
                     countSounds[i] = soundsContent.size - 1
+                    val visualise = mutableListOf<Sound>()
                     for (j in soundsContent.indices) {
                         val params = soundsContent[j].split(" ").toTypedArray()
-                        sounds[i][j] = SoundInfo(
+                         val sound = SoundInfo(
                             params[0],
                             params[1].toInt(),
                             params[2].toLong(),
@@ -395,13 +402,15 @@ open class MainActivity : AppCompatActivity(){
                             params[4].toInt(),
                             params[5].toFloat()
                         )
-                        val indentFloat : Float = if (j != 0) params[2].toLong() - getSoundLength(sounds[i][j - 1].res) / sounds[i][j - 1].ratio
-                        else params[2].toFloat()
-                        var len = ((getSoundLength(sounds[i][j].res) / sounds[i][j].ratio) / 20).roundToInt()
+                        sounds[i][j] = sound
+                        val indentFloat : Float = if (j != 0) sound.delay - getSoundLength(sounds[i][j - 1].res) / sounds[i][j - 1].ratio
+                        else sound.delay.toFloat()
+                        var len = ((getSoundLength(sound.res) / sound.ratio) / 20).roundToInt()
                         len = if (len > 0) len else 1
-                        (currentRecycler(i).adapter as SecondsListAdapter).addSound(Sound((indentFloat / 20).roundToInt(), len, currentColor(j), i, j))
+                        visualise.add(Sound((indentFloat / 20).roundToInt(), len, currentColor(j), i, j))
                         if (getSoundLength(params[0]) == 0.toLong() && !missingSounds.contains(params[0])) missingSounds.add(params[0])
                     }
+                    (currentRecycler(i).adapter as SecondsListAdapter).fillTrack(visualise)
                 }
             }
             catch (e : ArrayIndexOutOfBoundsException) {
@@ -494,35 +503,21 @@ open class MainActivity : AppCompatActivity(){
                 if (countTracks == i && countTracks != 0) countTracks --
             }
             setMusicLength()
-            (currentRecycler(i).adapter as SecondsListAdapter).eraseSounds()
-            if (countSounds[i] != -1) {
-                for (y in 0..countSounds[i]) {
-                    val sound = sounds[i][y]
-                    val indentFloat : Float = if (y != 0) sound.delay - getSoundLength(sounds[i][y - 1].res) / sounds[i][y - 1].ratio
-                    else sound.delay.toFloat()
-                    var len = ((getSoundLength(sounds[i][y].res) / sounds[i][y].ratio) / 20).roundToInt()
-                    len = if (len > 0) len else 1
-                    (currentRecycler(i).adapter as SecondsListAdapter).addSound(Sound(
-                        (indentFloat / 20).roundToInt(), len, currentColor(y), i, y))
-                }
-            }
+            (currentRecycler(i).adapter as SecondsListAdapter).deleteSound(j)
         }
     }
 
     private fun changeSelected (i : Int, j: Int) {
         if (j <= countSounds[i]) {
             sounds[i][j] = getSoundParameters(i, j)
+            val sound = sounds[i][j]
             setMusicLength()
-            (currentRecycler(i).adapter as SecondsListAdapter).eraseSounds()
-            for (y in 0..countSounds[i]) {
-                val sound = sounds[i][y]
-                val indentFloat : Float = if (y != 0) sound.delay - getSoundLength(sounds[i][y - 1].res) / sounds[i][y - 1].ratio
-                else sound.delay.toFloat()
-                var len = ((getSoundLength(sounds[i][y].res) / sounds[i][y].ratio) / 20).roundToInt()
-                len = if (len > 0) len else 1
-                (currentRecycler(i).adapter as SecondsListAdapter).addSound(Sound(
-                    (indentFloat / 20).roundToInt(), len, currentColor(y), i, y))
-            }
+            val indentFloat : Float = if (j != 0) sound.delay - getSoundLength(sounds[i][j - 1].res) / sounds[i][j - 1].ratio
+            else sound.delay.toFloat()
+            var len = ((getSoundLength(sounds[i][j].res) / sounds[i][j].ratio) / 20).roundToInt()
+            len = if (len > 0) len else 1
+            (currentRecycler(i).adapter as SecondsListAdapter).editSound(Sound(
+                (indentFloat / 20).roundToInt(), len, currentColor(j), i, j))
         }
     }
 
@@ -571,17 +566,15 @@ open class MainActivity : AppCompatActivity(){
 
     private fun playTrack(i: Int, j: Int, delay: Long = 0) {
         val started = played
-        object : CountDownTimer(sounds[i][j].delay + delay, 1000) {
-            override fun onTick(millisUntilFinished: Long) {}
-            override fun onFinish() {
-                val sound = sounds[i][j]
-                if (state != "pause" && started == played) {
-                    tracks[i].play(sound.id, sound.volume, sound.volume, 0, 0, sound.ratio)
-                    Log.d(TAG, "MYMSG play: $i $j " + sounds[i][0].res)
-                }
-                if (j < countSounds[i] && started == played) playTrack(i, j + 1)
+        val handler = Handler()
+        handler.postDelayed({
+            val sound = sounds[i][j]
+            if (state != "pause" && started == played) {
+                tracks[i].play(sound.id, sound.volume, sound.volume, 0, 0, sound.ratio)
+                Log.d(TAG, "MYMSG play: $i $j " + sounds[i][0].res)
             }
-        }.start()
+            if (j < countSounds[i] && started == played) playTrack(i, j + 1)
+        }, sounds[i][j].delay + delay)
     }
 
     private fun getSoundParameters(x : Int, y : Int): SoundInfo {
@@ -644,9 +637,9 @@ open class MainActivity : AppCompatActivity(){
             }
 
             if (state != "playing") {
-                setTimer()
                 val start: Long = currentTimeMillis() + 100
                 state = "playing"
+                setTimer()
                 if (countSounds[0] != -1) playTrack(0, 0, start - currentTimeMillis())
                 if (countSounds[1] != -1) playTrack(1, 0, start - currentTimeMillis())
                 if (countSounds[2] != -1) playTrack(2, 0, start - currentTimeMillis())
@@ -668,6 +661,7 @@ open class MainActivity : AppCompatActivity(){
 
     fun resetPlaying(view: View) {
         timer?.cancel()
+        setMusicLength()
         Toast.makeText(this, "Playing halted", Toast.LENGTH_SHORT).show()
         for (i in 0..countTracks) { // очищение и перезаполнение, если играем еще раз
             tracks[i].autoPause()
