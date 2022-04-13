@@ -3,7 +3,7 @@ package com.bigri239.easymusic
 import androidx.annotation.ColorRes
 
 data class Sound(
-    val shift: Int,
+    var shift: Int,
     val length: Int,
     val type: SoundType,
     val track: Int,

@@ -390,9 +390,10 @@ open class MainActivity : AppCompatActivity(){
                 for (i in tracksContent.indices) {
                     val soundsContent = tracksContent[i].split(";").toTypedArray()
                     countSounds[i] = soundsContent.size - 1
+                    val visualise = mutableListOf<Sound>()
                     for (j in soundsContent.indices) {
                         val params = soundsContent[j].split(" ").toTypedArray()
-                        sounds[i][j] = SoundInfo(
+                         val sound = SoundInfo(
                             params[0],
                             params[1].toInt(),
                             params[2].toLong(),
@@ -400,13 +401,15 @@ open class MainActivity : AppCompatActivity(){
                             params[4].toInt(),
                             params[5].toFloat()
                         )
-                        val indentFloat : Float = if (j != 0) params[2].toLong() - getSoundLength(sounds[i][j - 1].res) / sounds[i][j - 1].ratio
-                        else params[2].toFloat()
-                        var len = ((getSoundLength(sounds[i][j].res) / sounds[i][j].ratio) / 20).roundToInt()
+                        sounds[i][j] = sound
+                        val indentFloat : Float = if (j != 0) sound.delay - getSoundLength(sounds[i][j - 1].res) / sounds[i][j - 1].ratio
+                        else sound.delay.toFloat()
+                        var len = ((getSoundLength(sound.res) / sound.ratio) / 20).roundToInt()
                         len = if (len > 0) len else 1
-                        (currentRecycler(i).adapter as SecondsListAdapter).addSound(Sound((indentFloat / 20).roundToInt(), len, currentColor(j), i, j))
+                        visualise.add(Sound((indentFloat / 20).roundToInt(), len, currentColor(j), i, j))
                         if (getSoundLength(params[0]) == 0.toLong() && !missingSounds.contains(params[0])) missingSounds.add(params[0])
                     }
+                    (currentRecycler(i).adapter as SecondsListAdapter).fillTrack(visualise)
                 }
             }
             catch (e : ArrayIndexOutOfBoundsException) {
@@ -499,35 +502,21 @@ open class MainActivity : AppCompatActivity(){
                 if (countTracks == i && countTracks != 0) countTracks --
             }
             setMusicLength()
-            (currentRecycler(i).adapter as SecondsListAdapter).eraseSounds()
-            if (countSounds[i] != -1) {
-                for (y in 0..countSounds[i]) {
-                    val sound = sounds[i][y]
-                    val indentFloat : Float = if (y != 0) sound.delay - getSoundLength(sounds[i][y - 1].res) / sounds[i][y - 1].ratio
-                    else sound.delay.toFloat()
-                    var len = ((getSoundLength(sounds[i][y].res) / sounds[i][y].ratio) / 20).roundToInt()
-                    len = if (len > 0) len else 1
-                    (currentRecycler(i).adapter as SecondsListAdapter).addSound(Sound(
-                        (indentFloat / 20).roundToInt(), len, currentColor(y), i, y))
-                }
-            }
+            (currentRecycler(i).adapter as SecondsListAdapter).deleteSound(j)
         }
     }
 
     private fun changeSelected (i : Int, j: Int) {
         if (j <= countSounds[i]) {
             sounds[i][j] = getSoundParameters(i, j)
+            val sound = sounds[i][j]
             setMusicLength()
-            (currentRecycler(i).adapter as SecondsListAdapter).eraseSounds()
-            for (y in 0..countSounds[i]) {
-                val sound = sounds[i][y]
-                val indentFloat : Float = if (y != 0) sound.delay - getSoundLength(sounds[i][y - 1].res) / sounds[i][y - 1].ratio
-                else sound.delay.toFloat()
-                var len = ((getSoundLength(sounds[i][y].res) / sounds[i][y].ratio) / 20).roundToInt()
-                len = if (len > 0) len else 1
-                (currentRecycler(i).adapter as SecondsListAdapter).addSound(Sound(
-                    (indentFloat / 20).roundToInt(), len, currentColor(y), i, y))
-            }
+            val indentFloat : Float = if (j != 0) sound.delay - getSoundLength(sounds[i][j - 1].res) / sounds[i][j - 1].ratio
+            else sound.delay.toFloat()
+            var len = ((getSoundLength(sounds[i][j].res) / sounds[i][j].ratio) / 20).roundToInt()
+            len = if (len > 0) len else 1
+            (currentRecycler(i).adapter as SecondsListAdapter).editSound(Sound(
+                (indentFloat / 20).roundToInt(), len, currentColor(j), i, j))
         }
     }
 
