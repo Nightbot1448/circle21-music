@@ -56,8 +56,8 @@ class FriendActivity() : AppCompatActivity() {
 
         val intent = Intent(this, RecoveryActivity::class.java)
         findViewById<TextView>(R.id.backrec).setOnClickListener {
+            backrec.isClickable = false
             startActivity(intent)
-            backrec.setOnClickListener {}
         }
 
         customAdapter1 = if (itemsList1 != arrayListOf("")) CustomAdapter(itemsList1, connectorSound)

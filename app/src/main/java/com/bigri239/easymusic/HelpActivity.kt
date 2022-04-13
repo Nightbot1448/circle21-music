@@ -17,23 +17,23 @@ class HelpActivity : AppCompatActivity() {
         super.onStart()
         val intent = Intent(this, MainActivity::class.java)
         findViewById<TextView>(R.id.back_H).setOnClickListener {
+            back_H.isClickable = false
             startActivity(intent)
-            back_H.setOnClickListener {}
         }
         val intent11 = Intent(this, AuthorsActivity::class.java)
         findViewById<TextView>(R.id.authors).setOnClickListener {
+            authors.isClickable = false
             startActivity(intent11)
-            authors.setOnClickListener {}
         }
         val intent12 = Intent(this, FaqActivity::class.java)
         findViewById<TextView>(R.id.frequently).setOnClickListener {
+            terms.isClickable = false
             startActivity(intent12)
-            frequently.setOnClickListener {}
         }
         val intent13 = Intent(this, TermsActivity::class.java)
         findViewById<TextView>(R.id.terms).setOnClickListener {
+            terms.isClickable = false
             startActivity(intent13)
-            terms.setOnClickListener {}
         }
 
     }
