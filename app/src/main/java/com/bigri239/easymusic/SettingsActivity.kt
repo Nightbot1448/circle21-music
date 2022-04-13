@@ -39,8 +39,8 @@ class SettingsActivity : AppCompatActivity() {
         super.onStart()
         val intent = Intent(this, MainActivity::class.java)
         findViewById<TextView>(R.id.backsettings).setOnClickListener {
-            startActivity(intent)
             backsettings.isClickable = false
+            startActivity(intent)
         }
     }
 
