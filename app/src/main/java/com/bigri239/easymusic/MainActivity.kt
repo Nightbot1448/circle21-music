@@ -189,28 +189,28 @@ open class MainActivity : AppCompatActivity(){
         super.onStart()
         val intent = Intent(this, HelpActivity::class.java)
         help.setOnClickListener {
+            help.isClickable = false
             startActivity(intent)
-            //help.setOnClickListener {}
         }
         val intent1 = Intent(this, AddingfilesActivity::class.java)
         file.setOnClickListener {
+            file.isClickable = false
             startActivity(intent1)
-            //file.setOnClickListener {}
         }
         val intent2 = Intent(this, SettingsActivity::class.java)
         settings.setOnClickListener {
+            settings.isClickable = false
             startActivity(intent2)
-            //settings.setOnClickListener {}
         }
         val intent3 = Intent(this, TutorialActivity::class.java)
         tutorial.setOnClickListener {
+            tutorial.isClickable = false
             startActivity(intent3)
-            //tutorial.setOnClickListener {}
         }
         val intent4 = Intent(this, SigninActivity::class.java)
         account.setOnClickListener {
+            account.isClickable = false
             startActivity(intent4)
-            account.setOnClickListener {}
         }
     }
 

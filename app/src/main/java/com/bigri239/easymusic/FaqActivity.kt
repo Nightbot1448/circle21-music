@@ -16,8 +16,8 @@ class FaqActivity : AppCompatActivity() {
         super.onStart()
         val intent = Intent(this, MainActivity::class.java)
         findViewById<TextView>(R.id.backfaq).setOnClickListener {
+            backfaq.isClickable = false
             startActivity(intent)
-            backfaq.setOnClickListener {}
         }
     }
 }

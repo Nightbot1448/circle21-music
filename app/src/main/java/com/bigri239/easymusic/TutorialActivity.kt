@@ -16,8 +16,8 @@ class TutorialActivity : AppCompatActivity() {
         super.onStart()
         val intent = Intent(this, MainActivity::class.java)
         findViewById<TextView>(R.id.backtut).setOnClickListener {
+            backtut.isClickable = false
             startActivity(intent)
-            backtut.setOnClickListener {}
         }
     }
 }

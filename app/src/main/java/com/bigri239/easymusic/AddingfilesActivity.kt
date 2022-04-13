@@ -76,8 +76,8 @@ class AddingfilesActivity : AppCompatActivity() {
         super.onStart()
         val intent = Intent(this, MainActivity::class.java)
         findViewById<TextView>(R.id.back_A).setOnClickListener {
+            back_A.isClickable = false
             startActivity(intent)
-            back_A.setOnClickListener {}
         }
     }
 
