@@ -16,8 +16,8 @@ class AuthorsActivity : AppCompatActivity() {
         super.onStart()
         val intent = Intent(this, MainActivity::class.java)
         findViewById<TextView>(R.id.backauth).setOnClickListener {
+            backauth.isClickable = false
             startActivity(intent)
-            backauth.setOnClickListener {}
         }
     }
 }

@@ -30,8 +30,8 @@ class SignupActivity : AppCompatActivity() {
         super.onStart()
         val intent = Intent(this, SigninActivity::class.java)
         findViewById<TextView>(R.id.backsu).setOnClickListener {
+            backsu.isClickable = false
             startActivity(intent)
-            backsu.setOnClickListener {}
         }
     }
 

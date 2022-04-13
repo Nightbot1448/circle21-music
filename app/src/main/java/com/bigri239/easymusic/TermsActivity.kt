@@ -16,8 +16,8 @@ class TermsActivity : AppCompatActivity() {
         super.onStart()
         val intent = Intent(this, MainActivity::class.java)
         findViewById<TextView>(R.id.backter).setOnClickListener {
+            backter.isClickable = false
             startActivity(intent)
-            backter.setOnClickListener {}
         }
     }
 }
