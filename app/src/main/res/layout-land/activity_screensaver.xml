@@ -47,6 +47,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"  />
 
+    <TextView
+        android:id="@+id/version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ver. 0.8.9-aplha"
+        android:textSize="16sp"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintEnd_toEndOf="@id/createdBy"
+        app:layout_constraintBottom_toTopOf="@id/createdBy"  />
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"

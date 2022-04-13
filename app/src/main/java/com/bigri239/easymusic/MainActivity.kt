@@ -9,6 +9,7 @@ import android.media.MediaMetadataRetriever
 import android.media.SoundPool
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.Handler
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
@@ -565,17 +566,15 @@ open class MainActivity : AppCompatActivity(){
 
     private fun playTrack(i: Int, j: Int, delay: Long = 0) {
         val started = played
-        object : CountDownTimer(sounds[i][j].delay + delay, 1000) {
-            override fun onTick(millisUntilFinished: Long) {}
-            override fun onFinish() {
-                val sound = sounds[i][j]
-                if (state != "pause" && started == played) {
-                    tracks[i].play(sound.id, sound.volume, sound.volume, 0, 0, sound.ratio)
-                    Log.d(TAG, "MYMSG play: $i $j " + sounds[i][0].res)
-                }
-                if (j < countSounds[i] && started == played) playTrack(i, j + 1)
+        val handler = Handler()
+        handler.postDelayed({
+            val sound = sounds[i][j]
+            if (state != "pause" && started == played) {
+                tracks[i].play(sound.id, sound.volume, sound.volume, 0, 0, sound.ratio)
+                Log.d(TAG, "MYMSG play: $i $j " + sounds[i][0].res)
             }
-        }.start()
+            if (j < countSounds[i] && started == played) playTrack(i, j + 1)
+        }, sounds[i][j].delay + delay)
     }
 
     private fun getSoundParameters(x : Int, y : Int): SoundInfo {
@@ -638,9 +637,9 @@ open class MainActivity : AppCompatActivity(){
             }
 
             if (state != "playing") {
-                setTimer()
                 val start: Long = currentTimeMillis() + 100
                 state = "playing"
+                setTimer()
                 if (countSounds[0] != -1) playTrack(0, 0, start - currentTimeMillis())
                 if (countSounds[1] != -1) playTrack(1, 0, start - currentTimeMillis())
                 if (countSounds[2] != -1) playTrack(2, 0, start - currentTimeMillis())
@@ -662,6 +661,7 @@ open class MainActivity : AppCompatActivity(){
 
     fun resetPlaying(view: View) {
         timer?.cancel()
+        setMusicLength()
         Toast.makeText(this, "Playing halted", Toast.LENGTH_SHORT).show()
         for (i in 0..countTracks) { // очищение и перезаполнение, если играем еще раз
             tracks[i].autoPause()

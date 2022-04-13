@@ -16,7 +16,7 @@
         android:layout_marginStart="4dp"
         android:background="#444444"
         app:layout_constraintStart_toEndOf="@+id/textView19"
-        app:layout_constraintTop_toBottomOf="@+id/file"
+        app:layout_constraintBottom_toTopOf="@+id/stop"
         tools:context=".MainActivity"
         tools:ignore="MissingConstraints">
 
@@ -198,8 +198,8 @@
         android:onClick="resetPlaying"
         app:borderWidth="0dp"
         app:layout_constraintEnd_toStartOf="@+id/floatingActionButton2"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-        app:srcCompat="@android:drawable/alert_dark_frame"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
         tools:ignore="MissingConstraints" />
 
     <TextView
@@ -235,13 +235,13 @@
         android:scaleType="center"
         android:src="@drawable/soundmenunew"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt" />
+        app:layout_constraintTop_toTopOf="@+id/constraintLayout" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="16dp"
         android:backgroundTint="#D98B25"
         android:clickable="true"
         android:onClick="pause"
@@ -263,7 +263,7 @@
         app:borderWidth="0dp"
         app:layout_constraintStart_toStartOf="@+id/settings"
         app:layout_constraintTop_toTopOf="@+id/stop"
-        app:srcCompat="@android:drawable/ic_menu_upload"
+        app:srcCompat="@android:drawable/ic_menu_save"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
@@ -289,7 +289,7 @@
         android:text="1"
         android:textColor="@color/colorAccent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/file" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/btnRem1" />
 
     <TextView
         android:id="@+id/textView20"
@@ -299,7 +299,7 @@
         android:text="2"
         android:textColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="@+id/textView19"
-        app:layout_constraintTop_toBottomOf="@+id/textView19" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/btnRem2" />
 
     <TextView
         android:id="@+id/textView21"
@@ -309,7 +309,7 @@
         android:text="3"
         android:textColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="@+id/textView20"
-        app:layout_constraintTop_toBottomOf="@+id/textView20" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/btnRem3" />
 
     <TextView
         android:id="@+id/textView22"
@@ -319,7 +319,7 @@
         android:text="4"
         android:textColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="@+id/textView21"
-        app:layout_constraintTop_toBottomOf="@+id/textView21" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/btnRem4" />
 
     <TextView
         android:id="@+id/textView23"
@@ -329,7 +329,7 @@
         android:text="5"
         android:textColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="@+id/textView22"
-        app:layout_constraintTop_toBottomOf="@+id/textView22" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/btnRem5" />
 
     <TextView
         android:id="@+id/textView24"
@@ -339,7 +339,7 @@
         android:text="6"
         android:textColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="@+id/textView23"
-        app:layout_constraintTop_toBottomOf="@+id/textView23" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/btnRem6" />
 
     <TextView
         android:id="@+id/textView25"
@@ -349,7 +349,7 @@
         android:text="7"
         android:textColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="@+id/textView24"
-        app:layout_constraintTop_toBottomOf="@+id/textView24" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/btnRem7" />
 
     <TextView
         android:id="@+id/textView26"
@@ -359,7 +359,7 @@
         android:text="8"
         android:textColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="@+id/textView25"
-        app:layout_constraintTop_toBottomOf="@+id/textView25" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/btnRem8" />
 
     <TextView
         android:id="@+id/textView27"
@@ -369,7 +369,7 @@
         android:text="9"
         android:textColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="@+id/textView26"
-        app:layout_constraintTop_toBottomOf="@+id/textView26" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/btnRem9" />
 
     <ImageView
         android:id="@+id/imageView2"
