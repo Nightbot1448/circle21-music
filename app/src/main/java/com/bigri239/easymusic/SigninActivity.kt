@@ -30,10 +30,12 @@ class SigninActivity : AppCompatActivity() {
         val intent = Intent(this, MainActivity::class.java)
         findViewById<TextView>(R.id.backsi).setOnClickListener {
             startActivity(intent)
+            backsi.setOnClickListener {}
         }
         val intents2 = Intent(this, SignupActivity::class.java)
         findViewById<TextView>(R.id.signup).setOnClickListener {
             startActivity(intents2)
+            signup.setOnClickListener {}
         }
         if (webRequester.checkAuthorized()) {
             val intents3 = Intent(this, RecoveryActivity::class.java)

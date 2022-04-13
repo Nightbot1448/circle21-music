@@ -43,10 +43,30 @@ class SecondsListAdapter(val connector : MainActivity.Connector) : RecyclerView.
                 soundSeconds.add(SoundSecond(getColor(sound.type), sound))
             }
         }
-        for (i in 0..800) {
+        for (i in 0..700) {
             soundSeconds.add(SoundSecond())
         }
         notifyDataSetChanged()
+    }
+
+    fun fillTrack (soundList: List<Sound>) {
+        sounds.clear()
+        sounds.addAll(soundList)
+        initSecondSounds()
+    }
+
+    fun editSound (newSound : Sound) {
+        sounds[newSound.number] = newSound
+        initSecondSounds()
+    }
+
+    fun deleteSound (j : Int) {
+        if (j != sounds.size - 1) {
+            val sound = sounds[j + 1]
+            sounds[j + 1].shift += sounds[j].length + sounds[j].shift
+        }
+        sounds.removeAt(j)
+        initSecondSounds()
     }
 
     private fun getColor(type: SoundType): Int {

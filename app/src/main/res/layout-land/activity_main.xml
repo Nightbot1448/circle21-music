@@ -16,7 +16,7 @@
         android:layout_marginStart="4dp"
         android:background="#444444"
         app:layout_constraintStart_toEndOf="@+id/textView19"
-        app:layout_constraintTop_toBottomOf="@+id/file"
+        app:layout_constraintBottom_toTopOf="@+id/stop"
         tools:context=".MainActivity"
         tools:ignore="MissingConstraints">
 
@@ -198,8 +198,8 @@
         android:onClick="resetPlaying"
         app:borderWidth="0dp"
         app:layout_constraintEnd_toStartOf="@+id/floatingActionButton2"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-        app:srcCompat="@android:drawable/alert_dark_frame"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
         tools:ignore="MissingConstraints" />
 
     <TextView
@@ -216,6 +216,7 @@
         android:id="@+id/txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
         android:clickable="true"
         android:onClick="createSelectProjectPopupMenu"
         android:text="projectDefault"
@@ -227,21 +228,20 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="107dp"
+        android:layout_width="113dp"
         android:layout_height="270dp"
-        android:layout_marginEnd="5dp"
         android:layout_marginTop="4dp"
         android:contentDescription="@string/app_name"
         android:scaleType="center"
         android:src="@drawable/soundmenunew"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt" />
+        app:layout_constraintTop_toTopOf="@+id/constraintLayout" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="16dp"
         android:backgroundTint="#D98B25"
         android:clickable="true"
         android:onClick="pause"
@@ -263,7 +263,7 @@
         app:borderWidth="0dp"
         app:layout_constraintStart_toStartOf="@+id/settings"
         app:layout_constraintTop_toTopOf="@+id/stop"
-        app:srcCompat="@android:drawable/ic_menu_upload"
+        app:srcCompat="@android:drawable/ic_menu_save"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
@@ -289,7 +289,7 @@
         android:text="1"
         android:textColor="@color/colorAccent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/file" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/btnRem1" />
 
     <TextView
         android:id="@+id/textView20"
@@ -299,7 +299,7 @@
         android:text="2"
         android:textColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="@+id/textView19"
-        app:layout_constraintTop_toBottomOf="@+id/textView19" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/btnRem2" />
 
     <TextView
         android:id="@+id/textView21"
@@ -309,7 +309,7 @@
         android:text="3"
         android:textColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="@+id/textView20"
-        app:layout_constraintTop_toBottomOf="@+id/textView20" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/btnRem3" />
 
     <TextView
         android:id="@+id/textView22"
@@ -319,7 +319,7 @@
         android:text="4"
         android:textColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="@+id/textView21"
-        app:layout_constraintTop_toBottomOf="@+id/textView21" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/btnRem4" />
 
     <TextView
         android:id="@+id/textView23"
@@ -329,7 +329,7 @@
         android:text="5"
         android:textColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="@+id/textView22"
-        app:layout_constraintTop_toBottomOf="@+id/textView22" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/btnRem5" />
 
     <TextView
         android:id="@+id/textView24"
@@ -339,7 +339,7 @@
         android:text="6"
         android:textColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="@+id/textView23"
-        app:layout_constraintTop_toBottomOf="@+id/textView23" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/btnRem6" />
 
     <TextView
         android:id="@+id/textView25"
@@ -349,7 +349,7 @@
         android:text="7"
         android:textColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="@+id/textView24"
-        app:layout_constraintTop_toBottomOf="@+id/textView24" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/btnRem7" />
 
     <TextView
         android:id="@+id/textView26"
@@ -359,7 +359,7 @@
         android:text="8"
         android:textColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="@+id/textView25"
-        app:layout_constraintTop_toBottomOf="@+id/textView25" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/btnRem8" />
 
     <TextView
         android:id="@+id/textView27"
@@ -369,23 +369,24 @@
         android:text="9"
         android:textColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="@+id/textView26"
-        app:layout_constraintTop_toBottomOf="@+id/textView26" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/btnRem9" />
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="115dp"
+        android:layout_width="114dp"
         android:layout_height="245dp"
+        android:layout_marginEnd="-2dp"
         android:contentDescription="@string/app_name"
         android:scaleType="center"
         android:src="@drawable/fone"
         app:layout_constraintEnd_toStartOf="@id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/constraintLayout"
-        />
+        app:layout_constraintTop_toTopOf="@+id/constraintLayout" />
 
     <Button
         android:id="@+id/btnAdd8"
         android:layout_width="50dp"
         android:layout_height="28dp"
+        android:layout_marginTop="-1dp"
         android:text="add"
         android:textSize="7sp"
         app:layout_constraintStart_toStartOf="@+id/btnAdd7"
@@ -395,6 +396,7 @@
         android:id="@+id/btnAdd6"
         android:layout_width="50dp"
         android:layout_height="28dp"
+        android:layout_marginTop="-1dp"
         android:text="add"
         android:textSize="7sp"
         app:layout_constraintStart_toStartOf="@+id/btnAdd5"
@@ -404,6 +406,7 @@
         android:id="@+id/btnAdd5"
         android:layout_width="50dp"
         android:layout_height="28dp"
+        android:layout_marginTop="-1dp"
         android:text="add"
         android:textSize="7sp"
         app:layout_constraintStart_toStartOf="@+id/btnAdd4"
@@ -413,6 +416,7 @@
         android:id="@+id/btnAdd3"
         android:layout_width="50dp"
         android:layout_height="28dp"
+        android:layout_marginTop="-1dp"
         android:text="add"
         android:textSize="7sp"
         app:layout_constraintStart_toStartOf="@+id/btnAdd2"
@@ -422,6 +426,7 @@
         android:id="@+id/btnAdd4"
         android:layout_width="50dp"
         android:layout_height="28dp"
+        android:layout_marginTop="-1dp"
         android:text="add"
         android:textSize="7sp"
         app:layout_constraintStart_toStartOf="@+id/btnAdd3"
@@ -431,6 +436,7 @@
         android:id="@+id/btnAdd7"
         android:layout_width="50dp"
         android:layout_height="28dp"
+        android:layout_marginTop="-1dp"
         android:text="add"
         android:textSize="7sp"
         app:layout_constraintStart_toStartOf="@+id/btnAdd6"
@@ -440,6 +446,7 @@
         android:id="@+id/btnAdd9"
         android:layout_width="50dp"
         android:layout_height="28dp"
+        android:layout_marginTop="-1dp"
         android:text="add"
         android:textSize="7sp"
         app:layout_constraintStart_toStartOf="@+id/btnAdd8"
@@ -459,6 +466,7 @@
         android:id="@+id/btnAdd2"
         android:layout_width="50dp"
         android:layout_height="28dp"
+        android:layout_marginTop="-1dp"
         android:text="add"
         android:textSize="7sp"
         app:layout_constraintStart_toStartOf="@+id/btnAdd1"
@@ -469,6 +477,7 @@
         android:id="@+id/btnRem8"
         android:layout_width="50dp"
         android:layout_height="28dp"
+        android:layout_marginTop="-1dp"
         android:text="del"
         android:textSize="7sp"
         app:layout_constraintStart_toStartOf="@+id/btnRem7"
@@ -478,6 +487,7 @@
         android:id="@+id/btnRem6"
         android:layout_width="50dp"
         android:layout_height="28dp"
+        android:layout_marginTop="-1dp"
         android:text="del"
         android:textSize="7sp"
         app:layout_constraintStart_toStartOf="@+id/btnRem5"
@@ -487,6 +497,7 @@
         android:id="@+id/btnRem5"
         android:layout_width="50dp"
         android:layout_height="28dp"
+        android:layout_marginTop="-1dp"
         android:text="del"
         android:textSize="7sp"
         app:layout_constraintStart_toStartOf="@+id/btnRem4"
@@ -496,6 +507,7 @@
         android:id="@+id/btnRem3"
         android:layout_width="50dp"
         android:layout_height="28dp"
+        android:layout_marginTop="-1dp"
         android:text="del"
         android:textSize="7sp"
         app:layout_constraintStart_toStartOf="@+id/btnRem2"
@@ -505,6 +517,7 @@
         android:id="@+id/btnRem4"
         android:layout_width="50dp"
         android:layout_height="28dp"
+        android:layout_marginTop="-1dp"
         android:text="del"
         android:textSize="7sp"
         app:layout_constraintStart_toStartOf="@+id/btnRem3"
@@ -514,6 +527,7 @@
         android:id="@+id/btnRem7"
         android:layout_width="50dp"
         android:layout_height="28dp"
+        android:layout_marginTop="-1dp"
         android:text="del"
         android:textSize="7sp"
         app:layout_constraintStart_toStartOf="@+id/btnRem6"
@@ -523,6 +537,7 @@
         android:id="@+id/btnRem9"
         android:layout_width="50dp"
         android:layout_height="28dp"
+        android:layout_marginTop="-1dp"
         android:text="del"
         android:textSize="7sp"
         app:layout_constraintStart_toStartOf="@+id/btnRem8"
@@ -542,6 +557,7 @@
         android:id="@+id/btnRem2"
         android:layout_width="50dp"
         android:layout_height="28dp"
+        android:layout_marginTop="-1dp"
         android:text="del"
         android:textSize="7sp"
         app:layout_constraintStart_toStartOf="@+id/btnRem1"
@@ -549,7 +565,7 @@
 
     <EditText
         android:id="@+id/edittextmain1"
-        android:layout_width="70dp"
+        android:layout_width="75dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:hint="Indent"
@@ -562,7 +578,7 @@
         android:id="@+id/txt2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="22dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="50dp"
         android:text="bassalbane"
         android:clickable="true"
@@ -586,7 +602,7 @@
         android:id="@+id/txtMs0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="2dp"
+        android:layout_marginEnd="4dp"
         android:layout_marginTop="4dp"
         android:text="ms"
         android:textSize="14sp"
@@ -597,7 +613,7 @@
         android:id="@+id/txtMs1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="2dp"
+        android:layout_marginEnd="4dp"
         android:layout_marginTop="4dp"
         android:text="ms"
         android:textSize="14sp"
@@ -608,7 +624,7 @@
         android:id="@+id/txtPc0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="2dp"
+        android:layout_marginEnd="4dp"
         android:layout_marginTop="4dp"
         android:text="%"
         android:textSize="14sp"
@@ -619,7 +635,7 @@
         android:id="@+id/txtPc1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="2dp"
+        android:layout_marginEnd="4dp"
         android:layout_marginTop="4dp"
         android:text="%"
         android:textSize="14sp"
@@ -639,7 +655,7 @@
 
     <EditText
         android:id="@+id/edittextmain3"
-        android:layout_width="70dp"
+        android:layout_width="75dp"
         android:layout_height="wrap_content"
         android:hint="Volume"
         android:inputType="number"
@@ -649,7 +665,7 @@
 
     <EditText
         android:id="@+id/edittextmain4"
-        android:layout_width="70dp"
+        android:layout_width="75dp"
         android:layout_height="wrap_content"
         android:hint="Ratio"
         android:inputType="numberDecimal"
@@ -659,12 +675,13 @@
 
     <Button
         android:id="@+id/buttonEdit"
-        android:layout_width="74dp"
+        android:layout_width="75dp"
         android:layout_height="28dp"
         android:backgroundTint="#9C7425"
         android:text="Edit"
         android:textSize="7sp"
-        app:layout_constraintStart_toStartOf="@+id/edittextmain4"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintEnd_toEndOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/edittextmain4"
         app:rippleColor="@color/colorPrimaryDark" />
 
@@ -675,7 +692,8 @@
         android:backgroundTint="#9C7425"
         android:text="Delete"
         android:textSize="7sp"
-        app:layout_constraintStart_toStartOf="@+id/edittextmain4"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintEnd_toEndOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/buttonEdit"
         app:rippleColor="@color/colorPrimaryDark" />
 
