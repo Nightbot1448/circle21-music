@@ -14,9 +14,8 @@
         app:layout_constraintHorizontal_bias="0.025"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintVertical_bias="0.9"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"  />
+        app:layout_constraintTop_toBottomOf="@id/textView11"  />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView3"
@@ -66,7 +65,6 @@
         android:id="@+id/aboutme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         android:text="About me: "
         android:textColor="@color/colorAccent"
         android:textSize="20sp"
@@ -77,11 +75,11 @@
         android:id="@+id/textView11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
+        android:layout_marginTop="2dp"
         android:text="Sounds"
         android:textColor="@color/colorAccent"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerView2"
+        app:layout_constraintTop_toBottomOf="@+id/aboutme"
         app:layout_constraintEnd_toEndOf="@+id/recyclerView2"
         app:layout_constraintStart_toStartOf="@+id/recyclerView2" />
 
@@ -89,11 +87,10 @@
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
         android:text="Projects"
         android:textColor="@color/colorAccent"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerView3"
+        app:layout_constraintTop_toTopOf="@+id/textView11"
         app:layout_constraintEnd_toEndOf="@+id/recyclerView3"
         app:layout_constraintStart_toStartOf="@+id/recyclerView3" />
 

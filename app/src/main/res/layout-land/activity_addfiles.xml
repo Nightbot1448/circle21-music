@@ -21,34 +21,34 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView111"
         android:layout_width="300dp"
-        android:layout_height="201dp"
-        android:layout_marginBottom="10dp"
+        android:layout_height="200dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.075"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/button5" />
+        app:layout_constraintBottom_toTopOf="@+id/button5"
+        app:layout_constraintTop_toBottomOf="@+id/from" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView222"
         android:layout_width="300dp"
-        android:layout_height="201dp"
-        android:layout_marginBottom="10dp"
+        android:layout_height="200dp"
         app:layout_constraintHorizontal_bias="0.925"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_weight="2"
-        app:layout_constraintBottom_toTopOf="@+id/button5" />
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerView111" />
 
     <TextView
         android:id="@+id/from"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:text="OFFICIAL"
         android:textColor="@color/colorAccent"
         android:textSize="15dp"
         app:layout_constraintEnd_toEndOf="@+id/recyclerView111"
         app:layout_constraintStart_toStartOf="@+id/recyclerView111"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerView111" />
+        app:layout_constraintTop_toBottomOf="@+id/file" />
 
     <TextView
         android:id="@+id/name"
@@ -85,13 +85,12 @@
         android:id="@+id/to"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:text="CUSTOM"
         android:textColor="@color/colorAccent"
         android:textSize="15dp"
         app:layout_constraintEnd_toEndOf="@+id/recyclerView222"
         app:layout_constraintStart_toStartOf="@+id/recyclerView222"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerView222" />
+        app:layout_constraintBottom_toBottomOf="@+id/from" />
 
     <TextView
         android:id="@+id/back_A"
