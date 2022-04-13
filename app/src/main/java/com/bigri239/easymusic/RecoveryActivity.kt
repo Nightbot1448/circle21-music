@@ -112,6 +112,7 @@ class RecoveryActivity : AppCompatActivity() {
         val intent = Intent(this, MainActivity::class.java)
         findViewById<TextView>(R.id.backrec).setOnClickListener {
             startActivity(intent)
+            backrec.setOnClickListener {}
         }
         customAdapter = if (itemsList != arrayListOf("")) CustomAdapter(itemsList, connectorFriend)
         else CustomAdapter(arrayListOf(), connectorFriend)
