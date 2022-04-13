@@ -16,7 +16,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_recovery.*
-import kotlinx.android.synthetic.main.settings_activity.*
 import java.io.File
 import java.io.FileOutputStream
 
