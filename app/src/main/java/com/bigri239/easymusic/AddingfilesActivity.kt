@@ -25,7 +25,6 @@ import kotlin.math.abs
 @Suppress("DEPRECATION")
 class AddingfilesActivity : AppCompatActivity() {
     private var filePath = ""
-    private var isPlaying = false
     private var id = 0
     private var len : Long = 3615
     var track = SoundPool(1, AudioManager.STREAM_MUSIC, 0)
@@ -146,24 +145,15 @@ class AddingfilesActivity : AppCompatActivity() {
         if (len != 0.toLong()) {
             name.text = "Sound name: $soundName"
             length.text = "Sound length: $len"
-            if (!isPlaying) {
-                isPlaying = true
-                track = SoundPool(1, AudioManager.STREAM_MUSIC, 0)
-                id = if (itemsList.contains(soundName)) track.load(
-                    baseContext,
-                    resources.getIdentifier(soundName, "raw", packageName),
-                    0
-                )
-                else track.load("$filesDir/$soundName.wav",0)
-                play()
-                object : CountDownTimer(len, 1000) {
-                    override fun onTick(millisUntilFinished: Long) {}
-                    override fun onFinish() {
-                        track.release()
-                        isPlaying = false
-                    }
-                }.start()
-           }
+            track.release()
+            track = SoundPool(1, AudioManager.STREAM_MUSIC, 0)
+            id = if (itemsList.contains(soundName)) track.load(
+                baseContext,
+                resources.getIdentifier(soundName, "raw", packageName),
+                0
+            )
+            else track.load("$filesDir/$soundName.wav",0)
+            play()
         }
         else Toast.makeText(this, "Oops! This sound does not exist!", Toast.LENGTH_SHORT).show()
     }
