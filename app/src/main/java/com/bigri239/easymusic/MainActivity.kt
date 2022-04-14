@@ -518,9 +518,9 @@ open class MainActivity : AppCompatActivity(){
             sounds[i][j] = getSoundParameters(i, j)
             val sound = sounds[i][j]
             setMusicLength()
-            val indent = if (j != 0) (sound.delay - sounds[i][j - 1].len / 10.0).roundToInt()
+            val indent = if (j != 0) ((sound.delay - sounds[i][j - 1].len) / 10.0).roundToInt()
             else (sound.delay / 10.0).roundToInt()
-            var len = ((sounds[i][j].len) / 10.0).roundToInt()
+            var len = (sounds[i][j].len / 10.0).roundToInt()
             len = if (len > 0) len else 1
             (currentRecycler(i).adapter as SecondsListAdapter).editSound(Sound(
                 indent, len, currentColor(j), i, j))
