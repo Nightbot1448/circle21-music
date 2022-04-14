@@ -45,6 +45,7 @@ open class MainActivity : AppCompatActivity(){
         var volume: Float = 0.0F,
         var loop: Int = 0,
         var ratio: Float = 1.0F,
+        var len: Long = 0
     )
 
     private var newProject = ""
@@ -214,6 +215,11 @@ open class MainActivity : AppCompatActivity(){
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        saveProject()
+    }
+
     private fun currentRecycler (i : Int) : RecyclerView {
         val recyclerCurrent : RecyclerView = when(i) {
             0 -> recyclerViewhor1
@@ -241,22 +247,21 @@ open class MainActivity : AppCompatActivity(){
     }
 
     private fun addSound (x : Int) {
-        if (getSoundLength(currentSound) <= 5.6 * 60000) {
+        if (getSoundLength(currentSound) <= 5600) {
             if (isReady()) {
                 if (state == "unready") state = "ready"
                 if (countTracks < x) countTracks = x
                 val sound = getSoundParameters(x, countSounds[x] + 1)
                 countSounds[x]++
                 sounds[x][countSounds[x]] = sound
-                var len = ((getSoundLength(sound.res) / sound.ratio) / 20).roundToInt()
+                var len = (sound.len / 10.0).roundToInt()
                 len = if (len > 0) len else 1
-                val indent = if (countSounds[x] > 0) (sound.delay - getSoundLength(sounds[x][countSounds[x] - 1].res) / sounds[x][countSounds[x] - 1].ratio).toLong()
+                val indent = if (countSounds[x] > 0) sound.delay - sounds[x][countSounds[x] - 1].len
                 else sound.delay
                 (currentRecycler(x).adapter as SecondsListAdapter).addSound(Sound(
-                    (indent.toFloat() / 20).roundToInt(),
+                    (indent / 10.0).roundToInt(),
                     len,
                     currentColor(countSounds[x]), x, countSounds[x]))
-                Log.d(TAG, "MYMSG add: " + getSoundLength(sound.res))
                 setMusicLength()
             }
             buttonDelete.setOnClickListener {}
@@ -353,7 +358,7 @@ open class MainActivity : AppCompatActivity(){
                 try {
                     tracksLengths.add(0)
                     for (j in 0..countSounds[i]) tracksLengths[i] += sounds[i][j].delay
-                    tracksLengths[i] += (getSoundLength(sounds[i][countSounds[i]].res) / sounds[i][countSounds[i]].ratio).toLong()
+                    tracksLengths[i] += sounds[i][countSounds[i]].len
                 }
                 catch (e : IndexOutOfBoundsException) {}
             }
@@ -394,21 +399,22 @@ open class MainActivity : AppCompatActivity(){
                     val visualise = mutableListOf<Sound>()
                     for (j in soundsContent.indices) {
                         val params = soundsContent[j].split(" ").toTypedArray()
-                         val sound = SoundInfo(
+                        val sound = SoundInfo(
                             params[0],
                             params[1].toInt(),
                             params[2].toLong(),
                             params[3].toFloat(),
                             params[4].toInt(),
-                            params[5].toFloat()
+                            params[5].toFloat(),
+                            (getSoundLength(params[0]) / params[5].toFloat()).toLong()
                         )
                         sounds[i][j] = sound
-                        val indentFloat : Float = if (j != 0) sound.delay - getSoundLength(sounds[i][j - 1].res) / sounds[i][j - 1].ratio
-                        else sound.delay.toFloat()
-                        var len = ((getSoundLength(sound.res) / sound.ratio) / 20).roundToInt()
+                        val indent = if (j != 0) ((sound.delay - sounds[i][j - 1].len) / 10.0).roundToInt()
+                        else (sound.delay / 10.0).roundToInt()
+                        var len = (sound.len / 10.0).roundToInt()
                         len = if (len > 0) len else 1
-                        visualise.add(Sound((indentFloat / 20).roundToInt(), len, currentColor(j), i, j))
-                        if (getSoundLength(params[0]) == 0.toLong() && !missingSounds.contains(params[0])) missingSounds.add(params[0])
+                        visualise.add(Sound(indent, len, currentColor(j), i, j))
+                        if (sound.len == 0.toLong() && !missingSounds.contains(params[0])) missingSounds.add(params[0])
                     }
                     (currentRecycler(i).adapter as SecondsListAdapter).fillTrack(visualise)
                 }
@@ -512,12 +518,12 @@ open class MainActivity : AppCompatActivity(){
             sounds[i][j] = getSoundParameters(i, j)
             val sound = sounds[i][j]
             setMusicLength()
-            val indentFloat : Float = if (j != 0) sound.delay - getSoundLength(sounds[i][j - 1].res) / sounds[i][j - 1].ratio
-            else sound.delay.toFloat()
-            var len = ((getSoundLength(sounds[i][j].res) / sounds[i][j].ratio) / 20).roundToInt()
+            val indent = if (j != 0) (sound.delay - sounds[i][j - 1].len / 10.0).roundToInt()
+            else (sound.delay / 10.0).roundToInt()
+            var len = ((sounds[i][j].len) / 10.0).roundToInt()
             len = if (len > 0) len else 1
             (currentRecycler(i).adapter as SecondsListAdapter).editSound(Sound(
-                (indentFloat / 20).roundToInt(), len, currentColor(j), i, j))
+                indent, len, currentColor(j), i, j))
         }
     }
 
@@ -584,14 +590,15 @@ open class MainActivity : AppCompatActivity(){
         if (edittextmain4.text.toString().toFloat() < 12.5) edittextmain4.setText(12.5F.toString())
         else if (edittextmain4.text.toString().toFloat() > 800) edittextmain4.setText(800.toString())
         val ratio : Float = abs(100 / (edittextmain4.text.toString().toFloat()))
+        val len : Long = (getSoundLength(res) / ratio).toLong()
         Log.d(TAG, "MYMSG param: $res")
         if (y > 0) {
             val soundPrev = sounds[x][y - 1]
-            if (edittextmain1.text.toString().toLong() < getSoundLength(soundPrev.res) / soundPrev.ratio)
-                edittextmain1.setText((getSoundLength(soundPrev.res) / soundPrev.ratio).toLong().toString())
+            if (edittextmain1.text.toString().toLong() < soundPrev.len)
+                edittextmain1.setText(soundPrev.len.toString())
         }
         val delay : Long = edittextmain1.text.toString().toLong()
-        return SoundInfo(res, 0, delay, volume, 0, ratio)
+        return SoundInfo(res, 0, delay, volume, 0, ratio, len)
     }
 
     private fun setTimer (length: Long = getMusicLength()) {
