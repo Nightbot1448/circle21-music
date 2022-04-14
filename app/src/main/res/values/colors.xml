@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#d98b25</color>
+    <color name="colorPrimary">#ff9a00</color>
     <color name="colorPrimaryDark">#333333</color>
-    <color name="colorAccent">#d98b25</color>
+    <color name="colorAccent">#ff9a00</color>
 
     <color name="white">#696458</color>
     <color name="yellow">#ff0</color>
@@ -10,5 +10,24 @@
     <color name="blue">#00f</color>
     <color name="pink">#f0f</color>
     <color name="red">#f00</color>
+
+    <color name="darkRed">#8B0000</color>
+    <color name="mediumVioletRed">#C71585</color>
+    <color name="limeGreen">#32CD32</color>
+    <color name="midnightBlue">#191970</color>
+    <color name="indigo">#4B0082</color>
+
+
+    <color name="sound1">#daf8e3</color>
+    <color name="sound2">#97ebdb</color>
+    <color name="sound3">#00c2c7</color>
+    <color name="sound4">#0086ad</color>
+    <color name="sound5">#005582</color>
+
+    <color name="line1">#ffc100</color>
+    <color name="line2">#ff9a00</color>
+    <color name="line3">#ff7400</color>
+    <color name="line4">#ff4d00</color>
+    <color name="line5">#ff0000</color>
 </resources>
 <!--  CC6600  262F34-->

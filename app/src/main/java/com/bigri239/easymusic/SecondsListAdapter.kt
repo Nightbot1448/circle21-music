@@ -46,6 +46,17 @@ class SecondsListAdapter(val connector : MainActivity.Connector) : RecyclerView.
         for (i in 0..700) {
             soundSeconds.add(SoundSecond())
         }
+        for (i in 1 until soundSeconds.size) {
+            if (i % 50 == 0) {
+                soundSeconds[i].color =  when((i / 50) % 5) {
+                    0 -> R.color.line1
+                    1 -> R.color.line2
+                    2 -> R.color.line3
+                    3 -> R.color.line4
+                    else -> R.color.line5
+                }
+            }
+        }
         notifyDataSetChanged()
     }
 
@@ -71,11 +82,11 @@ class SecondsListAdapter(val connector : MainActivity.Connector) : RecyclerView.
 
     private fun getColor(type: SoundType): Int {
         return when (type){
-            SoundType.SOUND1 -> R.color.yellow
-            SoundType.SOUND2 -> R.color.pink
-            SoundType.SOUND3 -> R.color.blue
-            SoundType.SOUND4 -> R.color.cyan
-            SoundType.SOUND5 -> R.color.red
+            SoundType.SOUND1 -> R.color.sound1
+            SoundType.SOUND2 -> R.color.sound2
+            SoundType.SOUND3 -> R.color.sound3
+            SoundType.SOUND4 -> R.color.sound4
+            SoundType.SOUND5 -> R.color.sound5
         }
     }
 

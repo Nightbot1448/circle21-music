@@ -99,7 +99,7 @@ class AddingfilesActivity : AppCompatActivity() {
         dialog.setContentView(R.layout.dialog_sound_name)
         dialog.findViewById<Button>(R.id.save).setOnClickListener {
             filePath = dialog.findViewById<EditText>(R.id.newname).text.toString()
-            if (filePath != "") {
+            if (filePath != "" && !filePath.contains(';')) {
                 val path = filesDir
                 val file = File(path, "$filePath.wav")
                 FileOutputStream(file).use {
@@ -107,15 +107,19 @@ class AddingfilesActivity : AppCompatActivity() {
                 }
                 val file1 = File(path, "sounds.conf")
                 var sounds: String = file1.readText()
-                if (sounds != "") sounds += "\n"
-                sounds += filePath
-                FileOutputStream(file1).use {
-                    it.write(sounds.toByteArray())
+                if (!itemsList1.contains(filePath)) {
+                    if (sounds != "") sounds += "\n"
+                    sounds += filePath
+                    FileOutputStream(file1).use {
+                        it.write(sounds.toByteArray())
+                    }
+                    itemsList1.add(filePath)
+                    customAdapter1.notifyDataSetChanged()
                 }
-                if (!itemsList1.contains(filePath)) itemsList1.add(filePath)
-                customAdapter1.notifyDataSetChanged()
                 dialog.dismiss()
+                Toast.makeText(this, "Sound added successfully!", Toast.LENGTH_SHORT).show()
             }
+            else Toast.makeText(this, "Incorrect file name!", Toast.LENGTH_SHORT).show()
         }
         dialog.show()
     }
@@ -172,7 +176,17 @@ class AddingfilesActivity : AppCompatActivity() {
             val input: InputStream? = data!!.data?.let { contentResolver.openInputStream(it) }
             val wavdata = input?.let { readBytes(it) }
             if (wavdata != null) {
-                showCopyingDialog(wavdata)
+                val file = File(filesDir, "sound.wav")
+                FileOutputStream(file).use {
+                    it.write(wavdata)
+                }
+                val metaRetriever = MediaMetadataRetriever()
+                metaRetriever.setDataSource(File(filesDir, "sound.wav").absolutePath)
+                val len = abs(metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)!!.toLong() - 1)
+                if (len < 5600) {
+                    showCopyingDialog(wavdata)
+                }
+                else Toast.makeText(this, "Oops! This file is too long!", Toast.LENGTH_SHORT).show()
             }
         }
         }

@@ -13,6 +13,6 @@ data class Sound(
 enum class SoundType { SOUND1, SOUND2, SOUND3, SOUND4, SOUND5 }
 
 data class SoundSecond(
-    @ColorRes val color: Int = R.color.white,
+    @ColorRes var color: Int = R.color.white,
     val sound: Sound? = null
 )

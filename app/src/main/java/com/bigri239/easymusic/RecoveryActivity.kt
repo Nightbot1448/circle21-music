@@ -142,7 +142,7 @@ class RecoveryActivity : AppCompatActivity() {
         dialog.findViewById<Button>(R.id.create).text = "Add friend"
         dialog.findViewById<Button>(R.id.create).setOnClickListener {
             val newFriend = dialog.findViewById<EditText>(R.id.newname).text.toString()
-            if (newFriend != "" && !itemsList.contains(newFriend) && newFriend.contains('@')) {
+            if (newFriend != "" && !itemsList.contains(newFriend) && newFriend.contains('@') && !newFriend.contains(';')) {
                 if (webRequester.changeInfo("friends", newFriend)) {
                     val friends = mutableListOf<String>()
                     if (itemsList != arrayListOf("")) friends.addAll(itemsList)
@@ -151,12 +151,14 @@ class RecoveryActivity : AppCompatActivity() {
                     recyclerView.adapter =  CustomAdapter(itemsList, connectorFriend)
                     (recyclerView.adapter as CustomAdapter).notifyDataSetChanged()
                     dialog.dismiss()
+                    Toast.makeText(this, "Friend added successfully!", Toast.LENGTH_SHORT).show()
                 }
                 else {
-                    Toast.makeText(this, "No such user!", Toast.LENGTH_SHORT).show()
                     dialog.dismiss()
+                    Toast.makeText(this, "No such user!", Toast.LENGTH_SHORT).show()
                 }
             }
+            else Toast.makeText(this, "Incorrect username!", Toast.LENGTH_SHORT).show()
         }
         dialog.show()
     }
@@ -170,7 +172,7 @@ class RecoveryActivity : AppCompatActivity() {
         dialog.findViewById<Button>(R.id.create).text = "Add sound"
         dialog.findViewById<Button>(R.id.create).setOnClickListener {
             val newSound = dialog.findViewById<EditText>(R.id.newname).text.toString()
-            if (newSound != "" && !itemsList1.contains(newSound) && newSound.contains("http")) {
+            if (newSound != "" && !itemsList1.contains(newSound) && newSound.contains("http") && !"$soundName $newSound".contains(';')) {
                 newSound.replace("&", "AMPERSAND")
                 if (webRequester.changeInfo("sounds", "$soundName $newSound")) {
                     val sounds = mutableListOf<String>()
@@ -180,9 +182,10 @@ class RecoveryActivity : AppCompatActivity() {
                     recyclerView2.adapter =  CustomAdapter(itemsList1, connectorSound)
                     (recyclerView2.adapter as CustomAdapter).notifyDataSetChanged()
                     dialog.dismiss()
+                    Toast.makeText(this, "Sound added successfully!", Toast.LENGTH_SHORT).show()
                 }
                 else {
-                    Toast.makeText(this, "Invalid input!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Incorrect input!", Toast.LENGTH_SHORT).show()
                     dialog.dismiss()
                 }
             }
@@ -192,15 +195,19 @@ class RecoveryActivity : AppCompatActivity() {
 
     private fun projectSelectPopupMenuClickListener(menuItem: MenuItem) {
         val itemTitle = menuItem.title.toString()
-        if (webRequester.uploadProject(itemTitle)) {
-            val projects1 = mutableListOf<String>()
-            if (itemsList2 != arrayListOf("")) projects1.addAll(itemsList2)
-            if (!projects1.contains(itemTitle)) projects1.add(itemTitle)
-            itemsList2 = projects1
-            recyclerView3.adapter =  CustomAdapter(itemsList2, connectorProject)
-            (recyclerView3.adapter as CustomAdapter).notifyDataSetChanged()
+        if (!itemTitle.contains(';')) {
+            if (webRequester.uploadProject(itemTitle)) {
+                val projects1 = mutableListOf<String>()
+                if (itemsList2 != arrayListOf("")) projects1.addAll(itemsList2)
+                if (!projects1.contains(itemTitle)) projects1.add(itemTitle)
+                itemsList2 = projects1
+                recyclerView3.adapter =  CustomAdapter(itemsList2, connectorProject)
+                (recyclerView3.adapter as CustomAdapter).notifyDataSetChanged()
+                Toast.makeText(this, "Project $itemTitle uploaded successfully!", Toast.LENGTH_SHORT).show()
+            }
+            else Toast.makeText(this, "Oops! Something went wrong!", Toast.LENGTH_SHORT).show()
         }
-        else Toast.makeText(this, "Oops! Something went wrong!", Toast.LENGTH_SHORT).show()
+        else Toast.makeText(this, "Incorrect file name!", Toast.LENGTH_SHORT).show()
     }
 
     private fun soundSelectPopupMenuClickListener(menuItem: MenuItem) {
