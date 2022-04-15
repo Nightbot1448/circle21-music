@@ -4,13 +4,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import java.lang.Exception
 
 class SecondsListAdapter(val connector : MainActivity.Connector) : RecyclerView.Adapter<SecondsListAdapter.SecondsListViewHolder>() {
 
 
     private val sounds: MutableList<Sound> = mutableListOf()
     private val soundSeconds: MutableList<SoundSecond> = mutableListOf()
+    private var lenLast = 700
     init {
         eraseSounds()
     }
@@ -43,16 +43,34 @@ class SecondsListAdapter(val connector : MainActivity.Connector) : RecyclerView.
                 soundSeconds.add(SoundSecond(getColor(sound.type), sound))
             }
         }
-        for (i in 0..700) {
+        for (i in 0..lenLast) {
             soundSeconds.add(SoundSecond())
         }
         for (i in 1 until soundSeconds.size) {
             if (i % 50 == 0) {
-                soundSeconds[i].color =  when((i / 50) % 5) {
-                    0 -> R.color.line1
-                    1 -> R.color.line2
-                    2 -> R.color.line3
-                    3 -> R.color.line4
+                soundSeconds[i].color =  when((i / 50) % 4) {
+                    0 -> R.color.line2
+                    1 -> R.color.line3
+                    2 -> R.color.line4
+                    else -> R.color.line5
+                }
+            }
+        }
+        notifyDataSetChanged()
+    }
+
+    fun setLength (len: Int) {
+        lenLast += len - itemCount
+        val prevItemCount = itemCount
+        for (i in 0..(len - prevItemCount)) {
+            soundSeconds.add(SoundSecond())
+        }
+        for (i in prevItemCount until soundSeconds.size) {
+            if (i % 50 == 0) {
+                soundSeconds[i].color =  when((i / 50) % 4) {
+                    0 -> R.color.line2
+                    1 -> R.color.line3
+                    2 -> R.color.line4
                     else -> R.color.line5
                 }
             }
@@ -72,10 +90,7 @@ class SecondsListAdapter(val connector : MainActivity.Connector) : RecyclerView.
     }
 
     fun deleteSound (j : Int) {
-        if (j != sounds.size - 1) {
-            val sound = sounds[j + 1]
-            sounds[j + 1].shift += sounds[j].length + sounds[j].shift
-        }
+        if (j != sounds.size - 1) sounds[j + 1].shift += sounds[j].length + sounds[j].shift
         sounds.removeAt(j)
         initSecondSounds()
     }
@@ -95,20 +110,12 @@ class SecondsListAdapter(val connector : MainActivity.Connector) : RecyclerView.
         initSecondSounds()
     }
 
-    fun removeSound(sound: Sound) {
-        if (sounds.size > 0) {
-            connector.function(sound.track)
-            sounds.removeAt(sounds.size - 1)
-            initSecondSounds()
-        }
-    }
-
     inner class SecondsListViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         private val viewSquare: View = itemView.findViewById(R.id.viewSquare)
         fun bind(second: SoundSecond) {
             viewSquare.setBackgroundResource(second.color)
             viewSquare.setOnClickListener {
-                second.sound?.let { try {connector.function2(it.track, it.number)} catch (e: Exception) {} }
+                second.sound?.let { if (second != SoundSecond()) {connector.function(it.track, it.number)} }
             }
         }
     }
