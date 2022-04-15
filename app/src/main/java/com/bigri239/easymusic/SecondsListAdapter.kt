@@ -49,10 +49,10 @@ class SecondsListAdapter(val connector : MainActivity.Connector) : RecyclerView.
         for (i in 1 until soundSeconds.size) {
             if (i % 50 == 0) {
                 soundSeconds[i].color =  when((i / 50) % 4) {
-                    0 -> R.color.line2
-                    1 -> R.color.line3
-                    2 -> R.color.line4
-                    else -> R.color.line5
+                    0 -> R.color.line5
+                    1 -> R.color.line2
+                    2 -> R.color.line3
+                    else -> R.color.line4
                 }
             }
         }
@@ -68,10 +68,10 @@ class SecondsListAdapter(val connector : MainActivity.Connector) : RecyclerView.
         for (i in prevItemCount until soundSeconds.size) {
             if (i % 50 == 0) {
                 soundSeconds[i].color =  when((i / 50) % 4) {
-                    0 -> R.color.line2
-                    1 -> R.color.line3
-                    2 -> R.color.line4
-                    else -> R.color.line5
+                    0 -> R.color.line5
+                    1 -> R.color.line2
+                    2 -> R.color.line3
+                    else -> R.color.line4
                 }
             }
         }
@@ -102,6 +102,16 @@ class SecondsListAdapter(val connector : MainActivity.Connector) : RecyclerView.
             SoundType.SOUND3 -> R.color.sound3
             SoundType.SOUND4 -> R.color.sound4
             SoundType.SOUND5 -> R.color.sound5
+            SoundType.SOUND11 -> R.color.sound11
+            SoundType.SOUND12 -> R.color.sound12
+            SoundType.SOUND13 -> R.color.sound13
+            SoundType.SOUND14 -> R.color.sound14
+            SoundType.SOUND15 -> R.color.sound15
+            SoundType.SOUND21 -> R.color.sound21
+            SoundType.SOUND22 -> R.color.sound22
+            SoundType.SOUND23 -> R.color.sound23
+            SoundType.SOUND24 -> R.color.sound24
+            SoundType.SOUND25 -> R.color.sound25
         }
     }
 
