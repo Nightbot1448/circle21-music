@@ -12,6 +12,7 @@ import android.os.CountDownTimer
 import android.os.Handler
 import android.util.Log
 import android.view.MenuItem
+import android.view.MotionEvent
 import android.view.View
 import android.view.Window
 import android.widget.Button
@@ -21,9 +22,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.*
-import java.lang.Exception
 import java.lang.System.currentTimeMillis
 import java.util.Collections.max
 import kotlin.math.abs
@@ -85,9 +86,46 @@ open class MainActivity : AppCompatActivity(){
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 
+        var touchedRvTag = 0
+
+        val yourScrollListener: RecyclerView.OnScrollListener =
+            object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if (recyclerView.tag as Int == touchedRvTag) {
+                        for (noOfRecyclerView in 0..countTracks) {
+                            if (noOfRecyclerView != recyclerView.tag as Int) {
+                                val tempRecyclerView =
+                                    constraintLayout.findViewWithTag(noOfRecyclerView) as RecyclerView
+                                tempRecyclerView.scrollBy(dx, dy)
+                            }
+                        }
+                    }
+                }
+
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                }
+            }
+
+        val yourTouchListener: OnItemTouchListener = object : OnItemTouchListener {
+            override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
+                touchedRvTag = rv.tag as Int
+                return false
+            }
+
+            override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
+            override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
+        }
+
         for (i in 0..8) {
-            currentRecycler(i).adapter = SecondsListAdapter(connector)
-            (currentRecycler(i).adapter as SecondsListAdapter).notifyDataSetChanged()
+            val recycler = currentRecycler(i)
+            recycler.adapter = SecondsListAdapter(connector)
+            (recycler.adapter as SecondsListAdapter).notifyDataSetChanged()
+            recycler.setTag(i)
+            recycler.addOnScrollListener(yourScrollListener)
+            recycler.addOnItemTouchListener(yourTouchListener)
+
         }
 
         btnAdd1.setOnClickListener { addSound(0) }
