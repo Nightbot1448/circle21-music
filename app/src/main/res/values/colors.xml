@@ -18,11 +18,23 @@
     <color name="indigo">#4B0082</color>
 
 
-    <color name="sound1">#daf8e3</color>
-    <color name="sound2">#97ebdb</color>
+    <color name="sound1">#a8e8ff</color>
+    <color name="sound2">#88daea</color>
     <color name="sound3">#00c2c7</color>
     <color name="sound4">#0086ad</color>
     <color name="sound5">#005582</color>
+
+    <color name="sound11">#b8ffff</color>
+    <color name="sound12">#96fbbf</color>
+    <color name="sound13">#00ce8b</color>
+    <color name="sound14">#00ad7f</color>
+    <color name="sound15">#009077</color>
+
+    <color name="sound21">#b8ffd8</color>
+    <color name="sound22">#96eb96</color>
+    <color name="sound23">#00c758</color>
+    <color name="sound24">#00ad55</color>
+    <color name="sound25">#008043</color>
 
     <color name="line1">#ffc100</color>
     <color name="line2">#ff9a00</color>

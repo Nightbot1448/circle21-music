@@ -250,12 +250,28 @@ open class MainActivity : AppCompatActivity(){
         val names = mutableSetOf<String>()
         for (k in sounds[i]) names.add(k.res)
         val number = names.indexOf(sounds[i][j].res)
-        val color : SoundType = when (number % 5) {
-            0 -> SoundType.SOUND1
-            1 -> SoundType.SOUND2
-            2 -> SoundType.SOUND3
-            3 -> SoundType.SOUND4
-            else -> SoundType.SOUND5
+        val color : SoundType = when (i % 3) {
+            0 -> when (number % 5) {
+                0 -> SoundType.SOUND1
+                1 -> SoundType.SOUND2
+                2 -> SoundType.SOUND3
+                3 -> SoundType.SOUND4
+                else -> SoundType.SOUND5
+            }
+            1 -> when (number % 5) {
+                0 -> SoundType.SOUND11
+                1 -> SoundType.SOUND12
+                2 -> SoundType.SOUND13
+                3 -> SoundType.SOUND14
+                else -> SoundType.SOUND15
+            }
+            else -> when (number % 5) {
+                0 -> SoundType.SOUND21
+                1 -> SoundType.SOUND22
+                2 -> SoundType.SOUND23
+                3 -> SoundType.SOUND24
+                else -> SoundType.SOUND25
+            }
         }
         return color
     }
@@ -263,6 +279,7 @@ open class MainActivity : AppCompatActivity(){
     private fun addSound (x : Int) {
         if (getSoundLength(currentSound) <= 5600) {
             if (isReady()) {
+                val prevMusicLength = getMusicLength()
                 if (state == "unready") state = "ready"
                 if (countTracks < x) countTracks = x
                 val sound = getSoundParameters(x, countSounds[x] + 1)
@@ -276,7 +293,7 @@ open class MainActivity : AppCompatActivity(){
                     (indent / 10.0).roundToInt(),
                     len,
                     currentColor(x, countSounds[x]), x, countSounds[x]))
-                setMusicLength()
+                if (prevMusicLength != getMusicLength()) setMusicLength()
             }
             buttonDelete.setOnClickListener {}
             buttonEdit.setOnClickListener {}
@@ -504,6 +521,7 @@ open class MainActivity : AppCompatActivity(){
 
     private fun deleteSelected (i : Int, j: Int) {
         if (j <= countSounds[i] && countSounds[i] != -1) {
+            val prevMusicLength = getMusicLength()
             val delay : Long = sounds[i][j].delay + sounds[i][j + 1].delay
             sounds[i][j] = sounds[i][j + 1]
             sounds[i][j].delay = delay
@@ -514,12 +532,13 @@ open class MainActivity : AppCompatActivity(){
                 if (countTracks == i && countTracks != 0) countTracks --
             }
             (currentRecycler(i).adapter as SecondsListAdapter).deleteSound(j)
-            setMusicLength()
+            if (prevMusicLength != getMusicLength()) setMusicLength()
         }
     }
 
     private fun changeSelected (i : Int, j: Int) {
         if (j <= countSounds[i]) {
+            val prevMusicLength = getMusicLength()
             val prevLen = sounds[i][j].len
             sounds[i][j] = getSoundParameters(i, j)
             val sound = sounds[i][j]
@@ -530,7 +549,7 @@ open class MainActivity : AppCompatActivity(){
             (currentRecycler(i).adapter as SecondsListAdapter).editSound(Sound(
                 indent, len, currentColor(i, j), i, j))
             if (j != countSounds[i]) {
-                sounds[i][j + 1].delay += sound.len - prevLen
+                sounds[i][j + 1].delay += if (sound.len - prevLen > 0) sound.len - prevLen else 0
                 val nextSound = sounds[i][j + 1]
                 val nextIndent = ((nextSound.delay - sound.len) / 10.0).roundToInt()
                 var nextLen = (nextSound.len / 10.0).roundToInt()
@@ -539,7 +558,7 @@ open class MainActivity : AppCompatActivity(){
                     nextIndent, nextLen, currentColor(i, j + 1), i, j + 1))
             }
 
-            setMusicLength()
+            if (prevMusicLength != getMusicLength()) setMusicLength()
         }
     }
 
