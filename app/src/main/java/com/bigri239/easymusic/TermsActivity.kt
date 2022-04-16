@@ -54,6 +54,7 @@ class TermsActivity : AppCompatActivity() {
         }
         btnDecline.setOnClickListener {
             Toast.makeText(this, "Use of the application is allowed only if you agree to the Terms of Use!", Toast.LENGTH_LONG).show()
+            if (file.exists()) file.delete()
         }
     }
 }
