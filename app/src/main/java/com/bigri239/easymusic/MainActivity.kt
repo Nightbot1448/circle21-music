@@ -81,6 +81,22 @@ open class MainActivity : AppCompatActivity(){
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 
+        var file = File(filesDir, "terms.conf")
+
+        if (file.exists()) {
+            val content: String = file.readText()
+            if (content != "1") {
+                val intent0 = Intent(this, TermsActivity::class.java)
+                intent0.putExtra("isStart", "true")
+                startActivity(intent0)
+            }
+        }
+        else {
+            val intent0 = Intent(this, TermsActivity::class.java)
+            intent0.putExtra("isStart", "true")
+            startActivity(intent0)
+        }
+
         var touchedRvTag = 0
 
         val yourScrollListener: RecyclerView.OnScrollListener =
@@ -140,7 +156,7 @@ open class MainActivity : AppCompatActivity(){
         btnRem9.setOnClickListener { deleteSelected(8, countSounds[8]) }
 
         val path = filesDir
-        var file = File(path, "projects.conf")
+        file = File(path, "projects.conf")
 
         if (file.exists()) {
             val content: String = file.readText()

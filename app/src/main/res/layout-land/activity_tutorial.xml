@@ -13,10 +13,34 @@
         android:layout_height="wrap_content"
         android:text="Tutorial"
         android:textColor="@color/colorAccent"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="fill_parent"
+        android:layout_height="300dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tutorialact">
+
+    <TextView
+        android:id="@+id/text_vie"
+        android:layout_width="wrap_content"
+        android:layout_height="300dp"
+        android:scrollbars="vertical"
+        android:text=""
+        android:textColor="@color/colorAccent"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </ScrollView>
 
     <TextView
         android:id="@+id/text_vie"

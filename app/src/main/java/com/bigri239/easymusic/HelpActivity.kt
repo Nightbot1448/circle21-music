@@ -33,6 +33,7 @@ class HelpActivity : AppCompatActivity() {
         val intent13 = Intent(this, TermsActivity::class.java)
         findViewById<TextView>(R.id.terms).setOnClickListener {
             terms.isClickable = false
+            intent13.putExtra("isStart", "false")
             startActivity(intent13)
         }
 

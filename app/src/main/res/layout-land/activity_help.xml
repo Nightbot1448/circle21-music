@@ -23,31 +23,28 @@
         android:layout_width="500dp"
         android:layout_height="70dp"
         android:backgroundTint="#D98B25"
-        android:text="frequently asked Questions "
+        android:text="Frequently Asked Questions"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintVertical_bias="0.2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@id/terms" />
 
     <Button
         android:id="@+id/terms"
         android:layout_width="500dp"
         android:layout_height="70dp"
-        android:layout_marginTop="80dp"
         android:backgroundTint="#D98B25"
-        android:text="Terms of use "
+        android:text="Terms of use"
         app:layout_constraintEnd_toEndOf="@+id/frequently"
         app:layout_constraintStart_toStartOf="@+id/frequently"
-        app:layout_constraintTop_toTopOf="@+id/frequently" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/authors"
         android:layout_width="500dp"
         android:layout_height="70dp"
-        android:layout_marginTop="8dp"
         android:backgroundTint="#D98B25"
-        android:text="authors "
+        android:text="Developers"
         app:layout_constraintEnd_toEndOf="@+id/terms"
         app:layout_constraintStart_toStartOf="@+id/terms"
         app:layout_constraintTop_toBottomOf="@+id/terms" />
