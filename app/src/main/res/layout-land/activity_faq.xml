@@ -31,6 +31,8 @@
 3) Что делать если звуковые дорожки на экране сместились относительно друг друга?
 Перезагрузите проект. Чтобы избежать данной ошибки, не листайте звуковые дорожки слишком резко.
 "
+        android:textColor="@color/colorAccent"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/backfaq"
         app:layout_constraintTop_toBottomOf="@+id/faqact" />
 
