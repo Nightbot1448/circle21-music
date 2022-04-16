@@ -19,6 +19,22 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/text_view"
+        android:layout_width="670dp"
+        android:layout_height="250dp"
+        android:layout_margin="16dp"
+        android:scrollbars="vertical"
+        android:text="1) Можно ли сохранить звук на устройство в mp3 формате?
+К сожалению, нет, приложение создано в учебных целях и ставит перед собой задачу простым языком объяснить принцип создания музыки. Однако вы можете делится музыкой с друзьями внутри приложения. Или, при желании, записать музыку с помощью приложения записи экрана на вашем телефоне.
+2) Какие звуки можно загружать в приложение?
+Для загрузки подходят звуки в wav или mp3 формате. Длина звука не должна превышать 5 секунд.
+3) Что делать если звуковые дорожки на экране сместились относительно друг друга?
+Перезагрузите проект. Чтобы избежать данной ошибки, не листайте звуковые дорожки слишком резко.
+"
+        app:layout_constraintStart_toStartOf="@+id/backfaq"
+        app:layout_constraintTop_toBottomOf="@+id/faqact" />
+
+    <TextView
         android:id="@+id/backfaq"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
