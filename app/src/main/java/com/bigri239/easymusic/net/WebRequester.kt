@@ -1,13 +1,10 @@
-package com.bigri239.easymusic
+package com.bigri239.easymusic.net
 
 import android.content.Context
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import java.net.HttpURLConnection
-import java.net.URL
 import java.util.*
-
 
 class WebRequester (private val context: Context) {
 
@@ -28,18 +25,16 @@ class WebRequester (private val context: Context) {
 
     private fun getUUID(): String {
         val file = File(context.filesDir, "uuid.conf")
-         return if (file.exists()) file.readText()
+        return if (file.exists()) file.readText()
         else {
             val id = UUID.randomUUID().toString()
-            FileOutputStream(file).use {
-                it.write(id.toByteArray())
-            }
+            FileOutputStream(file).write(id.toByteArray())
              id
         }
     }
 
     private fun baseRequest (subAddress : String, params : Map<String, String>): Array<String> {
-        try {
+        return try {
             var paramsGET = ""
             if (params.isNotEmpty()) {
                 paramsGET = "?"
@@ -48,10 +43,9 @@ class WebRequester (private val context: Context) {
             }
             val requester = HTTPRequestTask(baseURL + subAddress + paramsGET)
             val answer = requester.execute()
-            return answer.split("\n").toTypedArray()
-        }
-        catch (e: Exception) {
-            return arrayOf("")
+            answer.split("\n").toTypedArray()
+        } catch (e: Exception) {
+            arrayOf("")
         }
     }
 
@@ -72,9 +66,7 @@ class WebRequester (private val context: Context) {
             hashedPassword = response[2]
             lid = response[3]
             val file = File(context.filesDir, "login.conf")
-            FileOutputStream(file).use {
-                it.write("$hashedLogin\n$hashedPassword\n$lid".toByteArray())
-            }
+            FileOutputStream(file).write("$hashedLogin\n$hashedPassword\n$lid".toByteArray())
             true
         }
         else return false
@@ -82,7 +74,8 @@ class WebRequester (private val context: Context) {
 
     fun checkAuthorized () : Boolean{
         return if (!hashed.contentEquals(arrayOf("", "", ""))) {
-            val params = mapOf("user" to hashedLogin, "passw" to hashedPassword, "lid" to lid, "mac" to uuid)
+            val params = mapOf("user" to hashedLogin, "passw" to hashedPassword, "lid" to lid,
+                "mac" to uuid)
             baseRequest("prove_login.php", params)[0] == "1"
         }
         else false
@@ -95,7 +88,8 @@ class WebRequester (private val context: Context) {
 
     fun getInfo () : Array<List<String>> {
         return if (!hashed.contentEquals(arrayOf("", "", ""))) {
-            val params = mapOf("user" to hashedLogin, "passw" to hashedPassword, "lid" to lid, "mac" to uuid)
+            val params = mapOf("user" to hashedLogin, "passw" to hashedPassword, "lid" to lid,
+                "mac" to uuid)
             val answer = baseRequest("get_info.php", params)
             if (answer[0] == "1") {
                 val friends = answer[3].split(";").toList()
@@ -109,7 +103,8 @@ class WebRequester (private val context: Context) {
     }
 
     fun changeInfo (edit : String, value : String) : Boolean {
-        val params = mapOf("edit" to edit, "value" to value, "user" to hashedLogin, "passw" to hashedPassword, "lid" to lid, "mac" to uuid)
+        val params = mapOf("edit" to edit, "value" to value, "user" to hashedLogin,
+            "passw" to hashedPassword, "lid" to lid, "mac" to uuid)
         return baseRequest("change_info.php", params)[0] == "1"
     }
     
@@ -117,7 +112,8 @@ class WebRequester (private val context: Context) {
         var response = false
         try {
             val fileName = context.filesDir.toString() + "/" + "$projectName.emproj"
-            val params = mapOf("user" to hashedLogin, "passw" to hashedPassword, "lid" to lid, "mac" to uuid)
+            val params = mapOf("user" to hashedLogin, "passw" to hashedPassword, "lid" to lid,
+                "mac" to uuid)
             var paramsGET = "?"
             for ((param, value) in params.entries) paramsGET += "$param=$value&"
             paramsGET = paramsGET.dropLast(1)
@@ -138,14 +134,13 @@ class WebRequester (private val context: Context) {
     }
 
     fun getProject (owner : String, projectName: String) : Boolean{
-        val params = mapOf("owner" to owner, "name" to projectName, "user" to hashedLogin, "passw" to hashedPassword, "lid" to lid, "mac" to uuid)
+        val params = mapOf("owner" to owner, "name" to projectName, "user" to hashedLogin,
+            "passw" to hashedPassword, "lid" to lid, "mac" to uuid)
         val answer = baseRequest("get_project.php", params)
         return if (answer[0] == "1") {
             val content = answer.slice(1 until answer.size).joinToString("\n")
             var file = File(context.filesDir, "$projectName.emproj")
-            FileOutputStream(file).use {
-                it.write(content.toByteArray())
-            }
+            FileOutputStream(file).write(content.toByteArray())
             file = File(context.filesDir, "projects.conf")
             if (file.exists()) {
                 if (file.readText() != "") {
@@ -156,9 +151,7 @@ class WebRequester (private val context: Context) {
                 else file.appendText("projectDefault\n$projectName")
             }
             else {
-                FileOutputStream(file).use {
-                    it.write("projectDefault\n$projectName".toByteArray())
-                }
+                FileOutputStream(file).write("projectDefault\n$projectName".toByteArray())
             }
             true
         }
@@ -167,7 +160,8 @@ class WebRequester (private val context: Context) {
 
     fun getFriendInfo (owner: String) : Array<List<String>> {
         return if (!hashed.contentEquals(arrayOf("", "", ""))) {
-            val params = mapOf("owner" to owner, "user" to hashedLogin, "passw" to hashedPassword, "lid" to lid, "mac" to uuid)
+            val params = mapOf("owner" to owner, "user" to hashedLogin, "passw" to hashedPassword,
+                "lid" to lid, "mac" to uuid)
             val answer = baseRequest("get_friend_info.php", params)
             if (answer[0] == "1") {
                 val friends = answer[3].split(";").toList()

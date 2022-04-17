@@ -5,10 +5,10 @@ import android.os.Bundle
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy
 import android.view.View
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import com.bigri239.easymusic.net.WebRequester
 import kotlinx.android.synthetic.main.activity_sign_in.*
 
 
@@ -28,12 +28,12 @@ class SigninActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         val intent = Intent(this, MainActivity::class.java)
-        findViewById<TextView>(R.id.backsi).setOnClickListener {
+        backsi.setOnClickListener {
             backsi.isClickable = false
             startActivity(intent)
         }
         val intents2 = Intent(this, SignupActivity::class.java)
-        findViewById<TextView>(R.id.signup).setOnClickListener {
+        signup.setOnClickListener {
             signup.isClickable = false
             startActivity(intents2)
         }

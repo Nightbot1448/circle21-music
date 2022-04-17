@@ -9,21 +9,19 @@ import android.view.View
 import android.view.Window
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bigri239.easymusic.adapter.*
+import com.bigri239.easymusic.net.WebRequester
 import kotlinx.android.synthetic.main.activity_recovery.*
 import java.io.File
 import java.io.FileOutputStream
 
 @Suppress("DEPRECATION")
 class RecoveryActivity : AppCompatActivity() {
-    interface WebConnector {
-        fun function(string: String)
-    }
 
     private var itemsList : List<String> = arrayListOf()
     private var itemsList1 : List<String> = arrayListOf()
@@ -35,17 +33,17 @@ class RecoveryActivity : AppCompatActivity() {
     private val projects = mutableListOf<String>()
     private val customArray = mutableListOf<String>()
     private lateinit var email : String
-    private val connectorProject = object : WebConnector {
+    private val connectorProject = object : CustomConnector {
         override fun function(string: String) {
             loadProject(string)
         }
     }
 
-    private val connectorSound = object : WebConnector {
+    private val connectorSound = object : CustomConnector {
         override fun function(string: String) {}
     }
 
-    private val connectorFriend = object : WebConnector {
+    private val connectorFriend = object : CustomConnector {
         override fun function(string: String) {
             seeFriend(string)
         }
@@ -70,7 +68,6 @@ class RecoveryActivity : AppCompatActivity() {
             itemsList = info[2]
             itemsList1 = info[3]
             itemsList2 = info[4]
-
         }
         else {
             val intent = Intent(this, SigninActivity::class.java)
@@ -110,23 +107,26 @@ class RecoveryActivity : AppCompatActivity() {
         }
 
         val intent = Intent(this, MainActivity::class.java)
-        findViewById<TextView>(R.id.backrec).setOnClickListener {
+        backrec.setOnClickListener {
             backrec.isClickable = false
             startActivity(intent)
         }
+
         customAdapter = if (itemsList != arrayListOf("")) CustomAdapter(itemsList, connectorFriend)
         else CustomAdapter(arrayListOf(), connectorFriend)
         val layoutManager = LinearLayoutManager(applicationContext)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = customAdapter
 
-        customAdapter1 = if (itemsList1 != arrayListOf("")) CustomAdapter(itemsList1, connectorSound)
+        customAdapter1 = if (itemsList1 != arrayListOf("")) CustomAdapter(itemsList1,
+            connectorSound)
         else CustomAdapter(arrayListOf(), connectorSound)
         val layoutManager1 = LinearLayoutManager(applicationContext)
         recyclerView2.layoutManager = layoutManager1
         recyclerView2.adapter = customAdapter1
 
-        customAdapter2 = if (itemsList2 != arrayListOf("")) CustomAdapter(itemsList2, connectorProject)
+        customAdapter2 = if (itemsList2 != arrayListOf("")) CustomAdapter(itemsList2,
+            connectorProject)
         else CustomAdapter(arrayListOf(), connectorProject)
         val layoutManager2 = LinearLayoutManager(applicationContext)
         recyclerView3.layoutManager = layoutManager2
@@ -142,7 +142,8 @@ class RecoveryActivity : AppCompatActivity() {
         dialog.findViewById<Button>(R.id.create).text = "Add friend"
         dialog.findViewById<Button>(R.id.create).setOnClickListener {
             val newFriend = dialog.findViewById<EditText>(R.id.newname).text.toString()
-            if (newFriend != "" && !itemsList.contains(newFriend) && newFriend.contains('@') && !newFriend.contains(';')) {
+            if (newFriend != "" && !itemsList.contains(newFriend) && newFriend.contains('@') &&
+                !newFriend.contains(';')) {
                 if (webRequester.changeInfo("friends", newFriend)) {
                     val friends = mutableListOf<String>()
                     if (itemsList != arrayListOf("")) friends.addAll(itemsList)
@@ -151,7 +152,8 @@ class RecoveryActivity : AppCompatActivity() {
                     recyclerView.adapter =  CustomAdapter(itemsList, connectorFriend)
                     (recyclerView.adapter as CustomAdapter).notifyDataSetChanged()
                     dialog.dismiss()
-                    Toast.makeText(this, "Friend added successfully!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Friend added successfully!",
+                        Toast.LENGTH_SHORT).show()
                 }
                 else {
                     dialog.dismiss()
@@ -172,7 +174,8 @@ class RecoveryActivity : AppCompatActivity() {
         dialog.findViewById<Button>(R.id.create).text = "Add sound"
         dialog.findViewById<Button>(R.id.create).setOnClickListener {
             val newSound = dialog.findViewById<EditText>(R.id.newname).text.toString()
-            if (newSound != "" && !itemsList1.contains(newSound) && newSound.contains("http") && !"$soundName $newSound".contains(';')) {
+            if (newSound != "" && !itemsList1.contains(newSound) &&
+                newSound.contains("http") && !"$soundName $newSound".contains(';')) {
                 newSound.replace("&", "AMPERSAND")
                 if (webRequester.changeInfo("sounds", "$soundName $newSound")) {
                     val sounds = mutableListOf<String>()
@@ -182,7 +185,8 @@ class RecoveryActivity : AppCompatActivity() {
                     recyclerView2.adapter =  CustomAdapter(itemsList1, connectorSound)
                     (recyclerView2.adapter as CustomAdapter).notifyDataSetChanged()
                     dialog.dismiss()
-                    Toast.makeText(this, "Sound added successfully!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Sound added successfully!",
+                        Toast.LENGTH_SHORT).show()
                 }
                 else {
                     Toast.makeText(this, "Incorrect input!", Toast.LENGTH_SHORT).show()
@@ -203,9 +207,11 @@ class RecoveryActivity : AppCompatActivity() {
                 itemsList2 = projects1
                 recyclerView3.adapter =  CustomAdapter(itemsList2, connectorProject)
                 (recyclerView3.adapter as CustomAdapter).notifyDataSetChanged()
-                Toast.makeText(this, "Project $itemTitle uploaded successfully!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Project $itemTitle uploaded successfully!",
+                    Toast.LENGTH_SHORT).show()
             }
-            else Toast.makeText(this, "Oops! Something went wrong!", Toast.LENGTH_SHORT).show()
+            else Toast.makeText(this, "Oops! Something went wrong!",
+                Toast.LENGTH_SHORT).show()
         }
         else Toast.makeText(this, "Incorrect file name!", Toast.LENGTH_SHORT).show()
     }
@@ -245,8 +251,10 @@ class RecoveryActivity : AppCompatActivity() {
 
     fun changeAbout (view: View) {
         val newInfo = editInfo.text.toString()
-        if (webRequester.changeInfo("about", newInfo)) Toast.makeText(this, "Edited successfully", Toast.LENGTH_SHORT).show()
-        else Toast.makeText(this, "Oops! Something went wrong!", Toast.LENGTH_SHORT).show()
+        if (webRequester.changeInfo("about", newInfo)) Toast.makeText(this,
+            "Edited successfully", Toast.LENGTH_SHORT).show()
+        else Toast.makeText(this, "Oops! Something went wrong!",
+            Toast.LENGTH_SHORT).show()
     }
 
     fun addFriend (view: View) {
