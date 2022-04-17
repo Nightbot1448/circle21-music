@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.PopupMenu
@@ -20,6 +19,7 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings_activity)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+
         val file = File(filesDir, "settings.conf")
 
         if (file.exists()) {
@@ -28,17 +28,16 @@ class SettingsActivity : AppCompatActivity() {
         }
         else {
             val content = "10"
-            FileOutputStream(file).use {
-                it.write(content.toByteArray())
-            }
+            FileOutputStream(file).write(content.toByteArray())
         }
+
         textMins.text = autosave.toString()
     }
 
     override fun onStart() {
         super.onStart()
         val intent = Intent(this, MainActivity::class.java)
-        findViewById<TextView>(R.id.backsettings).setOnClickListener {
+        backsettings.setOnClickListener {
             backsettings.isClickable = false
             startActivity(intent)
         }
@@ -82,9 +81,7 @@ class SettingsActivity : AppCompatActivity() {
         textMins.text = itemTitle
         val file = File(filesDir, "settings.conf")
         val content = itemTitle
-        FileOutputStream(file).use {
-            it.write(content.toByteArray())
-        }
+        FileOutputStream(file).write(content.toByteArray())
     }
 
     fun createAutosaveTimePopupMenu(v: View) {
