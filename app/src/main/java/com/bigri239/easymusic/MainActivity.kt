@@ -82,6 +82,43 @@ open class MainActivity : AppCompatActivity(){
         setContentView(R.layout.activity_main)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        var touchedRvTag = 0
+
+        val yourScrollListener: RecyclerView.OnScrollListener =
+            object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if (recyclerView.tag as Int == touchedRvTag) {
+                        for (noOfRecyclerView in 0..8) {
+                            if (noOfRecyclerView != recyclerView.tag as Int) {
+                                val tempRecyclerView =
+                                    constraintLayout.findViewWithTag(noOfRecyclerView)
+                                            as RecyclerView
+                                tempRecyclerView.scrollBy(dx, dy)
+                            }
+                        }
+                    }
+                }
+            }
+
+        val yourTouchListener: OnItemTouchListener = object : OnItemTouchListener {
+            override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
+                touchedRvTag = rv.tag as Int
+                return false
+            }
+
+            override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
+            override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
+        }
+
+        for (i in 0..8) {
+            val recycler = currentRecycler(i)
+            recycler.adapter = SecondsListAdapter(connector)
+            (recycler.adapter as SecondsListAdapter).notifyDataSetChanged()
+            recycler.tag = i
+            recycler.addOnScrollListener(yourScrollListener)
+            recycler.addOnItemTouchListener(yourTouchListener)
+        }
     }
 
     // ниже создание переходов между экранами
@@ -142,44 +179,6 @@ open class MainActivity : AppCompatActivity(){
         else {
             val content = "10"
             FileOutputStream(currentFile).write(content.toByteArray())
-        }
-
-        var touchedRvTag = 0
-
-        val yourScrollListener: RecyclerView.OnScrollListener =
-            object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
-                    if (recyclerView.tag as Int == touchedRvTag) {
-                        for (noOfRecyclerView in 0..8) {
-                            if (noOfRecyclerView != recyclerView.tag as Int) {
-                                val tempRecyclerView =
-                                    constraintLayout.findViewWithTag(noOfRecyclerView)
-                                            as RecyclerView
-                                tempRecyclerView.scrollBy(dx, dy)
-                            }
-                        }
-                    }
-                }
-            }
-
-        val yourTouchListener: OnItemTouchListener = object : OnItemTouchListener {
-            override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
-                touchedRvTag = rv.tag as Int
-                return false
-            }
-
-            override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
-            override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
-        }
-
-        for (i in 0..8) {
-            val recycler = currentRecycler(i)
-            recycler.adapter = SecondsListAdapter(connector)
-            (recycler.adapter as SecondsListAdapter).notifyDataSetChanged()
-            recycler.tag = i
-            recycler.addOnScrollListener(yourScrollListener)
-            recycler.addOnItemTouchListener(yourTouchListener)
         }
 
         for (i in 1..9) {
