@@ -82,12 +82,17 @@ open class MainActivity : AppCompatActivity(){
         setContentView(R.layout.activity_main)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+    }
+
+    // ниже создание переходов между экранами
+    override fun onStart() {
+        super.onStart()
 
         val path = filesDir
-        var file = File(filesDir, "terms.conf")
+        var currentFile = File(filesDir, "terms.conf")
 
-        if (file.exists()) {
-            val content: String = file.readText()
+        if (currentFile.exists()) {
+            val content: String = currentFile.readText()
             if (content != "1") {
                 val intent0 = Intent(this, TermsActivity::class.java)
                 intent0.putExtra("isStart", "true")
@@ -100,10 +105,10 @@ open class MainActivity : AppCompatActivity(){
             startActivity(intent0)
         }
 
-        file = File(path, "projects.conf")
+        currentFile = File(path, "projects.conf")
 
-        if (file.exists()) {
-            val content: String = file.readText()
+        if (currentFile.exists()) {
+            val content: String = currentFile.readText()
             projects.addAll(content.split("\n").toTypedArray())
         }
         else {
@@ -113,30 +118,30 @@ open class MainActivity : AppCompatActivity(){
                 content += projects[i]
                 if (i != projects.size - 1) content += "\n"
             }
-            FileOutputStream(file).write(content.toByteArray())
+            FileOutputStream(currentFile).write(content.toByteArray())
             saveProject()
         }
 
-        file = File(path, "sounds.conf")
+        currentFile = File(path, "sounds.conf")
 
-        if (file.exists()) {
-            val content: String = file.readText()
+        if (currentFile.exists()) {
+            val content: String = currentFile.readText()
             if (content != "") customArray.addAll(content.split("\n").toTypedArray())
         }
         else {
             val content = ""
-            FileOutputStream(file).write(content.toByteArray())
+            FileOutputStream(currentFile).write(content.toByteArray())
         }
 
-        file = File(path, "settings.conf")
+        currentFile = File(path, "settings.conf")
 
-        if (file.exists()) {
-            val content: String = file.readText()
+        if (currentFile.exists()) {
+            val content: String = currentFile.readText()
             if (content != "") autosave = content.split("\n").toTypedArray()[0].toInt()
         }
         else {
             val content = "10"
-            FileOutputStream(file).write(content.toByteArray())
+            FileOutputStream(currentFile).write(content.toByteArray())
         }
 
         var touchedRvTag = 0
@@ -194,11 +199,6 @@ open class MainActivity : AppCompatActivity(){
         }.start()
 
         openProject()
-    }
-
-    // ниже создание переходов между экранами
-    override fun onStart() {
-        super.onStart()
 
         val intent = Intent(this, HelpActivity::class.java)
         help.setOnClickListener {
