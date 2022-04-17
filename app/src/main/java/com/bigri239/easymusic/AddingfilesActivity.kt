@@ -6,7 +6,6 @@ import android.media.AudioManager
 import android.media.MediaMetadataRetriever
 import android.media.SoundPool
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.view.View
 import android.view.Window
 import android.widget.Button
@@ -17,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bigri239.easymusic.adapter.*
 import kotlinx.android.synthetic.main.activity_addfiles.*
 import java.io.*
 import kotlin.math.abs
@@ -35,7 +35,7 @@ class AddingfilesActivity : AppCompatActivity() {
     private val itemsList1 = arrayListOf<String>()
     private lateinit var customAdapter: CustomAdapter
     private lateinit var customAdapter1: CustomAdapter
-    private val connectorSound = object : RecoveryActivity.WebConnector {
+    private val connectorSound = object : CustomConnector {
         override fun function(string: String) {
             playSound(string)
         }

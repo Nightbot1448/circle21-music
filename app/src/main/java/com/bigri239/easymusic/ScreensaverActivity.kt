@@ -13,6 +13,7 @@ class ScreensaverActivity : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         setContentView(R.layout.activity_screensaver)
     }
+
     override fun onStart() {
         super.onStart()
         Handler().postDelayed({

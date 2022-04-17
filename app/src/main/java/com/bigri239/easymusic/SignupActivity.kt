@@ -4,11 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.StrictMode
 import android.view.View
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import kotlinx.android.synthetic.main.activity_sign_in.*
+import com.bigri239.easymusic.net.WebRequester
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import kotlinx.android.synthetic.main.activity_sign_up.mail
 import kotlinx.android.synthetic.main.activity_sign_up.password
@@ -29,7 +28,7 @@ class SignupActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         val intent = Intent(this, SigninActivity::class.java)
-        findViewById<TextView>(R.id.backsu).setOnClickListener {
+        backsu.setOnClickListener {
             backsu.isClickable = false
             startActivity(intent)
         }

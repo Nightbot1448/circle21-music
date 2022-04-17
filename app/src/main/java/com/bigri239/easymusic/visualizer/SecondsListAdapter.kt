@@ -1,22 +1,24 @@
-package com.bigri239.easymusic
+package com.bigri239.easymusic.visualizer
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bigri239.easymusic.*
 
 class SecondsListAdapter(val connector : MainActivity.Connector) : RecyclerView.Adapter<SecondsListAdapter.SecondsListViewHolder>() {
-
 
     private val sounds: MutableList<Sound> = mutableListOf()
     private val soundSeconds: MutableList<SoundSecond> = mutableListOf()
     private var lenLast = 700
+
     init {
         eraseSounds()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SecondsListViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_second, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_second, parent,
+            false)
         return SecondsListViewHolder(view)
     }
 
@@ -35,17 +37,21 @@ class SecondsListAdapter(val connector : MainActivity.Connector) : RecyclerView.
 
     private fun initSecondSounds() {
         soundSeconds.clear()
+
         for (sound in sounds) {
             for (i in 0 until sound.shift) {
                 soundSeconds.add(SoundSecond())
             }
+
             for (i in 0 until sound.length) {
                 soundSeconds.add(SoundSecond(getColor(sound.type), sound))
             }
         }
+
         for (i in 0..lenLast) {
             soundSeconds.add(SoundSecond())
         }
+
         for (i in 1 until soundSeconds.size) {
             if (i % 50 == 0) {
                 soundSeconds[i].color =  when((i / 50) % 4) {
@@ -56,15 +62,15 @@ class SecondsListAdapter(val connector : MainActivity.Connector) : RecyclerView.
                 }
             }
         }
+
         notifyDataSetChanged()
     }
 
     fun setLength (len: Int) {
         lenLast += len - itemCount
         val prevItemCount = itemCount
-        for (i in 0..(len - prevItemCount)) {
-            soundSeconds.add(SoundSecond())
-        }
+        for (i in 0..(len - prevItemCount)) soundSeconds.add(SoundSecond())
+
         for (i in prevItemCount until soundSeconds.size) {
             if (i % 50 == 0) {
                 soundSeconds[i].color =  when((i / 50) % 4) {
@@ -75,6 +81,7 @@ class SecondsListAdapter(val connector : MainActivity.Connector) : RecyclerView.
                 }
             }
         }
+
         notifyDataSetChanged()
     }
 
@@ -125,7 +132,8 @@ class SecondsListAdapter(val connector : MainActivity.Connector) : RecyclerView.
         fun bind(second: SoundSecond) {
             viewSquare.setBackgroundResource(second.color)
             viewSquare.setOnClickListener {
-                second.sound?.let { if (second != SoundSecond()) {connector.function(it.track, it.number)} }
+                second.sound?.let { if (second != SoundSecond()) {connector.function(it.track,
+                    it.number)} }
             }
         }
     }
