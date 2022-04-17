@@ -188,7 +188,6 @@
         android:id="@+id/stop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         android:layout_marginEnd="20dp"
         android:backgroundTint="#ff9a00"
         android:clickable="true"
