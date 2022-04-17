@@ -309,7 +309,7 @@ open class MainActivity : AppCompatActivity(){
                     (indent / 10.0).roundToInt(),
                     len,
                     currentColor(x, countSounds[x]), x, countSounds[x]))
-                if (prevMusicLength > getMusicLength()) setMusicLength()
+                if (prevMusicLength < getMusicLength()) setMusicLength()
             }
             buttonDelete.setOnClickListener {}
             buttonEdit.setOnClickListener {}
