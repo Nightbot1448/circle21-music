@@ -310,6 +310,7 @@ open class MainActivity : AppCompatActivity(){
                     len,
                     currentColor(x, countSounds[x]), x, countSounds[x]))
                 if (prevMusicLength < getMusicLength()) setMusicLength()
+                else setMusicLength(changeRecycler = false)
             }
             buttonDelete.setOnClickListener {}
             buttonEdit.setOnClickListener {}
@@ -565,7 +566,7 @@ open class MainActivity : AppCompatActivity(){
             (currentRecycler(i).adapter as SecondsListAdapter).editSound(Sound(
                 indent, len, currentColor(i, j), i, j))
             if (j != countSounds[i]) {
-                sounds[i][j + 1].delay += if (sound.len - prevLen > 0) sound.len - prevLen else 0
+                sounds[i][j + 1].delay += if (sounds[i][j + 1].delay - sound.len <= 0) sound.len - sounds[i][j + 1].delay else 0
                 val nextSound = sounds[i][j + 1]
                 val nextIndent = ((nextSound.delay - sound.len) / 10.0).roundToInt()
                 var nextLen = (nextSound.len / 10.0).roundToInt()
