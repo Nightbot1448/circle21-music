@@ -29,7 +29,7 @@ class WebRequester (private val context: Context) {
         else {
             val id = UUID.randomUUID().toString()
             FileOutputStream(file).write(id.toByteArray())
-             id
+            id
         }
     }
 
@@ -172,5 +172,20 @@ class WebRequester (private val context: Context) {
             else Array (5) {arrayListOf("")}
         }
         else Array (5) {arrayListOf("")}
+    }
+
+    fun getTextResource (name : String) : String {
+        val answer = baseRequest("textResources/$name.txt", mapOf())
+        return if (!answer.contentEquals(arrayOf(""))) {
+            val test = when (name) {
+                "faq" -> '1'
+                "terms" -> 'U'
+                "tutorial" -> 'G'
+                else -> 'Ш' // this letter will never occur in any resource, so...
+            }
+            if (answer[0].first() == test) answer.joinToString("\n")
+            else "0"
+        }
+        else "0"
     }
 }
