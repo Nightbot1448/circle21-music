@@ -67,7 +67,7 @@ class SettingsActivity : AppCompatActivity() {
                 val projectDefault = File(path, "projectDefault.emproj")
                 if (projectDefault.exists()) projectDefault.delete()
                 for (i in projects) {
-                    val project = File(path, i)
+                    val project = File(path, "$i.emproj")
                     if (project.exists()) project.delete()
                 }
                 file.delete()
