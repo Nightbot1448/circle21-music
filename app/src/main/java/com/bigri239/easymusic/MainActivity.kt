@@ -156,8 +156,13 @@ open class MainActivity : AppCompatActivity(){
                 if (i != projects.size - 1) content += "\n"
             }
             FileOutputStream(currentFile).write(content.toByteArray())
-            saveProject()
+            rawResourceToFile("project", "projectDefault.emproj")
         }
+
+        currentFile = File(path, "projectDefault.emproj")
+
+        if (!currentFile.exists())
+            rawResourceToFile("project", "projectDefault.emproj")
 
         currentFile = File(path, "sounds.conf")
 
@@ -431,12 +436,12 @@ open class MainActivity : AppCompatActivity(){
     }
 
     private fun openProject() {
-        try {
-            Toast.makeText(this, "Opening project $projectName...",
-                Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Opening project $projectName...",
+            Toast.LENGTH_SHORT).show()
+        val path = filesDir
+        val file = File(path, "$projectName.emproj")
+        if (file.exists()) {
             clearSounds()
-            val path = filesDir
-            val file = File(path, "$projectName.emproj")
             val content: String = file.readText()
             val tracksContent = content.split("\n").toTypedArray()
             countTracks = tracksContent.size - 1
@@ -489,9 +494,7 @@ open class MainActivity : AppCompatActivity(){
                 Toast.makeText(this, message, Toast.LENGTH_LONG).show()
             }
         }
-        catch (e: IOException) {
-            Toast.makeText(this, "No such file!", Toast.LENGTH_SHORT).show()
-        }
+        else Toast.makeText(this, "No such file!", Toast.LENGTH_SHORT).show()
     }
 
     private fun saveProject() {
@@ -596,15 +599,20 @@ open class MainActivity : AppCompatActivity(){
         return byteBuffer.toByteArray()
     }
 
+    private fun rawResourceToFile (resourceName : String, fileName : String) {
+        val res = resources
+        val inStream: InputStream = res.openRawResource(res.getIdentifier(resourceName,
+            "raw", packageName))
+        val data = readBytes(inStream)
+        val firstProject = File(filesDir, fileName)
+        FileOutputStream(firstProject).write(data)
+    }
+
     private fun getSoundLength(name: String): Long {
         return try {
             val metaRetriever = MediaMetadataRetriever()
             if (isRawResource(name)) {
-                val inStream: InputStream = resources.openRawResource(resources.getIdentifier(name,
-                    "raw", packageName))
-                val data = readBytes(inStream)
-                val file = File(filesDir, "sound.wav")
-                FileOutputStream(file).write(data)
+                rawResourceToFile(name, "sound.wav")
                 metaRetriever.setDataSource(File(filesDir, "sound.wav").absolutePath)
             }
             else metaRetriever.setDataSource(File(filesDir, "$name.wav").absolutePath)
