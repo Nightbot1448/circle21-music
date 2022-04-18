@@ -1,9 +1,7 @@
 package com.bigri239.easymusic.net
 
 import android.content.Context
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
+import java.io.*
 import java.util.*
 
 class WebRequester (private val context: Context) {
@@ -29,7 +27,7 @@ class WebRequester (private val context: Context) {
         else {
             val id = UUID.randomUUID().toString()
             FileOutputStream(file).write(id.toByteArray())
-             id
+            id
         }
     }
 
@@ -47,6 +45,25 @@ class WebRequester (private val context: Context) {
         } catch (e: Exception) {
             arrayOf("")
         }
+    }
+
+    @Throws(IOException::class)
+    private fun readBytes(inputStream: InputStream): ByteArray? {
+        val byteBuffer = ByteArrayOutputStream()
+        val bufferSize = 1024
+        val buffer = ByteArray(bufferSize)
+        var len: Int
+        while(inputStream.read(buffer).also { len = it } != -1) byteBuffer.write(buffer, 0, len)
+        return byteBuffer.toByteArray()
+    }
+
+    private fun rawResourceToFile (resourceName : String, fileName : String) {
+        val res = context.resources
+        val inStream: InputStream = res.openRawResource(res.getIdentifier(resourceName,
+            "raw", context.packageName))
+        val data = readBytes(inStream)
+        val firstProject = File(context.filesDir, fileName)
+        FileOutputStream(firstProject).write(data)
     }
 
     fun logOff () : Boolean {
@@ -148,10 +165,14 @@ class WebRequester (private val context: Context) {
                     projects.addAll(file.readText().split("\n").toTypedArray())
                     if (!projects.contains(projectName)) file.appendText("\n$projectName")
                 }
-                else file.appendText("projectDefault\n$projectName")
+                else {
+                    file.appendText("projectDefault\n$projectName")
+                    rawResourceToFile("project", "projectDefault.emproj")
+                }
             }
             else {
                 FileOutputStream(file).write("projectDefault\n$projectName".toByteArray())
+                rawResourceToFile("project", "projectDefault.emproj")
             }
             true
         }
@@ -172,5 +193,20 @@ class WebRequester (private val context: Context) {
             else Array (5) {arrayListOf("")}
         }
         else Array (5) {arrayListOf("")}
+    }
+
+    fun getTextResource (name : String) : String {
+        val answer = baseRequest("textResources/$name.txt", mapOf())
+        return if (!answer.contentEquals(arrayOf(""))) {
+            val test = when (name) {
+                "faq" -> '1'
+                "terms" -> 'U'
+                "tutorial" -> 'G'
+                else -> 'Ш' // this letter will never occur in any resource, so...
+            }
+            if (answer[0].first() == test) answer.joinToString("\n")
+            else "0"
+        }
+        else "0"
     }
 }

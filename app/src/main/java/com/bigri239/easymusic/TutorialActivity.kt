@@ -2,7 +2,9 @@ package com.bigri239.easymusic
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.StrictMode
 import androidx.appcompat.app.AppCompatActivity
+import com.bigri239.easymusic.net.WebRequester
 import kotlinx.android.synthetic.main.activity_tutorial.*
 
 @Suppress("DEPRECATION")
@@ -11,14 +13,23 @@ class TutorialActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tutorial)
     }
+
     override fun onStart() {
         super.onStart()
+        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
+        val webRequester = WebRequester(this@TutorialActivity)
+
         val intent = Intent(this, MainActivity::class.java)
         backtut.setOnClickListener {
             backtut.isClickable = false
             startActivity(intent)
         }
-        text_vie.text = "Greetings, aspiring musician! Thank you for choosing our application. Below you will find detailed instructions for working with the program.\n\n" +
+
+        val tutorialText = webRequester.getTextResource("tutorial")
+        text_vie.text = if (tutorialText != "0") tutorialText
+        else {
+            "Greetings, aspiring musician! Thank you for choosing our application. Below you will find detailed instructions for working with the program.\n\n" +
                 "1) Loading Sounds \n" +
                 "To create a project, you will need a basic set of sounds that you will work with. You can work with the sounds that are already in the application, or upload your own. To do this, from the main screen, click the Sounds button to go to the sounds download menu. When you press the ADD button, you will be prompted to select the sounds in the phone's memory to load into the application. Once added, these sounds will be located in the list of Custom sounds.\n\n" +
                 "2) Creating a project \n" +
@@ -30,5 +41,6 @@ class TutorialActivity : AppCompatActivity() {
                 "6) In the Settings menu, you can set the interval for automatically saving sounds, as well as reset downloaded sounds or projects. \n\n" +
                 "7) The Account menu contains information about your account. If you are using the application for the first time, go to the Sign up menu, enter your email and password. An email will be sent to you to confirm your account. Open it and click on the link. After that, return to the application and re-enter your username and password in the log in menu. You will be redirected to your profile, where you can fill in information about yourself. The screen will display a list of your downloaded sounds and projects. To add a sound or a project to a profile, click on the add button under the corresponding list, and select the desired list item. Here you can also add a friend who also uses our application. To do this, just click the add button and enter your friend's email. You can go to his profile to view his friend's projects. When you click on a friend's project, it will be copied to your projects. \n\n" +
                 "8) In the Help activity you will find the user agreement, answers to frequently asked questions and information about the authors."
+        }
     }
 }
