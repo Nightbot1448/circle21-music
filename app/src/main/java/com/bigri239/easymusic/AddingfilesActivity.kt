@@ -21,20 +21,20 @@ import kotlinx.android.synthetic.main.activity_addfiles.*
 import java.io.*
 import kotlin.math.abs
 
-
 @Suppress("DEPRECATION")
 class AddingfilesActivity : AppCompatActivity() {
     private var filePath = ""
     private var id = 0
     private var len : Long = 3615
-    var track = SoundPool(1, AudioManager.STREAM_MUSIC, 0)
-    private val itemsList : ArrayList<String> = arrayListOf("bassalbane", "basscentury", "bassflowers",
+    private var track = SoundPool(1, AudioManager.STREAM_MUSIC, 0)
+    private val defaultList : ArrayList<String> = arrayListOf("bassalbane", "basscentury", "bassflowers",
         "clapchoppa", "clapforeign", "crashalect", "crashbloods", "crashvinnyx", "fxfreeze",
         "fxgunnes", "hihatcheque", "hihatmystery", "kickartillery", "kickinfinite", "percardonme",
         "percpaolla", "rimchaser", "rimstount", "snarecompas", "snarewoods", "voxanother", "voxgilens")
-    private val itemsList1 = arrayListOf<String>()
+    private val customList = arrayListOf<String>()
+    private lateinit var defaultAdapter: CustomAdapter
     private lateinit var customAdapter: CustomAdapter
-    private lateinit var customAdapter1: CustomAdapter
+
     private val connectorSound = object : CustomConnector {
         override fun function(string: String) {
             playSound(string)
@@ -50,25 +50,21 @@ class AddingfilesActivity : AppCompatActivity() {
 
         if (file.exists()) {
             val content: String = file.readText()
-            if (content != "") itemsList1.addAll(content.split("\n").toTypedArray())
+            if (content != "") customList.addAll(content.split("\n").toTypedArray())
         }
         else {
-            FileOutputStream(file).use {
-                it.write("".toByteArray())
-            }
+            FileOutputStream(file).write("".toByteArray())
         }
 
         val recyclerView: RecyclerView = recyclerView111
-        customAdapter = CustomAdapter(itemsList, connectorSound)
-        val layoutManager = LinearLayoutManager(applicationContext)
-        recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = customAdapter
+        defaultAdapter = CustomAdapter(defaultList, connectorSound)
+        recyclerView.layoutManager = LinearLayoutManager(applicationContext)
+        recyclerView.adapter = defaultAdapter
 
         val recyclerView1: RecyclerView = recyclerView222
-        customAdapter1 = CustomAdapter(itemsList1, connectorSound)
-        val layoutManager1 = LinearLayoutManager(applicationContext)
-        recyclerView1.layoutManager = layoutManager1
-        recyclerView1.adapter = customAdapter1
+        customAdapter = CustomAdapter(customList, connectorSound)
+        recyclerView1.layoutManager = LinearLayoutManager(applicationContext)
+        recyclerView1.adapter = customAdapter
     }
 
     override fun onStart() {
@@ -102,22 +98,19 @@ class AddingfilesActivity : AppCompatActivity() {
             if (filePath != "" && !filePath.contains(';')) {
                 val path = filesDir
                 val file = File(path, "$filePath.wav")
-                FileOutputStream(file).use {
-                    it.write(content)
-                }
+                FileOutputStream(file).write(content)
                 val file1 = File(path, "sounds.conf")
                 var sounds: String = file1.readText()
-                if (!itemsList1.contains(filePath)) {
+                if (!customList.contains(filePath)) {
                     if (sounds != "") sounds += "\n"
                     sounds += filePath
-                    FileOutputStream(file1).use {
-                        it.write(sounds.toByteArray())
-                    }
-                    itemsList1.add(filePath)
-                    customAdapter1.notifyDataSetChanged()
+                    FileOutputStream(file1).write(sounds.toByteArray())
+                    customList.add(filePath)
+                    customAdapter.notifyItemInserted(customList.size - 1)
                 }
                 dialog.dismiss()
-                Toast.makeText(this, "Sound added successfully!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Sound added successfully!", Toast.LENGTH_SHORT)
+                    .show()
             }
             else Toast.makeText(this, "Incorrect file name!", Toast.LENGTH_SHORT).show()
         }
@@ -125,10 +118,11 @@ class AddingfilesActivity : AppCompatActivity() {
     }
 
     private fun getSoundLength(name: String): Long {
-        try {
+        return try {
             val metaRetriever = MediaMetadataRetriever()
-            if (itemsList.contains(name)) {
-                val inStream: InputStream = resources.openRawResource(resources.getIdentifier(name, "raw", packageName))
+            if (defaultList.contains(name)) {
+                val inStream: InputStream = resources.openRawResource(resources.getIdentifier(name,
+                    "raw", packageName))
                 val data = readBytes(inStream)
                 val file = File(filesDir, "sound.wav")
                 FileOutputStream(file).use {
@@ -137,10 +131,11 @@ class AddingfilesActivity : AppCompatActivity() {
                 metaRetriever.setDataSource(File(filesDir, "sound.wav").absolutePath)
             }
             else metaRetriever.setDataSource(File(filesDir, "$name.wav").absolutePath)
-            return abs(metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)!!.toLong() - 1)
+            abs(metaRetriever.extractMetadata(MediaMetadataRetriever.
+                METADATA_KEY_DURATION)!!.toLong() - 1)
         }
         catch (e: java.lang.Exception) {
-            return 0
+            0
         }
     }
 
@@ -151,7 +146,7 @@ class AddingfilesActivity : AppCompatActivity() {
             length.text = "Sound length: $len"
             track.release()
             track = SoundPool(1, AudioManager.STREAM_MUSIC, 0)
-            id = if (itemsList.contains(soundName)) track.load(
+            id = if (defaultList.contains(soundName)) track.load(
                 baseContext,
                 resources.getIdentifier(soundName, "raw", packageName),
                 0
@@ -159,7 +154,8 @@ class AddingfilesActivity : AppCompatActivity() {
             else track.load("$filesDir/$soundName.wav",0)
             play()
         }
-        else Toast.makeText(this, "Oops! This sound does not exist!", Toast.LENGTH_SHORT).show()
+        else Toast.makeText(this, "Oops! This sound does not exist!",
+            Toast.LENGTH_SHORT).show()
     }
 
     fun play() {
@@ -177,16 +173,13 @@ class AddingfilesActivity : AppCompatActivity() {
             val wavdata = input?.let { readBytes(it) }
             if (wavdata != null) {
                 val file = File(filesDir, "sound.wav")
-                FileOutputStream(file).use {
-                    it.write(wavdata)
-                }
-                val metaRetriever = MediaMetadataRetriever()
-                metaRetriever.setDataSource(File(filesDir, "sound.wav").absolutePath)
-                val len = abs(metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)!!.toLong() - 1)
+                FileOutputStream(file).write(wavdata)
+                val len = getSoundLength("sound.wav")
                 if (len < 5600) {
                     showCopyingDialog(wavdata)
                 }
-                else Toast.makeText(this, "Oops! This file is too long!", Toast.LENGTH_SHORT).show()
+                else Toast.makeText(this, "Oops! This file is too long!",
+                    Toast.LENGTH_SHORT).show()
             }
         }
         }

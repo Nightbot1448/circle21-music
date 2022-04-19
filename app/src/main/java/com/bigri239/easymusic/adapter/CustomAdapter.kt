@@ -36,5 +36,4 @@ internal class CustomAdapter(private var itemsList: List<String>, val connector:
     override fun getItemCount(): Int {
         return itemsList.size
     }
-
 }
