@@ -31,7 +31,6 @@ import java.util.Collections.max
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
-
 @Suppress("DEPRECATION")
 open class MainActivity : AppCompatActivity(){
 
@@ -50,16 +49,17 @@ open class MainActivity : AppCompatActivity(){
     )
 
     private var newProject = ""
-    private var state: String = "unready"
+    private var state = "unready"
     private var played = 0
+    private var touchedRvTag = 0
     private var projectName = "projectDefault"
     private var currentSound = "bassalbane"
-    private var autosave = 10
+    private var autoSaveInterval = 10
     private val projects = mutableListOf<String>()
     private val tracks: Array<SoundPool> =
         Array(9) { SoundPool(10, AudioManager.STREAM_MUSIC, 0) }
-    private var countTracks = 0
-    private var countSounds: Array<Int> = Array(9) { -1 }
+    private var maxTracks = 0
+    private var maxSounds: Array<Int> = Array(9) { -1 }
     private val emptySound = SoundInfo()
     private var sounds: Array<Array<SoundInfo>> = Array(9) { Array(1000) { emptySound } }
     private val resourcesArray : Array<String> = arrayOf("bassalbane", "basscentury", "bassflowers",
@@ -82,7 +82,6 @@ open class MainActivity : AppCompatActivity(){
         setContentView(R.layout.activity_main)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-        var touchedRvTag = 0
 
         val yourScrollListener: RecyclerView.OnScrollListener =
             object : RecyclerView.OnScrollListener() {
@@ -114,14 +113,12 @@ open class MainActivity : AppCompatActivity(){
         for (i in 0..8) {
             val recycler = currentRecycler(i)
             recycler.adapter = SecondsListAdapter(connector)
-            (recycler.adapter as SecondsListAdapter).notifyDataSetChanged()
             recycler.tag = i
             recycler.addOnScrollListener(yourScrollListener)
             recycler.addOnItemTouchListener(yourTouchListener)
         }
     }
 
-    // ниже создание переходов между экранами
     override fun onStart() {
         super.onStart()
 
@@ -150,12 +147,7 @@ open class MainActivity : AppCompatActivity(){
         }
         else {
             projects.add(projectName)
-            var content = ""
-            for (i in projects.indices) {
-                content += projects[i]
-                if (i != projects.size - 1) content += "\n"
-            }
-            FileOutputStream(currentFile).write(content.toByteArray())
+            FileOutputStream(currentFile).write(projectName.toByteArray())
             rawResourceToFile("project", "projectDefault.emproj")
         }
 
@@ -170,30 +162,26 @@ open class MainActivity : AppCompatActivity(){
             val content: String = currentFile.readText()
             if (content != "") customArray.addAll(content.split("\n").toTypedArray())
         }
-        else {
-            val content = ""
-            FileOutputStream(currentFile).write(content.toByteArray())
-        }
+        else FileOutputStream(currentFile).write("".toByteArray())
 
         currentFile = File(path, "settings.conf")
 
         if (currentFile.exists()) {
             val content: String = currentFile.readText()
-            if (content != "") autosave = content.split("\n").toTypedArray()[0].toInt()
+            if (content != "") autoSaveInterval = content.split("\n").toTypedArray()[0]
+                .toInt()
         }
-        else {
-            val content = "10"
-            FileOutputStream(currentFile).write(content.toByteArray())
-        }
+        else FileOutputStream(currentFile).write("10".toByteArray())
 
         for (i in 1..9) {
             findViewById<Button>(resources.getIdentifier("btnAdd$i", "id",
                 packageName)).setOnClickListener { addSound(i - 1) }
             findViewById<Button>(resources.getIdentifier("btnRem$i", "id",
-                packageName)).setOnClickListener { deleteSelected(i - 1, countSounds[i - 1]) }
+                packageName)).setOnClickListener { deleteSelected(i - 1, maxSounds[i - 1]) }
         }
 
-        autoSaver = object : CountDownTimer(360001, (autosave * 60000).toLong()) {
+        autoSaver = object : CountDownTimer(360001, (autoSaveInterval * 60000)
+            .toLong()) {
             override fun onTick(millisUntilFinished: Long) {
                 saveProject()
             }
@@ -288,19 +276,19 @@ open class MainActivity : AppCompatActivity(){
             if (isReady()) {
                 val prevMusicLength = getMusicLength()
                 if (state == "unready") state = "ready"
-                if (countTracks < x) countTracks = x
-                val sound = getSoundParameters(x, countSounds[x] + 1)
-                countSounds[x]++
-                sounds[x][countSounds[x]] = sound
+                if (maxTracks < x) maxTracks = x
+                val sound = getSoundParameters(x, maxSounds[x] + 1)
+                maxSounds[x]++
+                sounds[x][maxSounds[x]] = sound
                 var len = (sound.len / 10.0).roundToInt()
                 len = if (len > 0) len else 1
-                val indent = if (countSounds[x] > 0) sound.delay - sounds[x][countSounds[x] - 1].len
+                val indent = if (maxSounds[x] > 0) sound.delay - sounds[x][maxSounds[x] - 1].len
                 else sound.delay
                 (currentRecycler(x).adapter as SecondsListAdapter).addSound(
                     Sound(
                     (indent / 10.0).roundToInt(),
                     len,
-                    currentColor(x, countSounds[x]), x, countSounds[x])
+                    currentColor(x, maxSounds[x]), x, maxSounds[x])
                 )
                 if (prevMusicLength < getMusicLength()) setMusicLength()
             }
@@ -361,7 +349,7 @@ open class MainActivity : AppCompatActivity(){
             openProject()
             state = "unready"
 
-            for (i in 0..countTracks) {
+            for (i in 0..maxTracks) {
                 if (sounds[i][0] != emptySound) state = "ready"
             }
         }
@@ -384,18 +372,18 @@ open class MainActivity : AppCompatActivity(){
             (currentRecycler(i).adapter as SecondsListAdapter).eraseSounds()
         }
 
-        for (i in 0..countTracks) { // очистка данных по звукам
+        for (i in 0..maxTracks) { // очистка данных по звукам
             tracks[i].release()
             tracks[i] = SoundPool(10, AudioManager.STREAM_MUSIC, 0)
 
-            for (j in 0..countSounds[i]) {
+            for (j in 0..maxSounds[i]) {
                 sounds[i][j] = emptySound
             }
 
-            countSounds[i] = -1
+            maxSounds[i] = -1
         }
 
-        countTracks = 0
+        maxTracks = 0
         state = "unready"
         setMusicLength()
     }
@@ -404,11 +392,11 @@ open class MainActivity : AppCompatActivity(){
         return if (state != "unready") {
             val tracksLengths = mutableListOf<Long>()
 
-            for (i in 0..countTracks) {
+            for (i in 0..maxTracks) {
                 try {
                     tracksLengths.add(0)
-                    for (j in 0..countSounds[i]) tracksLengths[i] += sounds[i][j].delay
-                    tracksLengths[i] += sounds[i][countSounds[i]].len
+                    for (j in 0..maxSounds[i]) tracksLengths[i] += sounds[i][j].delay
+                    tracksLengths[i] += sounds[i][maxSounds[i]].len
                 }
                 catch (e : IndexOutOfBoundsException) {}
             }
@@ -444,12 +432,12 @@ open class MainActivity : AppCompatActivity(){
             clearSounds()
             val content: String = file.readText()
             val tracksContent = content.split("\n").toTypedArray()
-            countTracks = tracksContent.size - 1
+            maxTracks = tracksContent.size - 1
             val missingSounds = mutableListOf<String>()
             try {
                 for (i in tracksContent.indices) {
                     val soundsContent = tracksContent[i].split(";").toTypedArray()
-                    countSounds[i] = soundsContent.size - 1
+                    maxSounds[i] = soundsContent.size - 1
                     val visualise = mutableListOf<Sound>()
 
                     for (j in soundsContent.indices) {
@@ -503,18 +491,18 @@ open class MainActivity : AppCompatActivity(){
             val file = File(path, "$projectName.emproj")
             var content = ""
 
-            for (i in 0..countTracks) {
-                if (countSounds[i] != -1) {
-                    for (j in 0..countSounds[i]) {
+            for (i in 0..maxTracks) {
+                if (maxSounds[i] != -1) {
+                    for (j in 0..maxSounds[i]) {
                         content += sounds[i][j].res + " "
                         content += sounds[i][j].id.toString() + " "
                         content += sounds[i][j].delay.toString() + " "
                         content += sounds[i][j].volume.toString() + " "
                         content += sounds[i][j].loop.toString() + " "
                         content += sounds[i][j].ratio.toString()
-                        if (j != countSounds[i]) content += ";"
+                        if (j != maxSounds[i]) content += ";"
                     }
-                    if (i != countTracks) content += "\n"
+                    if (i != maxTracks) content += "\n"
                 }
             }
 
@@ -524,9 +512,9 @@ open class MainActivity : AppCompatActivity(){
 
     fun editSelected (i : Int, j : Int) {
         infoAboutSelected(i, j)
-        if (countSounds[i] != -1) buttonDelete.setOnClickListener { deleteSelected(i, j) }
+        if (maxSounds[i] != -1) buttonDelete.setOnClickListener { deleteSelected(i, j) }
         else buttonDelete.setOnClickListener {}
-        if (countSounds[i] != -1) buttonEdit.setOnClickListener { changeSelected(i, j) }
+        if (maxSounds[i] != -1) buttonEdit.setOnClickListener { changeSelected(i, j) }
         else buttonEdit.setOnClickListener {}
     }
 
@@ -541,17 +529,17 @@ open class MainActivity : AppCompatActivity(){
     }
 
     private fun deleteSelected (i : Int, j: Int) {
-        if (j <= countSounds[i] && countSounds[i] != -1) {
+        if (j <= maxSounds[i] && maxSounds[i] != -1) {
             val prevMusicLength = getMusicLength()
             val delay : Long = sounds[i][j].delay + sounds[i][j + 1].delay
             sounds[i][j] = sounds[i][j + 1]
             sounds[i][j].delay = delay
-            for (k in (j + 1)..countSounds[i]) sounds[i][k] = sounds[i][k + 1]
-            countSounds[i]--
-            if (countSounds[i] == -1) {
+            for (k in (j + 1)..maxSounds[i]) sounds[i][k] = sounds[i][k + 1]
+            maxSounds[i]--
+            if (maxSounds[i] == -1) {
                 if (sounds.contentEquals(Array(100) { Array(500) { emptySound } }))
                     state = "unready"
-                if (countTracks == i && countTracks != 0) countTracks --
+                if (maxTracks == i && maxTracks != 0) maxTracks --
             }
             (currentRecycler(i).adapter as SecondsListAdapter).deleteSound(j)
             if (prevMusicLength > getMusicLength()) setMusicLength(changeRecycler = false)
@@ -559,7 +547,7 @@ open class MainActivity : AppCompatActivity(){
     }
 
     private fun changeSelected (i : Int, j: Int) {
-        if (j <= countSounds[i]) {
+        if (j <= maxSounds[i]) {
             val prevMusicLength = getMusicLength()
             sounds[i][j] = getSoundParameters(i, j)
             val sound = sounds[i][j]
@@ -571,7 +559,7 @@ open class MainActivity : AppCompatActivity(){
                 Sound(
                 indent, len, currentColor(i, j), i, j)
             )
-            if (j != countSounds[i]) {
+            if (j != maxSounds[i]) {
                 if (sounds[i][j + 1].delay < sound.len) {
                     sounds[i][j + 1].delay += sound.len - sounds[i][j + 1].delay
                     val nextSound = sounds[i][j + 1]
@@ -633,7 +621,7 @@ open class MainActivity : AppCompatActivity(){
                 tracks[i].play(sound.id, sound.volume, sound.volume, 0, 0, sound.ratio)
                 Log.d(TAG, "MYMSG play: $i $j " + sounds[i][0].res)
             }
-            if (j < countSounds[i] && started == played) playTrack(i, j + 1)
+            if (j < maxSounds[i] && started == played) playTrack(i, j + 1)
         }, sounds[i][j].delay + delay)
     }
 
@@ -646,7 +634,6 @@ open class MainActivity : AppCompatActivity(){
             edittextmain4.setText(800.toString())
         val ratio : Float = abs(100 / (edittextmain4.text.toString().toFloat()))
         val len : Long = (getSoundLength(res) / ratio).toLong()
-        Log.d(TAG, "MYMSG param: $res")
         if (y > 0) {
             val soundPrev = sounds[x][y - 1]
             if (edittextmain1.text.toString().toLong() < soundPrev.len)
@@ -679,13 +666,13 @@ open class MainActivity : AppCompatActivity(){
             saveProject()
             setMusicLength(changeRecycler = false)
 
-            for (i in 0..countTracks) { // очищение и перезаполнение, если играем еще раз
+            for (i in 0..maxTracks) { // очищение и перезаполнение, если играем еще раз
                 tracks[i].release()
                 tracks[i] = SoundPool(10, AudioManager.STREAM_MUSIC, 0)
             }
 
-            for (i in 0..countTracks) {
-                for (j in 0..countSounds[i]) {
+            for (i in 0..maxTracks) {
+                for (j in 0..maxSounds[i]) {
                     val res = sounds[i][j].res
                     if (isRawResource(res)) sounds[i][j].id = tracks[i].load(
                         baseContext,
@@ -703,22 +690,22 @@ open class MainActivity : AppCompatActivity(){
                 val start: Long = currentTimeMillis() + 100
                 state = "playing"
                 setTimer()
-                if (countSounds[0] != -1) playTrack(0, 0, start - currentTimeMillis())
-                if (countSounds[1] != -1) playTrack(1, 0, start - currentTimeMillis())
-                if (countSounds[2] != -1) playTrack(2, 0, start - currentTimeMillis())
-                if (countSounds[3] != -1) playTrack(3, 0, start - currentTimeMillis())
-                if (countSounds[4] != -1) playTrack(4, 0, start - currentTimeMillis())
-                if (countSounds[5] != -1) playTrack(5, 0, start - currentTimeMillis())
-                if (countSounds[6] != -1) playTrack(6, 0, start - currentTimeMillis())
-                if (countSounds[7] != -1) playTrack(7, 0, start - currentTimeMillis())
-                if (countSounds[8] != -1) playTrack(8, 0, start - currentTimeMillis())
+                if (maxSounds[0] != -1) playTrack(0, 0, start - currentTimeMillis())
+                if (maxSounds[1] != -1) playTrack(1, 0, start - currentTimeMillis())
+                if (maxSounds[2] != -1) playTrack(2, 0, start - currentTimeMillis())
+                if (maxSounds[3] != -1) playTrack(3, 0, start - currentTimeMillis())
+                if (maxSounds[4] != -1) playTrack(4, 0, start - currentTimeMillis())
+                if (maxSounds[5] != -1) playTrack(5, 0, start - currentTimeMillis())
+                if (maxSounds[6] != -1) playTrack(6, 0, start - currentTimeMillis())
+                if (maxSounds[7] != -1) playTrack(7, 0, start - currentTimeMillis())
+                if (maxSounds[8] != -1) playTrack(8, 0, start - currentTimeMillis())
             }
         }
         else if (state == "pause") {
             Toast.makeText(this, "Music unpaused", Toast.LENGTH_SHORT).show()
             setTimer(timeRemaining)
             state = "playing"
-            for (i in 0..countTracks) tracks[i].autoResume()
+            for (i in 0..maxTracks) tracks[i].autoResume()
         }
     }
 
@@ -726,7 +713,7 @@ open class MainActivity : AppCompatActivity(){
         timer?.cancel()
         setMusicLength(changeRecycler = false)
         Toast.makeText(this, "Playing halted", Toast.LENGTH_SHORT).show()
-        for (i in 0..countTracks) { // очищение и перезаполнение, если играем еще раз
+        for (i in 0..maxTracks) { // очищение и перезаполнение, если играем еще раз
             tracks[i].autoPause()
             tracks[i].release()
             tracks[i] = SoundPool(10, AudioManager.STREAM_MUSIC, 0)
@@ -738,7 +725,7 @@ open class MainActivity : AppCompatActivity(){
         if (state == "playing") {
             timer?.cancel()
             Toast.makeText(this, "Music paused", Toast.LENGTH_SHORT).show()
-            for (i in 0..countTracks) tracks[i].autoPause()
+            for (i in 0..maxTracks) tracks[i].autoPause()
             state = "pause"
         }
     }

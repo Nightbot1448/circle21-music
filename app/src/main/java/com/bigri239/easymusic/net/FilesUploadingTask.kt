@@ -6,8 +6,10 @@ import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import java.net.ProtocolException
 import java.net.URL
+import kotlin.math.min
 
-open class FilesUploadingTask (private val filePath: String, private val url : String) : AsyncTask<Void?, Void?, String?>() {
+@Suppress("DEPRECATION")
+class FilesUploadingTask (private val filePath: String, private val url : String) : AsyncTask<Void?, Void?, String?>() {
     // Конец строки
     private val lineEnd = "\r\n"
 
@@ -54,21 +56,21 @@ open class FilesUploadingTask (private val filePath: String, private val url : S
             val connection: HttpURLConnection = uploadUrl.openConnection() as HttpURLConnection
 
             // Разрешение ввода соединению
-            connection.setDoInput(true)
+            connection.doInput = true
             // Разрешение вывода соединению
-            connection.setDoOutput(true)
+            connection.doOutput = true
             // Отключение кеширования
-            connection.setUseCaches(false)
+            connection.useCaches = false
 
             // Задание запросу типа POST
-            connection.setRequestMethod("POST")
+            connection.requestMethod = "POST"
 
             // Задание необходимых свойств запросу
             connection.setRequestProperty("Connection", "Keep-Alive")
             connection.setRequestProperty("Content-Type", "multipart/form-data;boundary=$boundary")
 
             // Создание потока для записи в соединение
-            val outputStream = DataOutputStream(connection.getOutputStream())
+            val outputStream = DataOutputStream(connection.outputStream)
 
             // Формирование multipart контента
 
@@ -85,7 +87,7 @@ open class FilesUploadingTask (private val filePath: String, private val url : S
             // Поток для считывания файла в оперативную память
             val fileInputStream = FileInputStream(File(filePath))
             bytesAvailable = fileInputStream.available()
-            bufferSize = Math.min(bytesAvailable, maxBufferSize)
+            bufferSize = min(bytesAvailable, maxBufferSize)
             buffer = ByteArray(bufferSize)
 
             // Считывание файла в оперативную память и запись его в соединение
@@ -93,7 +95,7 @@ open class FilesUploadingTask (private val filePath: String, private val url : S
             while (bytesRead > 0) {
                 outputStream.write(buffer, 0, bufferSize)
                 bytesAvailable = fileInputStream.available()
-                bufferSize = Math.min(bytesAvailable, maxBufferSize)
+                bufferSize = min(bytesAvailable, maxBufferSize)
                 bytesRead = fileInputStream.read(buffer, 0, bufferSize)
             }
 

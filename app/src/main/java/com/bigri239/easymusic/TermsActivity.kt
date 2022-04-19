@@ -52,22 +52,18 @@ class TermsActivity : AppCompatActivity() {
 
         btnAccept.setOnClickListener {
             btnAccept.isClickable = false
-            FileOutputStream(file).use {
-                it.write("1".toByteArray())
-            }
+            FileOutputStream(file).write("1".toByteArray())
             Toast.makeText(this, "Thanks!", Toast.LENGTH_SHORT).show()
-            if (intent.getStringExtra("isStart").toString() == "true") {
-                val intent2 = Intent(this, MainActivity::class.java)
-                startActivity(intent2)
-            }
-            else {
-                val intent2 = Intent(this, HelpActivity::class.java)
-                startActivity(intent2)
-            }
+            val intent2 = if (intent.getStringExtra("isStart").toString() == "true")
+                Intent(this, MainActivity::class.java)
+            else Intent(this, HelpActivity::class.java)
+            startActivity(intent2)
         }
 
         btnDecline.setOnClickListener {
-            Toast.makeText(this, "Use of the application is allowed only if you agree to the Terms of Use!", Toast.LENGTH_LONG).show()
+            Toast.makeText(this,
+                "Use of the application is allowed only if you agree to the Terms of Use!",
+                Toast.LENGTH_LONG).show()
             if (file.exists()) file.delete()
         }
     }

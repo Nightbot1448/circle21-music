@@ -27,16 +27,19 @@ class SigninActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+
         val intent = Intent(this, MainActivity::class.java)
         backsi.setOnClickListener {
             backsi.isClickable = false
             startActivity(intent)
         }
+
         val intents2 = Intent(this, SignupActivity::class.java)
         signup.setOnClickListener {
             signup.isClickable = false
             startActivity(intents2)
         }
+
         if (webRequester.checkAuthorized()) {
             val intents3 = Intent(this, RecoveryActivity::class.java)
             startActivity(intents3)
@@ -45,12 +48,14 @@ class SigninActivity : AppCompatActivity() {
     }
 
     fun logIn (view : View) {
-        if (mail.text.toString().trim().isNotEmpty() && password.text.toString().trim().isNotEmpty()) {
+        if (mail.text.toString().trim().isNotEmpty() &&
+            password.text.toString().trim().isNotEmpty()) {
             if (webRequester.logIn(mail.text.toString(), password.text.toString())) {
                 val intents3 = Intent(this, RecoveryActivity::class.java)
                 startActivity(intents3)
             }
-            else Toast.makeText(this, "Wrong login or password!", Toast.LENGTH_SHORT).show()
+            else Toast.makeText(this, "Wrong login or password!", Toast.LENGTH_SHORT)
+                .show()
         }
     }
 
