@@ -98,6 +98,7 @@ class SecondsListAdapter(val connector : MainActivity.Connector) : RecyclerView.
 
     fun deleteSound (j : Int) {
         if (j != sounds.size - 1) sounds[j + 1].shift += sounds[j].length + sounds[j].shift
+        else lenLast += sounds[j].length + sounds[j].shift
         sounds.removeAt(j)
         initSecondSounds()
     }

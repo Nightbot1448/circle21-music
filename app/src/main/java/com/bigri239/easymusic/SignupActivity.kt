@@ -27,6 +27,7 @@ class SignupActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+
         val intent = Intent(this, SigninActivity::class.java)
         backsu.setOnClickListener {
             backsu.isClickable = false
@@ -35,7 +36,8 @@ class SignupActivity : AppCompatActivity() {
     }
 
     fun signUp (view: View) {
-        if (mail.text.toString().trim().isNotEmpty() && password.text.toString().trim().isNotEmpty()) {
+        if (mail.text.toString().trim().isNotEmpty() &&
+            password.text.toString().trim().isNotEmpty()) {
             val email = mail.text.toString()
             val password = password.text.toString()
             var maskOk = false
@@ -45,11 +47,13 @@ class SignupActivity : AppCompatActivity() {
             }
             if (maskOk) {
                 if (webRequester.signUp(email, password)) {
-                    Toast.makeText(this, "Check your email for an approval link", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Check your email for an approval link",
+                        Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, SigninActivity::class.java)
                     startActivity(intent)
                 }
-                else Toast.makeText(this, "This account already exists", Toast.LENGTH_SHORT).show()
+                else Toast.makeText(this, "This account already exists",
+                    Toast.LENGTH_SHORT).show()
             }
             else Toast.makeText(this, "Incorrect email!", Toast.LENGTH_SHORT).show()
         }

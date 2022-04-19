@@ -57,12 +57,12 @@ class WebRequester (private val context: Context) {
         return byteBuffer.toByteArray()
     }
 
-    private fun rawResourceToFile (resourceName : String, fileName : String) {
+    private fun projectToDefault () {
         val res = context.resources
-        val inStream: InputStream = res.openRawResource(res.getIdentifier(resourceName,
+        val inStream: InputStream = res.openRawResource(res.getIdentifier("project",
             "raw", context.packageName))
         val data = readBytes(inStream)
-        val firstProject = File(context.filesDir, fileName)
+        val firstProject = File(context.filesDir, "projectDefault.emproj")
         FileOutputStream(firstProject).write(data)
     }
 
@@ -167,12 +167,12 @@ class WebRequester (private val context: Context) {
                 }
                 else {
                     file.appendText("projectDefault\n$projectName")
-                    rawResourceToFile("project", "projectDefault.emproj")
+                    projectToDefault()
                 }
             }
             else {
                 FileOutputStream(file).write("projectDefault\n$projectName".toByteArray())
-                rawResourceToFile("project", "projectDefault.emproj")
+                projectToDefault()
             }
             true
         }

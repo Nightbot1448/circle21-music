@@ -80,8 +80,7 @@ class SettingsActivity : AppCompatActivity() {
         autosave = itemTitle.toInt()
         textMins.text = itemTitle
         val file = File(filesDir, "settings.conf")
-        val content = itemTitle
-        FileOutputStream(file).write(content.toByteArray())
+        FileOutputStream(file).write(itemTitle.toByteArray())
     }
 
     fun createAutosaveTimePopupMenu(v: View) {

@@ -1,13 +1,12 @@
 package com.bigri239.easymusic.net
 
 import android.os.AsyncTask
-import java.io.FileNotFoundException
-import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import java.net.ProtocolException
 import java.net.URL
 
+@Suppress("DEPRECATION")
 class HTTPRequestTask (private val url : String)  : AsyncTask<Void?, Void?, String?>(){
 
     override fun doInBackground(vararg params: Void?): String {
@@ -28,16 +27,10 @@ class HTTPRequestTask (private val url : String)  : AsyncTask<Void?, Void?, Stri
             connection.disconnect()
         }
         catch (e: MalformedURLException) {
-            e.printStackTrace()
+            result = "0"
         }
         catch (e: ProtocolException) {
-            e.printStackTrace()
-        }
-        catch (e: FileNotFoundException) {
-            e.printStackTrace()
-        }
-        catch (e: IOException) {
-            e.printStackTrace()
+            result = "0"
         }
         return result
     }

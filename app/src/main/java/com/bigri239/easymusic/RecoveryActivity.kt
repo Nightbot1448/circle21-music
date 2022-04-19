@@ -17,22 +17,22 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bigri239.easymusic.adapter.*
 import com.bigri239.easymusic.net.WebRequester
 import kotlinx.android.synthetic.main.activity_recovery.*
-import java.io.File
-import java.io.FileOutputStream
+import java.io.*
 
 @Suppress("DEPRECATION")
 class RecoveryActivity : AppCompatActivity() {
 
-    private var itemsList : List<String> = arrayListOf()
-    private var itemsList1 : List<String> = arrayListOf()
-    private var itemsList2 : List<String> = arrayListOf()
+    private var friendsList = mutableListOf<String>()
+    private var soundsList = mutableListOf<String>()
+    private var projectsList = mutableListOf<String>()
     private lateinit var webRequester : WebRequester
-    private lateinit var customAdapter1: CustomAdapter
-    private lateinit var customAdapter: CustomAdapter
-    private lateinit var customAdapter2: CustomAdapter
+    private lateinit var friendsAdapter: CustomAdapter
+    private lateinit var soundsAdapter: CustomAdapter
+    private lateinit var projectsAdapter: CustomAdapter
     private val projects = mutableListOf<String>()
     private val customArray = mutableListOf<String>()
     private lateinit var email : String
+
     private val connectorProject = object : CustomConnector {
         override fun function(string: String) {
             loadProject(string)
@@ -65,9 +65,12 @@ class RecoveryActivity : AppCompatActivity() {
             email = info[0][0]
             username.text = "Username: " + info[0][0]
             editInfo.setText(info[1][0])
-            itemsList = info[2]
-            itemsList1 = info[3]
-            itemsList2 = info[4]
+            friendsList = info[2] as MutableList
+            soundsList = info[3] as MutableList
+            projectsList = info[4] as MutableList
+            if (friendsList == mutableListOf("")) friendsList = mutableListOf()
+            if (soundsList == mutableListOf("")) soundsList = mutableListOf()
+            if (projectsList == mutableListOf("")) projectsList = mutableListOf()
         }
         else {
             val intent = Intent(this, SigninActivity::class.java)
@@ -79,31 +82,32 @@ class RecoveryActivity : AppCompatActivity() {
 
         if (file.exists()) {
             val content: String = file.readText()
+            projects.clear()
             projects.addAll(content.split("\n").toTypedArray())
         }
         else {
+            projects.clear()
             projects.add("projectDefault")
             var content = ""
             for (i in projects.indices) {
                 content += projects[i]
                 if (i != projects.size - 1) content += "\n"
             }
-            FileOutputStream(file).use {
-                it.write(content.toByteArray())
-            }
+            FileOutputStream(file).write(content.toByteArray())
+            projectToDefault()
+
         }
 
         file = File(path, "sounds.conf")
 
         if (file.exists()) {
+            customArray.clear()
             val content: String = file.readText()
             if (content != "") customArray.addAll(content.split("\n").toTypedArray())
         }
         else {
             val content = ""
-            FileOutputStream(file).use {
-                it.write(content.toByteArray())
-            }
+            FileOutputStream(file).write(content.toByteArray())
         }
 
         val intent = Intent(this, MainActivity::class.java)
@@ -112,25 +116,17 @@ class RecoveryActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        customAdapter = if (itemsList != arrayListOf("")) CustomAdapter(itemsList, connectorFriend)
-        else CustomAdapter(arrayListOf(), connectorFriend)
-        val layoutManager = LinearLayoutManager(applicationContext)
-        recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = customAdapter
+        friendsAdapter = CustomAdapter(friendsList, connectorFriend)
+        recyclerView.layoutManager = LinearLayoutManager(applicationContext)
+        recyclerView.adapter = friendsAdapter
 
-        customAdapter1 = if (itemsList1 != arrayListOf("")) CustomAdapter(itemsList1,
-            connectorSound)
-        else CustomAdapter(arrayListOf(), connectorSound)
-        val layoutManager1 = LinearLayoutManager(applicationContext)
-        recyclerView2.layoutManager = layoutManager1
-        recyclerView2.adapter = customAdapter1
+        soundsAdapter = CustomAdapter(soundsList, connectorSound)
+        recyclerView2.layoutManager = LinearLayoutManager(applicationContext)
+        recyclerView2.adapter = soundsAdapter
 
-        customAdapter2 = if (itemsList2 != arrayListOf("")) CustomAdapter(itemsList2,
-            connectorProject)
-        else CustomAdapter(arrayListOf(), connectorProject)
-        val layoutManager2 = LinearLayoutManager(applicationContext)
-        recyclerView3.layoutManager = layoutManager2
-        recyclerView3.adapter = customAdapter2
+        projectsAdapter = CustomAdapter(projectsList, connectorProject)
+        recyclerView3.layoutManager = LinearLayoutManager(applicationContext)
+        recyclerView3.adapter = projectsAdapter
     }
 
     private fun showFriendDialog() {
@@ -142,15 +138,12 @@ class RecoveryActivity : AppCompatActivity() {
         dialog.findViewById<Button>(R.id.create).text = "Add friend"
         dialog.findViewById<Button>(R.id.create).setOnClickListener {
             val newFriend = dialog.findViewById<EditText>(R.id.newname).text.toString()
-            if (newFriend != "" && !itemsList.contains(newFriend) && newFriend.contains('@') &&
-                !newFriend.contains(';')) {
+            if (newFriend != "" && !friendsList.contains(newFriend) && newFriend.contains('@')
+                && !newFriend.contains(';')) {
                 if (webRequester.changeInfo("friends", newFriend)) {
-                    val friends = mutableListOf<String>()
-                    if (itemsList != arrayListOf("")) friends.addAll(itemsList)
-                    friends.add(newFriend)
-                    itemsList = friends
-                    recyclerView.adapter =  CustomAdapter(itemsList, connectorFriend)
-                    (recyclerView.adapter as CustomAdapter).notifyDataSetChanged()
+                    friendsList.add(newFriend)
+                    (recyclerView.adapter as CustomAdapter).notifyItemInserted(
+                        friendsList.size - 1)
                     dialog.dismiss()
                     Toast.makeText(this, "Friend added successfully!",
                         Toast.LENGTH_SHORT).show()
@@ -173,17 +166,14 @@ class RecoveryActivity : AppCompatActivity() {
         dialog.findViewById<EditText>(R.id.newname).setHint("Link to sound")
         dialog.findViewById<Button>(R.id.create).text = "Add sound"
         dialog.findViewById<Button>(R.id.create).setOnClickListener {
-            val newSound = dialog.findViewById<EditText>(R.id.newname).text.toString()
-            if (newSound != "" && !itemsList1.contains(newSound) &&
+            var newSound = dialog.findViewById<EditText>(R.id.newname).text.toString()
+            if (newSound != "" && !soundsList.contains(newSound) &&
                 newSound.contains("http") && !"$soundName $newSound".contains(';')) {
-                newSound.replace("&", "AMPERSAND")
+                newSound = newSound.replace("&", "AMPERSAND")
                 if (webRequester.changeInfo("sounds", "$soundName $newSound")) {
-                    val sounds = mutableListOf<String>()
-                    if (itemsList1 != arrayListOf("")) sounds.addAll(itemsList1)
-                    sounds.add("$soundName $newSound")
-                    itemsList1 = sounds
-                    recyclerView2.adapter =  CustomAdapter(itemsList1, connectorSound)
-                    (recyclerView2.adapter as CustomAdapter).notifyDataSetChanged()
+                    soundsList.add("$soundName $newSound")
+                    (recyclerView2.adapter as CustomAdapter).notifyItemInserted(
+                        soundsList.size - 1)
                     dialog.dismiss()
                     Toast.makeText(this, "Sound added successfully!",
                         Toast.LENGTH_SHORT).show()
@@ -201,12 +191,9 @@ class RecoveryActivity : AppCompatActivity() {
         val itemTitle = menuItem.title.toString()
         if (!itemTitle.contains(';')) {
             if (webRequester.uploadProject(itemTitle)) {
-                val projects1 = mutableListOf<String>()
-                if (itemsList2 != arrayListOf("")) projects1.addAll(itemsList2)
-                if (!projects1.contains(itemTitle)) projects1.add(itemTitle)
-                itemsList2 = projects1
-                recyclerView3.adapter =  CustomAdapter(itemsList2, connectorProject)
-                (recyclerView3.adapter as CustomAdapter).notifyDataSetChanged()
+                projectsList.add(itemTitle)
+                (recyclerView3.adapter as CustomAdapter).notifyItemInserted(
+                    projectsList.size - 1)
                 Toast.makeText(this, "Project $itemTitle uploaded successfully!",
                     Toast.LENGTH_SHORT).show()
             }
@@ -229,17 +216,35 @@ class RecoveryActivity : AppCompatActivity() {
     }
 
     private fun loadProject(string: String) {
-        if (webRequester.getProject(email, string)) {
-            Toast.makeText(this, "Project $string downloaded", Toast.LENGTH_SHORT).show()
-        }
-        else Toast.makeText(this, "Oops! Something went wrong", Toast.LENGTH_SHORT).show()
-
+        if (webRequester.getProject(email, string)) Toast.makeText(this,
+            "Project $string downloaded", Toast.LENGTH_SHORT).show()
+        else Toast.makeText(this,
+            "Oops! Something went wrong", Toast.LENGTH_SHORT).show()
     }
 
     private fun seeFriend(string: String) {
         val intent = Intent(this, FriendActivity::class.java)
         intent.putExtra("owner", string)
         startActivity(intent)
+    }
+
+    @Throws(IOException::class)
+    private fun readBytes(inputStream: InputStream): ByteArray? {
+        val byteBuffer = ByteArrayOutputStream()
+        val bufferSize = 1024
+        val buffer = ByteArray(bufferSize)
+        var len: Int
+        while(inputStream.read(buffer).also { len = it } != -1) byteBuffer.write(buffer, 0, len)
+        return byteBuffer.toByteArray()
+    }
+
+    private fun projectToDefault () {
+        val res = resources
+        val inStream: InputStream = res.openRawResource(res.getIdentifier("project",
+            "raw", packageName))
+        val data = readBytes(inStream)
+        val firstProject = File(filesDir, "projectDefault.emproj")
+        FileOutputStream(firstProject).write(data)
     }
 
     fun logOff (view: View) {

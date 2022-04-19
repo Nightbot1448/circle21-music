@@ -15,11 +15,11 @@ import kotlinx.android.synthetic.main.activity_friend.*
 class FriendActivity : AppCompatActivity() {
 
     private lateinit var email : String
-    private var itemsList1 : List<String> = arrayListOf()
-    private var itemsList2 : List<String> = arrayListOf()
+    private var soundsList : List<String> = arrayListOf()
+    private var projectsList : List<String> = arrayListOf()
     private lateinit var webRequester : WebRequester
-    private lateinit var customAdapter1: CustomAdapter
-    private lateinit var customAdapter2: CustomAdapter
+    private lateinit var soundsAdapter: CustomAdapter
+    private lateinit var projectsAdapter: CustomAdapter
     private val connectorProject = object : CustomConnector {
         override fun function(string: String) {
             loadProject(string)
@@ -46,8 +46,10 @@ class FriendActivity : AppCompatActivity() {
         if (!info.contentEquals(Array (5) {arrayOf("")})) {
             username.text = "Username: " + info[0][0]
             aboutme.text = "About me: " + info[1][0]
-            itemsList1 = info[3]
-            itemsList2 = info[4]
+            soundsList = info[3]
+            projectsList = info[4]
+            if (soundsList == arrayListOf("")) soundsList = arrayListOf()
+            if (projectsList == arrayListOf("")) projectsList = arrayListOf()
         }
         else {
             val intent = Intent(this, RecoveryActivity::class.java)
@@ -60,19 +62,13 @@ class FriendActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        customAdapter1 = if (itemsList1 != arrayListOf("")) CustomAdapter(itemsList1,
-            connectorSound)
-        else CustomAdapter(arrayListOf(), connectorSound)
-        val layoutManager1 = LinearLayoutManager(applicationContext)
-        recyclerView2.layoutManager = layoutManager1
-        recyclerView2.adapter = customAdapter1
+        soundsAdapter = CustomAdapter(soundsList, connectorSound)
+        recyclerView2.layoutManager = LinearLayoutManager(applicationContext)
+        recyclerView2.adapter = soundsAdapter
 
-        customAdapter2 = if (itemsList2 != arrayListOf("")) CustomAdapter(itemsList2,
-            connectorProject)
-        else CustomAdapter(arrayListOf(), connectorProject)
-        val layoutManager2 = LinearLayoutManager(applicationContext)
-        recyclerView3.layoutManager = layoutManager2
-        recyclerView3.adapter = customAdapter2
+        projectsAdapter = CustomAdapter(projectsList, connectorProject)
+        recyclerView3.layoutManager = LinearLayoutManager(applicationContext)
+        recyclerView3.adapter = projectsAdapter
     }
 
     private fun loadProject(string: String) {
