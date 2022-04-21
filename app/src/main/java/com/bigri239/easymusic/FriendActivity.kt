@@ -3,6 +3,7 @@ package com.bigri239.easymusic
 import android.content.Intent
 import android.os.Bundle
 import android.os.StrictMode
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -65,10 +66,20 @@ class FriendActivity : AppCompatActivity() {
         soundsAdapter = CustomAdapter(soundsList, connectorSound)
         recyclerView2.layoutManager = LinearLayoutManager(applicationContext)
         recyclerView2.adapter = soundsAdapter
+        recyclerView2.layoutParams = getLayoutParametersRelativeWidth()
 
         projectsAdapter = CustomAdapter(projectsList, connectorProject)
         recyclerView3.layoutManager = LinearLayoutManager(applicationContext)
         recyclerView3.adapter = projectsAdapter
+        recyclerView3.layoutParams = getLayoutParametersRelativeWidth()
+    }
+
+    private fun getLayoutParametersRelativeWidth (): LinearLayout.LayoutParams {
+        val scale: Float = resources.displayMetrics.density
+        val displayMetrics = resources.displayMetrics
+        val pixelsWidth = (displayMetrics.widthPixels * 0.45F).toInt()
+        val pixelsHeight = (200 * scale + 0.5f).toInt()
+        return LinearLayout.LayoutParams(pixelsWidth, pixelsHeight)
     }
 
     private fun loadProject(string: String) {

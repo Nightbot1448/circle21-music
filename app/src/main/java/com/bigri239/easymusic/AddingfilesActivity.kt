@@ -8,18 +8,17 @@ import android.media.SoundPool
 import android.os.Bundle
 import android.view.View
 import android.view.Window
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bigri239.easymusic.adapter.*
+import com.bigri239.easymusic.adapter.CustomAdapter
+import com.bigri239.easymusic.adapter.CustomConnector
 import kotlinx.android.synthetic.main.activity_addfiles.*
 import java.io.*
 import kotlin.math.abs
+
 
 @Suppress("DEPRECATION")
 class AddingfilesActivity : AppCompatActivity() {
@@ -52,19 +51,19 @@ class AddingfilesActivity : AppCompatActivity() {
             val content: String = file.readText()
             if (content != "") customList.addAll(content.split("\n").toTypedArray())
         }
-        else {
-            FileOutputStream(file).write("".toByteArray())
-        }
+        else FileOutputStream(file).write("".toByteArray())
 
         val recyclerView: RecyclerView = recyclerView111
         defaultAdapter = CustomAdapter(defaultList, connectorSound)
         recyclerView.layoutManager = LinearLayoutManager(applicationContext)
         recyclerView.adapter = defaultAdapter
+        recyclerView.layoutParams = getLayoutParametersRelativeWidth()
 
         val recyclerView1: RecyclerView = recyclerView222
         customAdapter = CustomAdapter(customList, connectorSound)
         recyclerView1.layoutManager = LinearLayoutManager(applicationContext)
         recyclerView1.adapter = customAdapter
+        recyclerView1.layoutParams = getLayoutParametersRelativeWidth()
     }
 
     override fun onStart() {
@@ -117,24 +116,35 @@ class AddingfilesActivity : AppCompatActivity() {
         dialog.show()
     }
 
+    private fun getLayoutParametersRelativeWidth (): LinearLayout.LayoutParams {
+        val scale: Float = resources.displayMetrics.density
+        val displayMetrics = resources.displayMetrics
+        val pixelsWidth = (displayMetrics.widthPixels * 0.425F).toInt()
+        val pixelsHeight = (200 * scale + 0.5f).toInt()
+        return LinearLayout.LayoutParams(pixelsWidth, pixelsHeight)
+    }
+
+    private fun rawResourceToSound (resourceName : String) {
+        val res = resources
+        val inStream: InputStream = res.openRawResource(res.getIdentifier(resourceName,
+            "raw", packageName))
+        val data = readBytes(inStream)
+        val firstProject = File(filesDir, "sound.wav")
+        FileOutputStream(firstProject).write(data)
+    }
+
     private fun getSoundLength(name: String): Long {
         return try {
             val metaRetriever = MediaMetadataRetriever()
             if (defaultList.contains(name)) {
-                val inStream: InputStream = resources.openRawResource(resources.getIdentifier(name,
-                    "raw", packageName))
-                val data = readBytes(inStream)
-                val file = File(filesDir, "sound.wav")
-                FileOutputStream(file).use {
-                    it.write(data)
-                }
+                rawResourceToSound(name)
                 metaRetriever.setDataSource(File(filesDir, "sound.wav").absolutePath)
             }
             else metaRetriever.setDataSource(File(filesDir, "$name.wav").absolutePath)
-            abs(metaRetriever.extractMetadata(MediaMetadataRetriever.
-                METADATA_KEY_DURATION)!!.toLong() - 1)
+            abs(metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)!!.
+            toLong() - 1)
         }
-        catch (e: java.lang.Exception) {
+        catch (e: Exception) {
             0
         }
     }
@@ -158,7 +168,7 @@ class AddingfilesActivity : AppCompatActivity() {
             Toast.LENGTH_SHORT).show()
     }
 
-    fun play() {
+    private fun play() {
         track.setOnLoadCompleteListener { _, _, _ ->
             track.play(id, 1.0F, 1.0F, 0, 0, 1.0F)
         }
