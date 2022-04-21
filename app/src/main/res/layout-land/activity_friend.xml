@@ -7,24 +7,44 @@
     android:background="@color/colorPrimaryDark"
     tools:ignore="MissingDefaultResource">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView2"
-        android:layout_width="300dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout1"
+        android:layout_width="wrap_content"
         android:layout_height="200dp"
-        app:layout_constraintHorizontal_bias="0.025"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/backrec"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView11"  />
+        app:layout_constraintTop_toBottomOf="@id/textView11"
+        tools:context=".RecoveryActivity"
+        tools:ignore="MissingConstraints">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView3"
-        android:layout_width="300dp"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView2"
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
+        android:layout_width="wrap_content"
         android:layout_height="200dp"
         app:layout_constraintHorizontal_bias="0.975"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/recyclerView2" />
+        app:layout_constraintTop_toTopOf="@id/constraintLayout1"
+        tools:context=".RecoveryActivity"
+        tools:ignore="MissingConstraints">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView3"
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/recoveryact"
@@ -80,8 +100,8 @@
         android:textColor="@color/colorAccent"
         android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@+id/aboutme"
-        app:layout_constraintEnd_toEndOf="@+id/recyclerView2"
-        app:layout_constraintStart_toStartOf="@+id/recyclerView2" />
+        app:layout_constraintEnd_toEndOf="@+id/constraintLayout1"
+        app:layout_constraintStart_toStartOf="@+id/constraintLayout1" />
 
     <TextView
         android:id="@+id/textView12"
@@ -91,8 +111,8 @@
         android:textColor="@color/colorAccent"
         android:textSize="16sp"
         app:layout_constraintTop_toTopOf="@+id/textView11"
-        app:layout_constraintEnd_toEndOf="@+id/recyclerView3"
-        app:layout_constraintStart_toStartOf="@+id/recyclerView3" />
+        app:layout_constraintEnd_toEndOf="@+id/constraintLayout2"
+        app:layout_constraintStart_toStartOf="@+id/constraintLayout2" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
