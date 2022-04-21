@@ -9,6 +9,7 @@ import android.view.View
 import android.view.Window
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -119,14 +120,17 @@ class RecoveryActivity : AppCompatActivity() {
         friendsAdapter = CustomAdapter(friendsList, connectorFriend)
         recyclerView.layoutManager = LinearLayoutManager(applicationContext)
         recyclerView.adapter = friendsAdapter
+        recyclerView.layoutParams = getLayoutParametersRelativeWidth()
 
         soundsAdapter = CustomAdapter(soundsList, connectorSound)
         recyclerView2.layoutManager = LinearLayoutManager(applicationContext)
         recyclerView2.adapter = soundsAdapter
+        recyclerView2.layoutParams = getLayoutParametersRelativeWidth()
 
         projectsAdapter = CustomAdapter(projectsList, connectorProject)
         recyclerView3.layoutManager = LinearLayoutManager(applicationContext)
         recyclerView3.adapter = projectsAdapter
+        recyclerView3.layoutParams = getLayoutParametersRelativeWidth()
     }
 
     private fun showFriendDialog() {
@@ -191,9 +195,11 @@ class RecoveryActivity : AppCompatActivity() {
         val itemTitle = menuItem.title.toString()
         if (!itemTitle.contains(';')) {
             if (webRequester.uploadProject(itemTitle)) {
-                projectsList.add(itemTitle)
-                (recyclerView3.adapter as CustomAdapter).notifyItemInserted(
-                    projectsList.size - 1)
+                if (!projectsList.contains(itemTitle)) {
+                    projectsList.add(itemTitle)
+                    (recyclerView3.adapter as CustomAdapter).notifyItemInserted(
+                        projectsList.size - 1)
+                }
                 Toast.makeText(this, "Project $itemTitle uploaded successfully!",
                     Toast.LENGTH_SHORT).show()
             }
@@ -201,6 +207,14 @@ class RecoveryActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT).show()
         }
         else Toast.makeText(this, "Incorrect file name!", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun getLayoutParametersRelativeWidth (): LinearLayout.LayoutParams {
+        val scale: Float = resources.displayMetrics.density
+        val displayMetrics = resources.displayMetrics
+        val pixelsWidth = (displayMetrics.widthPixels * 0.3F).toInt()
+        val pixelsHeight = (165 * scale + 0.5f).toInt()
+        return LinearLayout.LayoutParams(pixelsWidth, pixelsHeight)
     }
 
     private fun soundSelectPopupMenuClickListener(menuItem: MenuItem) {
