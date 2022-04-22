@@ -17,6 +17,7 @@ import android.view.View
 import android.view.Window
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -110,9 +111,15 @@ open class MainActivity : AppCompatActivity(){
             override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
         }
 
+        val displayMetrics = resources.displayMetrics
+        val scale: Float = displayMetrics.density
+        val pixelsWidth = displayMetrics.widthPixels - (239 * scale + 0.5f).toInt()
+
         for (i in 0..8) {
             val recycler = currentRecycler(i)
-            recycler.adapter = SecondsListAdapter(connector)
+            recycler.layoutParams = LinearLayout.LayoutParams(pixelsWidth,
+                LinearLayout.LayoutParams.WRAP_CONTENT)
+            recycler.adapter = SecondsListAdapter(connector, (pixelsWidth / scale).toInt())
             recycler.tag = i
             recycler.addOnScrollListener(yourScrollListener)
             recycler.addOnItemTouchListener(yourTouchListener)
@@ -542,7 +549,7 @@ open class MainActivity : AppCompatActivity(){
                 if (maxTracks == i && maxTracks != 0) maxTracks --
             }
             (currentRecycler(i).adapter as SecondsListAdapter).deleteSound(j)
-            if (prevMusicLength > getMusicLength()) setMusicLength(changeRecycler = false)
+            if (prevMusicLength != getMusicLength()) setMusicLength(changeRecycler = false)
         }
     }
 
