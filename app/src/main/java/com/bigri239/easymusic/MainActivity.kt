@@ -111,19 +111,21 @@ open class MainActivity : AppCompatActivity(){
             override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
         }
 
-        val displayMetrics = resources.displayMetrics
-        val scale: Float = displayMetrics.density
-        val pixelsWidth = displayMetrics.widthPixels - (239 * scale + 0.5f).toInt()
+        Thread {
+            val displayMetrics = resources.displayMetrics
+            val scale: Float = displayMetrics.density
+            val pixelsWidth = displayMetrics.widthPixels - (239 * scale + 0.5f).toInt()
 
-        for (i in 0..8) {
-            val recycler = currentRecycler(i)
-            recycler.layoutParams = LinearLayout.LayoutParams(pixelsWidth,
-                LinearLayout.LayoutParams.WRAP_CONTENT)
-            recycler.adapter = SecondsListAdapter(connector, (pixelsWidth / scale).toInt())
-            recycler.tag = i
-            recycler.addOnScrollListener(yourScrollListener)
-            recycler.addOnItemTouchListener(yourTouchListener)
-        }
+            for (i in 0..8) {
+                val recycler = currentRecycler(i)
+                recycler.layoutParams = LinearLayout.LayoutParams(pixelsWidth,
+                    LinearLayout.LayoutParams.WRAP_CONTENT)
+                recycler.adapter = SecondsListAdapter(connector, (pixelsWidth / scale).toInt())
+                recycler.tag = i
+                recycler.addOnScrollListener(yourScrollListener)
+                recycler.addOnItemTouchListener(yourTouchListener)
+            }
+        }.start()
     }
 
     override fun onStart() {
@@ -295,8 +297,8 @@ open class MainActivity : AppCompatActivity(){
                     Sound(
                     (indent / 10.0).roundToInt(),
                     len,
-                    currentColor(x, maxSounds[x]), x, maxSounds[x])
-                )
+                    currentColor(x, maxSounds[x]), x, maxSounds[x]),
+                    prevMusicLength < getMusicLength())
                 if (prevMusicLength < getMusicLength()) setMusicLength()
             }
             buttonDelete.setOnClickListener {}
@@ -548,8 +550,8 @@ open class MainActivity : AppCompatActivity(){
                     state = "unready"
                 if (maxTracks == i && maxTracks != 0) maxTracks --
             }
-            (currentRecycler(i).adapter as SecondsListAdapter).deleteSound(j)
             if (prevMusicLength != getMusicLength()) setMusicLength(changeRecycler = false)
+            (currentRecycler(i).adapter as SecondsListAdapter).deleteSound(j)
         }
     }
 

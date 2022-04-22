@@ -31,7 +31,9 @@ class SecondsListAdapter(val connector : MainActivity.Connector, defaultLen : In
         return soundSeconds.size
     }
 
-    fun addSound(newSound: Sound) {
+    fun addSound(newSound: Sound, isChange : Boolean) {
+        val newLen = newSound.length + newSound.shift
+        if (!isChange) lenLast -= newLen
         sounds.add(newSound)
         initSecondSounds()
     }
@@ -93,6 +95,9 @@ class SecondsListAdapter(val connector : MainActivity.Connector, defaultLen : In
     }
 
     fun editSound (newSound : Sound) {
+        val oldLen = sounds[newSound.number].length + sounds[newSound.number].shift
+        val newLen = newSound.length + newSound.shift
+        lenLast -= newLen - oldLen
         sounds[newSound.number] = newSound
         initSecondSounds()
     }
