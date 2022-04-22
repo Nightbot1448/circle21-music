@@ -6,11 +6,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bigri239.easymusic.*
 
-class SecondsListAdapter(val connector : MainActivity.Connector) : RecyclerView.Adapter<SecondsListAdapter.SecondsListViewHolder>() {
+class SecondsListAdapter(val connector : MainActivity.Connector, defaultLen : Int)
+    : RecyclerView.Adapter<SecondsListAdapter.SecondsListViewHolder>() {
 
     private val sounds: MutableList<Sound> = mutableListOf()
     private val soundSeconds: MutableList<SoundSecond> = mutableListOf()
-    private var lenLast = 700
+    private var lenLast = defaultLen
 
     init {
         eraseSounds()
@@ -30,7 +31,9 @@ class SecondsListAdapter(val connector : MainActivity.Connector) : RecyclerView.
         return soundSeconds.size
     }
 
-    fun addSound(newSound: Sound) {
+    fun addSound(newSound: Sound, isChange : Boolean) {
+        val newLen = newSound.length + newSound.shift
+        if (!isChange) lenLast -= newLen
         sounds.add(newSound)
         initSecondSounds()
     }
@@ -92,6 +95,9 @@ class SecondsListAdapter(val connector : MainActivity.Connector) : RecyclerView.
     }
 
     fun editSound (newSound : Sound) {
+        val oldLen = sounds[newSound.number].length + sounds[newSound.number].shift
+        val newLen = newSound.length + newSound.shift
+        lenLast -= newLen - oldLen
         sounds[newSound.number] = newSound
         initSecondSounds()
     }
