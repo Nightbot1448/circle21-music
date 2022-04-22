@@ -61,6 +61,7 @@ class RecoveryActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+
         val info = webRequester.getInfo()
         if (!info.contentEquals(Array (5) {arrayOf("")})) {
             email = info[0][0]
@@ -77,6 +78,13 @@ class RecoveryActivity : AppCompatActivity() {
             val intent = Intent(this, SigninActivity::class.java)
             startActivity(intent)
         }
+
+        val scale: Float = resources.displayMetrics.density
+        val displayMetrics = resources.displayMetrics
+        val pixelsWidth = (displayMetrics.widthPixels * 0.95F - 190 * scale + 0.5f).toInt()
+
+        editInfo.layoutParams = LinearLayout.LayoutParams(pixelsWidth,
+            LinearLayout.LayoutParams.WRAP_CONTENT)
 
         val path = filesDir
         var file = File(path, "projects.conf")

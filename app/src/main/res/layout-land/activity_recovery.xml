@@ -113,16 +113,28 @@
         app:layout_constraintTop_toBottomOf="@+id/username"
         app:layout_constraintStart_toStartOf="@+id/username" />
 
-    <EditText
-        android:id="@+id/editInfo"
-        android:layout_width="500dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayoutInfo"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Write some information about you"
-        android:inputType="text"
-        android:textColor="@color/colorAccent"
-        android:textSize="18sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/aboutme"
-        app:layout_constraintStart_toEndOf="@+id/aboutme" />
+        app:layout_constraintTop_toTopOf="@+id/aboutme"
+        app:layout_constraintBottom_toBottomOf="@+id/aboutme"
+        app:layout_constraintStart_toEndOf="@+id/aboutme"
+        tools:context=".RecoveryActivity"
+        tools:ignore="MissingConstraints">
+
+        <EditText
+            android:id="@+id/editInfo"
+            android:layout_width="500dp"
+            android:layout_height="wrap_content"
+            android:hint="Write some information about you"
+            android:inputType="text"
+            android:textColor="@color/colorAccent"
+            android:textSize="18sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
         android:id="@+id/buttonInfo"
@@ -132,7 +144,8 @@
         android:clickable="true"
         android:onClick="changeAbout"
         app:layout_constraintEnd_toEndOf="@+id/constraintLayout3"
-        app:layout_constraintBaseline_toBaselineOf="@+id/editInfo" />
+        app:layout_constraintTop_toTopOf="@+id/constraintLayoutInfo"
+        app:layout_constraintBaseline_toBaselineOf="@+id/aboutme" />
 
     <Button
         android:id="@+id/buttonLogOff"
@@ -148,7 +161,7 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-2dp"
+        android:layout_marginTop="-4dp"
         android:text="Friends"
         android:textColor="@color/colorAccent"
         android:textSize="16sp"
