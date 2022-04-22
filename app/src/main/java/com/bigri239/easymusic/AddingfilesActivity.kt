@@ -26,10 +26,23 @@ class AddingfilesActivity : AppCompatActivity() {
     private var id = 0
     private var len : Long = 3615
     private var track = SoundPool(1, AudioManager.STREAM_MUSIC, 0)
-    private val defaultList : ArrayList<String> = arrayListOf("bassalbane", "basscentury", "bassflowers",
-        "clapchoppa", "clapforeign", "crashalect", "crashbloods", "crashvinnyx", "fxfreeze",
-        "fxgunnes", "hihatcheque", "hihatmystery", "kickartillery", "kickinfinite", "percardonme",
-        "percpaolla", "rimchaser", "rimstount", "snarecompas", "snarewoods", "voxanother", "voxgilens")
+    private val defaultList : ArrayList<String> = arrayListOf("aaf", "abandana", "abig", "ablockboy",
+        "afendi", "alongmoney", "anotavalible", "apluggirl", "apunch", "ashawty", "ashotta",
+        "asnake", "aspirit", "awork", "bassalbane", "basscentury", "bassflowers", "clapaf",
+        "clapchoppa", "clapcrazy", "clapflip", "clapforeign", "clapjuice", "clapple", "claprev",
+        "clapslime", "clapsoda", "clapspace", "crashalect", "crashbloods", "crashvinnyx",
+        "cymbalaf", "cymbalblockboy", "cymbalblueface", "cymbalglasses", "cymbalhoodfight",
+        "cymbalpancake", "fxcillbill", "fxcrashsiren", "fxcup", "fxfreeze", "fxgotcash",
+        "fxguncock", "fxgunnes", "fxmario", "fxnoisefall", "fxple", "fxrace", "fxscratch",
+        "fxshots", "hhbigmoney", "hhgang", "hhgotit", "hhhood", "hhple", "hhpunch", "hhshawty",
+        "hhsnake", "hhsoft", "hhspace", "hihatcheque", "hihatmystery", "kickaf", "kickartillery",
+        "kickflip", "kickhood", "kickinfinite", "kickjordan", "kickpunch", "kickslap", "ohaf",
+        "ohbandana", "ohblockboy", "ohkiss", "ohlow", "ohog", "ohstick", "ohwork", "percaf",
+        "percardonme", "percblockboy", "percgame", "percgoofy", "percicy", "perclame",
+        "percnotavalible", "percoldchair", "percpaolla", "percpegas", "percple", "percroll",
+        "percrun", "percset", "percslime", "percwoodtoy", "rimchaser", "rimstount", "snareaf",
+        "snareblockboy", "snarechop", "snarecompas", "snarehood", "snareshawty", "snareslime",
+        "snaretango", "snarewoods", "voxanother", "voxgilens")
     private val customList = arrayListOf<String>()
     private lateinit var defaultAdapter: CustomAdapter
     private lateinit var customAdapter: CustomAdapter
@@ -142,7 +155,7 @@ class AddingfilesActivity : AppCompatActivity() {
             }
             else metaRetriever.setDataSource(File(filesDir, "$name.wav").absolutePath)
             abs(metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)!!.
-            toLong() - 1)
+                toLong() - 1)
         }
         catch (e: Exception) {
             0
