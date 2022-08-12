@@ -63,23 +63,20 @@ open class MainActivity : AppCompatActivity(){
     private var maxSounds: Array<Int> = Array(9) { -1 }
     private val emptySound = SoundInfo()
     private var sounds: Array<Array<SoundInfo>> = Array(9) { Array(1000) { emptySound } }
-    private val resourcesArray : Array<String> = arrayOf("aaf", "abandana", "abig", "ablockboy",
-        "afendi", "alongmoney", "anotavalible", "apluggirl", "apunch", "ashawty", "ashotta",
-        "asnake", "aspirit", "awork", "bassalbane", "basscentury", "bassflowers", "clapaf",
-        "clapchoppa", "clapcrazy", "clapflip", "clapforeign", "clapjuice", "clapple", "claprev",
-        "clapslime", "clapsoda", "clapspace", "crashalect", "crashbloods", "crashvinnyx",
-        "cymbalaf", "cymbalblockboy", "cymbalblueface", "cymbalglasses", "cymbalhoodfight",
-        "cymbalpancake", "fxcillbill", "fxcrashsiren", "fxcup", "fxfreeze", "fxgotcash",
-        "fxguncock", "fxgunnes", "fxmario", "fxnoisefall", "fxple", "fxrace", "fxscratch",
-        "fxshots", "hhbigmoney", "hhgang", "hhgotit", "hhhood", "hhple", "hhpunch", "hhshawty",
-        "hhsnake", "hhsoft", "hhspace", "hihatcheque", "hihatmystery", "kickaf", "kickartillery",
-        "kickflip", "kickhood", "kickinfinite", "kickjordan", "kickpunch", "kickslap", "ohaf",
-        "ohbandana", "ohblockboy", "ohkiss", "ohlow", "ohog", "ohstick", "ohwork", "percaf",
-        "percardonme", "percblockboy", "percgame", "percgoofy", "percicy", "perclame",
-        "percnotavalible", "percoldchair", "percpaolla", "percpegas", "percple", "percroll",
-        "percrun", "percset", "percslime", "percwoodtoy", "rimchaser", "rimstount", "snareaf",
-        "snareblockboy", "snarechop", "snarecompas", "snarehood", "snareshawty", "snareslime",
-        "snaretango", "snarewoods", "voxanother", "voxgilens")
+    private val resourcesArray : Array<String> = arrayOf("aaf", "ablockboy", "ashawty", "asnake",
+        "aspirit", "bassalbane", "basscentury", "bassflowers", "clapaf", "clapchoppa", "clapcrazy",
+        "clapflip", "clapforeign", "clapjuice", "clapple", "claprev", "clapslime", "clapsoda",
+        "clapspace", "crashalect", "crashbloods", "crashvinnyx", "cymbalaf", "cymbalblockboy",
+        "cymbalblueface", "cymbalglasses", "cymbalhoodfight", "cymbalpancake", "fxcillbill",
+        "fxcup", "fxfreeze", "fxguncock", "fxgunnes", "hhbigmoney", "hhgang", "hhgotit", "hhhood",
+        "hhple", "hhpunch", "hhshawty", "hhsnake", "hhsoft", "hhspace", "hihatcheque",
+        "hihatmystery", "kickaf", "kickartillery", "kickflip", "kickhood", "kickinfinite",
+        "kickjordan", "kickpunch", "kickslap", "ohaf", "ohbandana", "ohblockboy", "ohkiss", "ohlow",
+        "ohog", "ohstick", "ohwork", "percaf", "percardonme", "percblockboy", "percgame",
+        "percgoofy", "percicy", "perclame", "percnotavalible", "percoldchair", "percpaolla",
+        "percpegas", "percple", "percroll", "percrun", "percset", "percslime", "percwoodtoy",
+        "rimchaser", "rimstount", "snareblockboy", "snarechop", "snarecompas", "snarehood",
+        "snareshawty", "snareslime", "snaretango", "snarewoods", "voxanother", "voxgilens")
     private val customArray = arrayListOf<String>()
     private var timer : CountDownTimer? = null
     private lateinit var autoSaver : CountDownTimer
