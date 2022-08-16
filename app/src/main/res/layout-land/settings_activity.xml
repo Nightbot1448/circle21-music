@@ -49,7 +49,7 @@
         android:textColor="@color/colorAccent"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView2"
-        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintHorizontal_bias="0.425"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView2" />
@@ -73,11 +73,71 @@
         android:text="Reset:"
         android:textColor="@color/colorAccent"
         android:textSize="18sp"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintVertical_bias="0.3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewNotify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Notify me about updates:"
+        android:textColor="@color/colorAccent"
+        android:textSize="18sp"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.45"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/checkBoxAlpha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Alpha"
+        android:textColor="@color/colorAccent"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewNotify"
+        app:layout_constraintStart_toStartOf="@id/checkBox"
+        app:layout_constraintTop_toTopOf="@+id/textViewNotify" />
+
+    <CheckBox
+        android:id="@+id/checkBoxBeta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Beta"
+        android:textColor="@color/colorAccent"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/checkBoxAlpha"
+        app:layout_constraintStart_toStartOf="@+id/checkBox2"
+        app:layout_constraintTop_toTopOf="@+id/checkBoxAlpha" />
+
+    <CheckBox
+        android:id="@+id/checkBoxStable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="Stable"
+        android:textColor="@color/colorAccent"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/checkBoxBeta"
+        app:layout_constraintStart_toEndOf="@+id/checkBoxBeta"
+        app:layout_constraintTop_toTopOf="@+id/checkBoxBeta" />
+
+    <Button
+        android:id="@+id/buttonSave"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginStart="108dp"
+        android:text="Save"
+        android:clickable="true"
+        android:onClick="saveNotify"
+        app:layout_constraintBottom_toBottomOf="@+id/checkBoxAlpha"
+        app:layout_constraintTop_toTopOf="@+id/checkBoxAlpha"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/buttonReset"

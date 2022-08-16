@@ -32,7 +32,7 @@
         android:layout_marginTop="12dp"
         android:layout_marginEnd="20dp"
         android:textSize="15sp"
-        android:contentDescription="Create new projecr"
+        android:contentDescription="Create new project"
         android:text="New project" />
 </LinearLayout>
 </FrameLayout>
