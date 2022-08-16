@@ -10,6 +10,7 @@ import android.media.SoundPool
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
+import android.os.StrictMode
 import android.util.Log
 import android.view.MenuItem
 import android.view.MotionEvent
@@ -24,6 +25,8 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
+import com.bigri239.easymusic.net.WebRequester
+import com.bigri239.easymusic.utils.UpdateDialog
 import com.bigri239.easymusic.visualizer.*
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.*
@@ -56,6 +59,7 @@ open class MainActivity : AppCompatActivity(){
     private var projectName = "projectDefault"
     private var currentSound = "bassalbane"
     private var autoSaveInterval = 10
+    private var updateType = 2
     private val projects = mutableListOf<String>()
     private val tracks: Array<SoundPool> =
         Array(9) { SoundPool(10, AudioManager.STREAM_MUSIC, 0) }
@@ -81,6 +85,7 @@ open class MainActivity : AppCompatActivity(){
     private var timer : CountDownTimer? = null
     private lateinit var autoSaver : CountDownTimer
     private var timeRemaining : Long = 0
+    private lateinit var webRequester : WebRequester
     private val connector = object : Connector {
         override fun function(i: Int, j: Int) {
             editSelected(i, j)
@@ -92,6 +97,9 @@ open class MainActivity : AppCompatActivity(){
         setContentView(R.layout.activity_main)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
+        webRequester = WebRequester(this@MainActivity)
 
         val yourScrollListener: RecyclerView.OnScrollListener =
             object : RecyclerView.OnScrollListener() {
@@ -183,13 +191,28 @@ open class MainActivity : AppCompatActivity(){
         else FileOutputStream(currentFile).write("".toByteArray())
 
         currentFile = File(path, "settings.conf")
+        val defaultSettings = "10\n3\nprojectDefault"
+        val defaultNs = defaultSettings.count {it == '\n'}
 
-        if (currentFile.exists()) {
-            val content: String = currentFile.readText()
-            if (content != "") autoSaveInterval = content.split("\n").toTypedArray()[0]
-                .toInt()
+        if (!currentFile.exists()) {
+            FileOutputStream(currentFile).write(defaultSettings.toByteArray())
         }
-        else FileOutputStream(currentFile).write("10".toByteArray())
+
+        var content: String = currentFile.readText()
+
+        if (content.count {it == '\n'} != defaultNs) {
+            val missingStrings = defaultNs - content.count {it == '\n'}
+            content += "\n" + defaultSettings.split("\n").toTypedArray().slice(
+                (defaultNs - missingStrings + 1)..defaultNs).joinToString("\n")
+            FileOutputStream(currentFile).write(defaultSettings.toByteArray())
+        }
+
+        val contentArray = content.split("\n").toTypedArray()
+        autoSaveInterval = contentArray[0].toInt()
+        updateType = contentArray[1].toInt()
+        projectName = contentArray[2]
+
+        txt.text = projectName
 
         for (i in 1..9) {
             findViewById<Button>(resources.getIdentifier("btnAdd$i", "id",
@@ -239,6 +262,23 @@ open class MainActivity : AppCompatActivity(){
             account.isClickable = false
             startActivity(intent4)
         }
+
+        try {
+            val versions = webRequester.getTextResource("version").split("\n")
+                .toTypedArray().slice(1..3)
+            val currentVersion = getString(R.string.version).split(" ").toTypedArray()[1]
+            val areNewVersions : Array<Boolean> = arrayOf(false, false, false)
+            if (updateType / 4 == 1) areNewVersions[0] = versions[0] > currentVersion
+            if ((updateType % 4) / 2 == 1) areNewVersions[1] = versions[1] > currentVersion
+            if (updateType % 2 == 1) areNewVersions[2] = versions[2] > currentVersion
+
+            if (areNewVersions[0] || areNewVersions[1] || areNewVersions[2]) {
+                val updateDialog = UpdateDialog(areNewVersions)
+                val manager = supportFragmentManager
+                updateDialog.show(manager, "myDialog")
+            }
+        }
+        catch (e : Exception) { }
     }
 
     override fun onStop() {
@@ -444,6 +484,11 @@ open class MainActivity : AppCompatActivity(){
     private fun openProject() {
         Toast.makeText(this, "Opening project $projectName...",
             Toast.LENGTH_SHORT).show()
+        val fileSettings = File(filesDir, "settings.conf")
+        val contentSettings: String = fileSettings.readText()
+        val contentArray = contentSettings.split("\n").toTypedArray()
+        contentArray[2] = projectName
+        FileOutputStream(fileSettings).write(contentArray.joinToString("\n").toByteArray())
         val path = filesDir
         val file = File(path, "$projectName.emproj")
         if (file.exists()) {

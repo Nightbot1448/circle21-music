@@ -202,6 +202,7 @@ class WebRequester (private val context: Context) {
                 "faq" -> '1'
                 "terms" -> 'U'
                 "tutorial" -> 'G'
+                "version" -> 'v'
                 else -> 'Ш' // this letter will never occur in any resource, so...
             }
             if (answer[0].first() == test) answer.joinToString("\n")
