@@ -60,7 +60,7 @@ open class MainActivity : AppCompatActivity(){
     private var currentSound = "bassalbane"
     private var autoSaveInterval = 10
     private var updateType = 2
-    private val projects = mutableListOf<String>()
+    private var projects = mutableListOf<String>()
     private val tracks: Array<SoundPool> =
         Array(9) { SoundPool(10, AudioManager.STREAM_MUSIC, 0) }
     private var maxTracks = 0
@@ -81,7 +81,7 @@ open class MainActivity : AppCompatActivity(){
         "percpegas", "percple", "percroll", "percrun", "percset", "percslime", "percwoodtoy",
         "rimchaser", "rimstount", "snareblockboy", "snarechop", "snarecompas", "snarehood",
         "snareshawty", "snareslime", "snaretango", "snarewoods", "voxanother", "voxgilens")
-    private val customArray = arrayListOf<String>()
+    private var customArray = arrayListOf<String>()
     private var timer : CountDownTimer? = null
     private lateinit var autoSaver : CountDownTimer
     private var timeRemaining : Long = 0
@@ -166,6 +166,7 @@ open class MainActivity : AppCompatActivity(){
         }
 
         currentFile = File(path, "projects.conf")
+        projects = mutableListOf()
 
         if (currentFile.exists()) {
             val content: String = currentFile.readText()
@@ -183,6 +184,7 @@ open class MainActivity : AppCompatActivity(){
             rawResourceToFile("project", "projectDefault.emproj")
 
         currentFile = File(path, "sounds.conf")
+        customArray = arrayListOf()
 
         if (currentFile.exists()) {
             val content: String = currentFile.readText()
