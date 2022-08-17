@@ -1,7 +1,6 @@
 package com.bigri239.easymusic
 
 import android.app.Dialog
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.media.AudioManager
@@ -11,7 +10,6 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
 import android.os.StrictMode
-import android.util.Log
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
@@ -142,55 +140,57 @@ open class MainActivity : AppCompatActivity(){
                 recycler.addOnScrollListener(yourScrollListener)
                 recycler.addOnItemTouchListener(yourTouchListener)
             }
-        }.start()
-    }
+            val path = filesDir
+            var currentFile = File(filesDir, "terms.conf")
 
-    override fun onStart() {
-        super.onStart()
-
-        val path = filesDir
-        var currentFile = File(filesDir, "terms.conf")
-
-        if (currentFile.exists()) {
-            val content: String = currentFile.readText()
-            if (content != "1") {
+            if (currentFile.exists()) {
+                val content: String = currentFile.readText()
+                if (content != "1") {
+                    val intent0 = Intent(this, TermsActivity::class.java)
+                    intent0.putExtra("isStart", "true")
+                    startActivity(intent0)
+                }
+            }
+            else {
                 val intent0 = Intent(this, TermsActivity::class.java)
                 intent0.putExtra("isStart", "true")
                 startActivity(intent0)
             }
-        }
-        else {
-            val intent0 = Intent(this, TermsActivity::class.java)
-            intent0.putExtra("isStart", "true")
-            startActivity(intent0)
-        }
 
-        currentFile = File(path, "projects.conf")
+            currentFile = File(path, "projects.conf")
 
-        if (currentFile.exists()) {
-            val content: String = currentFile.readText()
-            projects.addAll(content.split("\n").toTypedArray())
-        }
-        else {
-            projects.add(projectName)
-            FileOutputStream(currentFile).write(projectName.toByteArray())
-            rawResourceToFile("project", "projectDefault.emproj")
-        }
+            if (currentFile.exists()) {
+                val content: String = currentFile.readText()
+                projects.addAll(content.split("\n").toTypedArray())
+            }
+            else {
+                projects.add(projectName)
+                FileOutputStream(currentFile).write(projectName.toByteArray())
+                rawResourceToFile("project", "projectDefault.emproj")
+            }
 
-        currentFile = File(path, "projectDefault.emproj")
+            currentFile = File(path, "projectDefault.emproj")
 
-        if (!currentFile.exists())
-            rawResourceToFile("project", "projectDefault.emproj")
+            if (!currentFile.exists())
+                rawResourceToFile("project", "projectDefault.emproj")
 
-        currentFile = File(path, "sounds.conf")
+            currentFile = File(path, "sounds.conf")
 
-        if (currentFile.exists()) {
-            val content: String = currentFile.readText()
-            if (content != "") customArray.addAll(content.split("\n").toTypedArray())
-        }
-        else FileOutputStream(currentFile).write("".toByteArray())
+            if (currentFile.exists()) {
+                val content: String = currentFile.readText()
+                if (content != "") customArray.addAll(content.split("\n").toTypedArray())
+            }
+            else FileOutputStream(currentFile).write("".toByteArray())
 
-        currentFile = File(path, "settings.conf")
+            for (i in 1..9) {
+                findViewById<Button>(resources.getIdentifier("btnAdd$i", "id",
+                    packageName)).setOnClickListener { addSound(i - 1) }
+                findViewById<Button>(resources.getIdentifier("btnRem$i", "id",
+                    packageName)).setOnClickListener { deleteSelected(i - 1, maxSounds[i - 1]) }
+            }
+        }.start()
+
+        val currentFile = File(filesDir, "settings.conf")
         val defaultSettings = "10\n3\nprojectDefault"
         val defaultNs = defaultSettings.count {it == '\n'}
 
@@ -204,23 +204,27 @@ open class MainActivity : AppCompatActivity(){
             val missingStrings = defaultNs - content.count {it == '\n'}
             content += "\n" + defaultSettings.split("\n").toTypedArray().slice(
                 (defaultNs - missingStrings + 1)..defaultNs).joinToString("\n")
-            FileOutputStream(currentFile).write(defaultSettings.toByteArray())
+            FileOutputStream(currentFile).write(content.toByteArray())
         }
 
         val contentArray = content.split("\n").toTypedArray()
+        val defaultArray = defaultSettings.split("\n").toTypedArray()
+
+        for (i in 0..defaultNs) {
+            if (contentArray[i] == "") {
+                contentArray[i] = defaultArray[i]
+                FileOutputStream(currentFile).write(contentArray.joinToString("\n")
+                    .toByteArray())
+            }
+        }
+
         autoSaveInterval = contentArray[0].toInt()
         updateType = contentArray[1].toInt()
         projectName = contentArray[2]
 
         txt.text = projectName
 
-        for (i in 1..9) {
-            findViewById<Button>(resources.getIdentifier("btnAdd$i", "id",
-                packageName)).setOnClickListener { addSound(i - 1) }
-            findViewById<Button>(resources.getIdentifier("btnRem$i", "id",
-                packageName)).setOnClickListener { deleteSelected(i - 1, maxSounds[i - 1]) }
-        }
-
+        openProject()
         autoSaver = object : CountDownTimer(360001, (autoSaveInterval * 60000)
             .toLong()) {
             override fun onTick(millisUntilFinished: Long) {
@@ -230,8 +234,10 @@ open class MainActivity : AppCompatActivity(){
                 autoSaver.start()
             }
         }.start()
+    }
 
-        openProject()
+    override fun onStart() {
+        super.onStart()
 
         val intent = Intent(this, HelpActivity::class.java)
         help.setOnClickListener {
@@ -682,7 +688,6 @@ open class MainActivity : AppCompatActivity(){
             val sound = sounds[i][j]
             if (state != "pause" && started == played) {
                 tracks[i].play(sound.id, sound.volume, sound.volume, 0, 0, sound.ratio)
-                Log.d(TAG, "MYMSG play: $i $j " + sounds[i][0].res)
             }
             if (j < maxSounds[i] && started == played) playTrack(i, j + 1)
         }, sounds[i][j].delay + delay)

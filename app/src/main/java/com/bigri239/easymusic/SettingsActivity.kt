@@ -36,7 +36,7 @@ class SettingsActivity : AppCompatActivity() {
             val missingStrings = defaultNs - content.count {it == '\n'}
             content += "\n" + defaultSettings.split("\n").toTypedArray().slice(
                 (defaultNs - missingStrings + 1)..defaultNs).joinToString("\n")
-            FileOutputStream(file).write(defaultSettings.toByteArray())
+            FileOutputStream(file).write(content.toByteArray())
         }
 
         val contentArray = content.split("\n").toTypedArray()
