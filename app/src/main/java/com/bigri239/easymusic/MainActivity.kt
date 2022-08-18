@@ -199,28 +199,20 @@ open class MainActivity : AppCompatActivity(){
         }
 
         var content: String = currentFile.readText()
+        val contentArrayList = arrayListOf<String>()
+        contentArrayList.addAll(content.split("\n").toTypedArray())
 
         if (content.count {it == '\n'} != defaultNs) {
             val missingStrings = defaultNs - content.count {it == '\n'}
-            content += "\n" + defaultSettings.split("\n").toTypedArray().slice(
-                (defaultNs - missingStrings + 1)..defaultNs).joinToString("\n")
+            contentArrayList.addAll(defaultSettings.split("\n").toTypedArray().slice(
+                (defaultNs - missingStrings + 1)..defaultNs))
+            content = contentArrayList.joinToString("\n")
             FileOutputStream(currentFile).write(content.toByteArray())
         }
 
-        val contentArray = content.split("\n").toTypedArray()
-        val defaultArray = defaultSettings.split("\n").toTypedArray()
-
-        for (i in 0..defaultNs) {
-            if (contentArray[i] == "") {
-                contentArray[i] = defaultArray[i]
-                FileOutputStream(currentFile).write(contentArray.joinToString("\n")
-                    .toByteArray())
-            }
-        }
-
-        autoSaveInterval = contentArray[0].toInt()
-        updateType = contentArray[1].toInt()
-        projectName = contentArray[2]
+        autoSaveInterval = contentArrayList[0].toInt()
+        updateType = contentArrayList[1].toInt()
+        projectName = contentArrayList[2]
 
         txt.text = projectName
 
@@ -284,7 +276,10 @@ open class MainActivity : AppCompatActivity(){
                 updateDialog.show(manager, "myDialog")
             }
         }
-        catch (e : Exception) { }
+        catch (e : Exception) {
+            Toast.makeText(this, "Oops! No Internet connection!", Toast.LENGTH_SHORT)
+                .show()
+        }
     }
 
     override fun onStop() {
