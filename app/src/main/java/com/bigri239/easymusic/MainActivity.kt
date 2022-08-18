@@ -387,6 +387,12 @@ open class MainActivity : AppCompatActivity(){
                 projectName = newProject
                 projects.add(projectName)
                 txt.text = projectName
+                val fileSettings = File(filesDir, "settings.conf")
+                val contentSettings: String = fileSettings.readText()
+                val contentArray = contentSettings.split("\n").toTypedArray()
+                contentArray[2] = projectName
+                FileOutputStream(fileSettings).write(contentArray.joinToString("\n")
+                    .toByteArray())
                 Toast.makeText(applicationContext, "You created $projectName",
                     Toast.LENGTH_SHORT).show()
                 val path = filesDir
