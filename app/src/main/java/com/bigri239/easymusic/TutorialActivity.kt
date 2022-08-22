@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.os.StrictMode
 import androidx.appcompat.app.AppCompatActivity
 import com.bigri239.easymusic.net.WebRequester
+import kotlinx.android.synthetic.main.activity_faq.*
 import kotlinx.android.synthetic.main.activity_tutorial.*
+import kotlinx.android.synthetic.main.activity_tutorial.scroll
 
 @Suppress("DEPRECATION")
 class TutorialActivity : AppCompatActivity() {
@@ -42,5 +44,13 @@ class TutorialActivity : AppCompatActivity() {
                 "7) The Account menu contains information about your account. If you are using the application for the first time, go to the Sign up menu, enter your email and password. An email will be sent to you to confirm your account. Open it and click on the link. After that, return to the application and re-enter your username and password in the log in menu. You will be redirected to your profile, where you can fill in information about yourself. The screen will display a list of your downloaded sounds and projects. To add a sound or a project to a profile, click on the add button under the corresponding list, and select the desired list item. Here you can also add a friend who also uses our application. To do this, just click the add button and enter your friend's email. You can go to his profile to view his friend's projects. When you click on a friend's project, it will be copied to your projects. \n\n" +
                 "8) In the Help activity you will find the user agreement, answers to frequently asked questions and information about the authors."
         }
+
+        val scale: Float = resources.displayMetrics.density
+        val displayMetrics = resources.displayMetrics
+        val pixelsWidth = (displayMetrics.widthPixels * 0.95F).toInt()
+        val pixelsHeight = (displayMetrics.heightPixels * 0.95F - 50 * scale + 0.5f).toInt()
+
+        scroll.layoutParams.height = pixelsHeight
+        scroll.layoutParams.width = pixelsWidth
     }
 }
