@@ -6,7 +6,10 @@ import android.os.StrictMode
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bigri239.easymusic.net.WebRequester
+import kotlinx.android.synthetic.main.activity_faq.*
 import kotlinx.android.synthetic.main.activity_terms.*
+import kotlinx.android.synthetic.main.activity_terms.scroll
+import kotlinx.android.synthetic.main.activity_terms.text_view
 import java.io.File
 import java.io.FileOutputStream
 
@@ -49,6 +52,14 @@ class TermsActivity : AppCompatActivity() {
                 "3. It is strictly forbidden to upload any materials to your account that violate the laws of the Russian Federation, in particular, it is forbidden to upload the names of sounds, files or user descriptions that violate the laws of the Russian Federation or discredit the honor, dignity or reputation of a third party. \n" +
                 "4. When uploading information to the account, in particular, project files, the User implicitly consents to the free distribution of this information among the users of the application."
         }
+
+        val scale: Float = resources.displayMetrics.density
+        val displayMetrics = resources.displayMetrics
+        val pixelsWidth = (displayMetrics.widthPixels * 0.95F).toInt()
+        val pixelsHeight = (displayMetrics.heightPixels * 0.95F - 100 * scale + 0.5f).toInt()
+
+        scroll.layoutParams.height = pixelsHeight
+        scroll.layoutParams.width = pixelsWidth
 
         btnAccept.setOnClickListener {
             btnAccept.isClickable = false

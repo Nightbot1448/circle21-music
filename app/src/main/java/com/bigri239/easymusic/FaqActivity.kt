@@ -40,7 +40,7 @@ class FaqActivity : AppCompatActivity() {
         val scale: Float = resources.displayMetrics.density
         val displayMetrics = resources.displayMetrics
         val pixelsWidth = (displayMetrics.widthPixels * 0.95F).toInt()
-        val pixelsHeight = ((displayMetrics.heightPixels - 100 * scale + 0.5f) * 0.95F).toInt()
+        val pixelsHeight = (displayMetrics.heightPixels * 0.95F - 100 * scale + 0.5f).toInt()
 
         scroll.layoutParams.height = pixelsHeight
         scroll.layoutParams.width = pixelsWidth
