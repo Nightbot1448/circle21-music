@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bigri239.easymusic.adapter.CustomAdapter
 import com.bigri239.easymusic.adapter.CustomConnector
-import kotlinx.android.synthetic.main.activity_addfiles.*
 import java.io.*
 import kotlin.math.abs
 
@@ -44,6 +43,7 @@ class AddingfilesActivity : AppCompatActivity() {
     private val customList = arrayListOf<String>()
     private lateinit var defaultAdapter: CustomAdapter
     private lateinit var customAdapter: CustomAdapter
+    private lateinit var binding: AddingfilesActivityBinding
 
     private val connectorSound = object : CustomConnector {
         override fun function(string: String) {
@@ -53,6 +53,10 @@ class AddingfilesActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = AddingfilesActivityBinding.inflate(layoutInflater)
+        val view = binding.root.also {
+            setContentView(it)
+        }
         setContentView(R.layout.activity_addfiles)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         val path = filesDir

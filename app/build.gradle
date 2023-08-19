@@ -1,9 +1,17 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 33
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlin {
+        jvmToolchain(17)
+    }
 
     buildFeatures {
         viewBinding true
@@ -26,6 +34,7 @@ android {
         }
     }
     namespace 'com.bigri239.easymusic'
+    buildToolsVersion '33.0.1'
 
 }
 
