@@ -37,7 +37,7 @@
             app:layout_constraintEnd_toEndOf="parent">
 
             <TextView
-                android:id="@+id/text_view"
+                android:id="@+id/text_view0"
                 android:layout_width="wrap_content"
                 android:layout_height="300dp"
                 android:scrollbars="vertical"

@@ -45,6 +45,7 @@ class FilesUploadingTask (private val filePath: String, private val url : String
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun doInBackground(vararg params: Void?): String {
         // Результат выполнения запроса, полученный от сервера
         lateinit var result: String

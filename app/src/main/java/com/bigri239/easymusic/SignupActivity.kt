@@ -7,18 +7,20 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import com.bigri239.easymusic.databinding.ActivitySignUpBinding
 import com.bigri239.easymusic.net.WebRequester
-import kotlinx.android.synthetic.main.activity_sign_up.*
-import kotlinx.android.synthetic.main.activity_sign_up.mail
-import kotlinx.android.synthetic.main.activity_sign_up.password
 
 @Suppress("DEPRECATION")
 class SignupActivity : AppCompatActivity() {
     private lateinit var webRequester : WebRequester
+    private lateinit var binding: ActivitySignUpBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign_up)
+        binding = ActivitySignUpBinding.inflate(layoutInflater)
+        val view = binding.root.also {
+            setContentView(it)
+        }
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
@@ -29,17 +31,17 @@ class SignupActivity : AppCompatActivity() {
         super.onStart()
 
         val intent = Intent(this, SigninActivity::class.java)
-        backsu.setOnClickListener {
-            backsu.isClickable = false
+        binding.backsu.setOnClickListener {
+            binding.backsu.isClickable = false
             startActivity(intent)
         }
     }
 
     fun signUp (view: View) {
-        if (mail.text.toString().trim().isNotEmpty() &&
-            password.text.toString().trim().isNotEmpty()) {
-            val email = mail.text.toString()
-            val password = password.text.toString()
+        if (binding.mail.text.toString().trim().isNotEmpty() &&
+            binding.password.text.toString().trim().isNotEmpty()) {
+            val email = binding.mail.text.toString()
+            val password = binding.password.text.toString()
             var maskOk = false
             if (email.count{ it == '@' } == 1) {
                 val domain = email.substring(email.indexOf('@'))

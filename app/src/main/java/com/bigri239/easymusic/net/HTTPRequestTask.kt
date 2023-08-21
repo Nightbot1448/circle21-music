@@ -9,6 +9,7 @@ import java.net.URL
 @Suppress("DEPRECATION")
 class HTTPRequestTask (private val url : String)  : AsyncTask<Void?, Void?, String?>(){
 
+    @Deprecated("Deprecated in Java")
     override fun doInBackground(vararg params: Void?): String {
         lateinit var result: String
         try {
