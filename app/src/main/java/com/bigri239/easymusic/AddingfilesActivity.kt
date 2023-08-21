@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bigri239.easymusic.adapter.CustomAdapter
 import com.bigri239.easymusic.adapter.CustomConnector
+import com.bigri239.easymusic.databinding.ActivityAddfilesBinding
 import java.io.*
 import kotlin.math.abs
 
@@ -43,7 +44,7 @@ class AddingfilesActivity : AppCompatActivity() {
     private val customList = arrayListOf<String>()
     private lateinit var defaultAdapter: CustomAdapter
     private lateinit var customAdapter: CustomAdapter
-    private lateinit var binding: AddingfilesActivityBinding
+    private lateinit var binding: ActivityAddfilesBinding
 
     private val connectorSound = object : CustomConnector {
         override fun function(string: String) {
@@ -53,11 +54,10 @@ class AddingfilesActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = AddingfilesActivityBinding.inflate(layoutInflater)
+        binding = ActivityAddfilesBinding.inflate(layoutInflater)
         val view = binding.root.also {
             setContentView(it)
         }
-        setContentView(R.layout.activity_addfiles)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         val path = filesDir
         val file = File(path, "sounds.conf")
@@ -68,13 +68,13 @@ class AddingfilesActivity : AppCompatActivity() {
         }
         else FileOutputStream(file).write("".toByteArray())
 
-        val recyclerView: RecyclerView = recyclerView111
+        val recyclerView: RecyclerView = binding.recyclerView111
         defaultAdapter = CustomAdapter(defaultList, connectorSound)
         recyclerView.layoutManager = LinearLayoutManager(applicationContext)
         recyclerView.adapter = defaultAdapter
         recyclerView.layoutParams = getLayoutParametersRelativeWidth()
 
-        val recyclerView1: RecyclerView = recyclerView222
+        val recyclerView1: RecyclerView = binding.recyclerView222
         customAdapter = CustomAdapter(customList, connectorSound)
         recyclerView1.layoutManager = LinearLayoutManager(applicationContext)
         recyclerView1.adapter = customAdapter
@@ -85,7 +85,7 @@ class AddingfilesActivity : AppCompatActivity() {
         super.onStart()
         val intent = Intent(this, MainActivity::class.java)
         findViewById<TextView>(R.id.back_A).setOnClickListener {
-            back_A.isClickable = false
+            binding.backA.isClickable = false
             startActivity(intent)
         }
     }
@@ -167,8 +167,8 @@ class AddingfilesActivity : AppCompatActivity() {
     private fun playSound (soundName : String) {
         len = getSoundLength(soundName)
         if (len != 0.toLong()) {
-            name.text = "Sound name: $soundName"
-            length.text = "Sound length: $len"
+            binding.name.text = "Sound name: $soundName"
+            binding.length.text = "Sound length: $len"
             track.release()
             track = SoundPool(1, AudioManager.STREAM_MUSIC, 0)
             id = if (defaultList.contains(soundName)) track.load(

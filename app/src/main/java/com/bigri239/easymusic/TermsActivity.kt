@@ -5,20 +5,21 @@ import android.os.Bundle
 import android.os.StrictMode
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.bigri239.easymusic.databinding.ActivityTermsBinding
 import com.bigri239.easymusic.net.WebRequester
-import kotlinx.android.synthetic.main.activity_faq.*
-import kotlinx.android.synthetic.main.activity_terms.*
-import kotlinx.android.synthetic.main.activity_terms.scroll
-import kotlinx.android.synthetic.main.activity_terms.text_view
 import java.io.File
 import java.io.FileOutputStream
 
 @Suppress("DEPRECATION")
 class TermsActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityTermsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_terms)
+        binding = ActivityTermsBinding.inflate(layoutInflater)
+        val view = binding.root.also {
+            setContentView(it)
+        }
     }
 
     override fun onStart() {
@@ -38,13 +39,13 @@ class TermsActivity : AppCompatActivity() {
         }
 
         val intent1 = Intent(this, HelpActivity::class.java)
-        if (file.exists()) backter.setOnClickListener {
-            backter.isClickable = false
+        if (file.exists()) binding.backter.setOnClickListener {
+            binding.backter.isClickable = false
             startActivity(intent1)
         }
 
         val termsText = webRequester.getTextResource("terms")
-        text_view.text = if (termsText != "0") termsText
+        binding.textView.text = if (termsText != "0") termsText
         else {
             "Using the EasyMusic application (hereinafter referred to as the Application) is possible only if you agree to the following terms of use (hereinafter referred to as the Terms).\n\n" +
                 "1. Since the Application is distributed free of charge, no claims to the quality of the services provided are considered. \n" +
@@ -58,11 +59,11 @@ class TermsActivity : AppCompatActivity() {
         val pixelsWidth = (displayMetrics.widthPixels * 0.95F).toInt()
         val pixelsHeight = (displayMetrics.heightPixels * 0.95F - 100 * scale + 0.5f).toInt()
 
-        scroll.layoutParams.height = pixelsHeight
-        scroll.layoutParams.width = pixelsWidth
+        binding.scroll.layoutParams.height = pixelsHeight
+        binding.scroll.layoutParams.width = pixelsWidth
 
-        btnAccept.setOnClickListener {
-            btnAccept.isClickable = false
+        binding.btnAccept.setOnClickListener {
+            binding.btnAccept.isClickable = false
             FileOutputStream(file).write("1".toByteArray())
             Toast.makeText(this, "Thanks!", Toast.LENGTH_SHORT).show()
             val intent2 = if (intent.getStringExtra("isStart").toString() == "true")
@@ -71,7 +72,7 @@ class TermsActivity : AppCompatActivity() {
             startActivity(intent2)
         }
 
-        btnDecline.setOnClickListener {
+        binding.btnDecline.setOnClickListener {
             Toast.makeText(this,
                 "Use of the application is allowed only if you agree to the Terms of Use!",
                 Toast.LENGTH_LONG).show()

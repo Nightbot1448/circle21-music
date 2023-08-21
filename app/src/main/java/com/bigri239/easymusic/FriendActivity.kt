@@ -9,8 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bigri239.easymusic.adapter.*
+import com.bigri239.easymusic.databinding.ActivityFriendBinding
 import com.bigri239.easymusic.net.WebRequester
-import kotlinx.android.synthetic.main.activity_friend.*
 
 @Suppress("DEPRECATION")
 class FriendActivity : AppCompatActivity() {
@@ -21,6 +21,7 @@ class FriendActivity : AppCompatActivity() {
     private lateinit var webRequester : WebRequester
     private lateinit var soundsAdapter: CustomAdapter
     private lateinit var projectsAdapter: CustomAdapter
+    private lateinit var binding: ActivityFriendBinding
     private val connectorProject = object : CustomConnector {
         override fun function(string: String) {
             loadProject(string)
@@ -33,6 +34,10 @@ class FriendActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityFriendBinding.inflate(layoutInflater)
+        val view = binding.root.also {
+            setContentView(it)
+        }
         setContentView(R.layout.activity_friend)
         email = intent.getStringExtra("owner").toString()
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
@@ -45,8 +50,8 @@ class FriendActivity : AppCompatActivity() {
         super.onStart()
         val info = email.let { webRequester.getFriendInfo(it) }
         if (!info.contentEquals(Array (5) {arrayOf("")})) {
-            username.text = "Username: " + info[0][0]
-            aboutme.text = "About me: " + info[1][0]
+            binding.username.text = "Username: " + info[0][0]
+            binding.aboutme.text = "About me: " + info[1][0]
             soundsList = info[3]
             projectsList = info[4]
             if (soundsList == arrayListOf("")) soundsList = arrayListOf()
@@ -58,20 +63,20 @@ class FriendActivity : AppCompatActivity() {
         }
 
         val intent = Intent(this, RecoveryActivity::class.java)
-        backrec.setOnClickListener {
-            backrec.isClickable = false
+        binding.backrec.setOnClickListener {
+            binding.backrec.isClickable = false
             startActivity(intent)
         }
 
         soundsAdapter = CustomAdapter(soundsList, connectorSound)
-        recyclerView2.layoutManager = LinearLayoutManager(applicationContext)
-        recyclerView2.adapter = soundsAdapter
-        recyclerView2.layoutParams = getLayoutParametersRelativeWidth()
+        binding.recyclerView2.layoutManager = LinearLayoutManager(applicationContext)
+        binding.recyclerView2.adapter = soundsAdapter
+        binding.recyclerView2.layoutParams = getLayoutParametersRelativeWidth()
 
         projectsAdapter = CustomAdapter(projectsList, connectorProject)
-        recyclerView3.layoutManager = LinearLayoutManager(applicationContext)
-        recyclerView3.adapter = projectsAdapter
-        recyclerView3.layoutParams = getLayoutParametersRelativeWidth()
+        binding.recyclerView3.layoutManager = LinearLayoutManager(applicationContext)
+        binding.recyclerView3.adapter = projectsAdapter
+        binding.recyclerView3.layoutParams = getLayoutParametersRelativeWidth()
     }
 
     private fun getLayoutParametersRelativeWidth (): LinearLayout.LayoutParams {

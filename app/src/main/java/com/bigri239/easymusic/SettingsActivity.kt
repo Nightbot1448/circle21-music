@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.PopupMenu
-import kotlinx.android.synthetic.main.settings_activity.*
+import com.bigri239.easymusic.databinding.SettingsActivityBinding
 import java.io.File
 import java.io.FileOutputStream
 
@@ -16,10 +16,14 @@ import java.io.FileOutputStream
 class SettingsActivity : AppCompatActivity() {
     private var autosave = 10
     private var updateType = 2
+    private lateinit var binding: SettingsActivityBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.settings_activity)
+        binding = SettingsActivityBinding.inflate(layoutInflater)
+        val view = binding.root.also {
+            setContentView(it)
+        }
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
 
         val file = File(filesDir, "settings.conf")
@@ -43,24 +47,24 @@ class SettingsActivity : AppCompatActivity() {
         autosave = contentArray[0].toInt()
         updateType = contentArray[1].toInt()
 
-        textMins.text = autosave.toString()
-        if (updateType / 4 == 1) checkBoxAlpha.isChecked = true
-        if ((updateType % 4) / 2 == 1) checkBoxBeta.isChecked = true
-        if (updateType % 2 == 1) checkBoxStable.isChecked = true
+        binding.textMins.text = autosave.toString()
+        if (updateType / 4 == 1) binding.checkBoxAlpha.isChecked = true
+        if ((updateType % 4) / 2 == 1) binding.checkBoxBeta.isChecked = true
+        if (updateType % 2 == 1) binding.checkBoxStable.isChecked = true
     }
 
     override fun onStart() {
         super.onStart()
         val intent = Intent(this, MainActivity::class.java)
-        backsettings.setOnClickListener {
-            backsettings.isClickable = false
+        binding.backsettings.setOnClickListener {
+            binding.backsettings.isClickable = false
             startActivity(intent)
         }
     }
 
     fun reset (view : View) {
-        val deleteSounds = checkBox.isChecked
-        val deleteProjects = checkBox2.isChecked
+        val deleteSounds = binding.checkBox.isChecked
+        val deleteProjects = binding.checkBox2.isChecked
         val path = filesDir
         if (deleteSounds) {
             val file = File(path, "sounds.conf")
@@ -101,9 +105,9 @@ class SettingsActivity : AppCompatActivity() {
 
     fun saveNotify (view: View) {
         updateType = 0
-        if (checkBoxAlpha.isChecked) updateType += 4
-        if (checkBoxBeta.isChecked) updateType += 2
-        if (checkBoxStable.isChecked) updateType += 1
+        if (binding.checkBoxAlpha.isChecked) updateType += 4
+        if (binding.checkBoxBeta.isChecked) updateType += 2
+        if (binding.checkBoxStable.isChecked) updateType += 1
         writeChanges(1, updateType.toString())
         Toast.makeText(this, "Notification mode changed successfully",
             Toast.LENGTH_LONG).show()
@@ -120,7 +124,7 @@ class SettingsActivity : AppCompatActivity() {
     private fun autosaveTimePopupMenuClickListener(menuItem: MenuItem) {
         val itemTitle = menuItem.title.toString()
         autosave = itemTitle.toInt()
-        textMins.text = itemTitle
+        binding.textMins.text = itemTitle
         writeChanges(0, itemTitle)
         Toast.makeText(this, "Autosave interval changed successfully",
             Toast.LENGTH_LONG).show()

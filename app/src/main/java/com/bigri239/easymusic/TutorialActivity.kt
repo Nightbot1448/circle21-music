@@ -4,16 +4,18 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.StrictMode
 import androidx.appcompat.app.AppCompatActivity
+import com.bigri239.easymusic.databinding.ActivityTutorialBinding
 import com.bigri239.easymusic.net.WebRequester
-import kotlinx.android.synthetic.main.activity_faq.*
-import kotlinx.android.synthetic.main.activity_tutorial.*
-import kotlinx.android.synthetic.main.activity_tutorial.scroll
 
 @Suppress("DEPRECATION")
 class TutorialActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityTutorialBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_tutorial)
+        binding = ActivityTutorialBinding.inflate(layoutInflater)
+        val view = binding.root.also {
+            setContentView(it)
+        }
     }
 
     override fun onStart() {
@@ -23,13 +25,13 @@ class TutorialActivity : AppCompatActivity() {
         val webRequester = WebRequester(this@TutorialActivity)
 
         val intent = Intent(this, MainActivity::class.java)
-        backtut.setOnClickListener {
-            backtut.isClickable = false
+        binding.backtut.setOnClickListener {
+            binding.backtut.isClickable = false
             startActivity(intent)
         }
 
         val tutorialText = webRequester.getTextResource("tutorial")
-        text_vie.text = if (tutorialText != "0") tutorialText
+        binding.textView1.text = if (tutorialText != "0") tutorialText
         else {
             "Greetings, aspiring musician! Thank you for choosing our application. Below you will find detailed instructions for working with the program.\n\n" +
                 "1) Loading Sounds \n" +
@@ -50,7 +52,7 @@ class TutorialActivity : AppCompatActivity() {
         val pixelsWidth = (displayMetrics.widthPixels * 0.95F).toInt()
         val pixelsHeight = (displayMetrics.heightPixels * 0.95F - 50 * scale + 0.5f).toInt()
 
-        scroll.layoutParams.height = pixelsHeight
-        scroll.layoutParams.width = pixelsWidth
+        binding.scroll.layoutParams.height = pixelsHeight
+        binding.scroll.layoutParams.width = pixelsWidth
     }
 }

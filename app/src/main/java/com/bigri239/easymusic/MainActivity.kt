@@ -23,10 +23,10 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
+import com.bigri239.easymusic.databinding.ActivityMainBinding
 import com.bigri239.easymusic.net.WebRequester
 import com.bigri239.easymusic.utils.UpdateDialog
 import com.bigri239.easymusic.visualizer.*
-import kotlinx.android.synthetic.main.activity_main.*
 import java.io.*
 import java.lang.System.currentTimeMillis
 import java.util.Collections.max
@@ -35,6 +35,7 @@ import kotlin.math.roundToInt
 
 @Suppress("DEPRECATION")
 open class MainActivity : AppCompatActivity(){
+    private lateinit var binding: ActivityMainBinding
 
     interface Connector {
         fun function (i: Int, j: Int)
@@ -92,7 +93,10 @@ open class MainActivity : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root.also {
+            setContentView(it)
+        }
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
@@ -107,7 +111,7 @@ open class MainActivity : AppCompatActivity(){
                         for (noOfRecyclerView in 0..8) {
                             if (noOfRecyclerView != recyclerView.tag as Int) {
                                 val tempRecyclerView =
-                                    constraintLayout.findViewWithTag(noOfRecyclerView)
+                                    binding.constraintLayout.findViewWithTag(noOfRecyclerView)
                                             as RecyclerView
                                 tempRecyclerView.scrollBy(dx, dy)
                             }
@@ -214,7 +218,7 @@ open class MainActivity : AppCompatActivity(){
         updateType = contentArrayList[1].toInt()
         projectName = contentArrayList[2]
 
-        txt.text = projectName
+        binding.txt.text = projectName
 
         openProject()
         autoSaver = object : CountDownTimer(360001, (autoSaveInterval * 60000)
@@ -232,32 +236,32 @@ open class MainActivity : AppCompatActivity(){
         super.onStart()
 
         val intent = Intent(this, HelpActivity::class.java)
-        help.setOnClickListener {
-            help.isClickable = false
+        binding.help.setOnClickListener {
+            binding.help.isClickable = false
             startActivity(intent)
         }
 
         val intent1 = Intent(this, AddingfilesActivity::class.java)
-        file.setOnClickListener {
-            file.isClickable = false
+        binding.file.setOnClickListener {
+            binding.file.isClickable = false
             startActivity(intent1)
         }
 
         val intent2 = Intent(this, SettingsActivity::class.java)
-        settings.setOnClickListener {
-            settings.isClickable = false
+        binding.settings.setOnClickListener {
+            binding.settings.isClickable = false
             startActivity(intent2)
         }
 
         val intent3 = Intent(this, TutorialActivity::class.java)
-        tutorial.setOnClickListener {
-            tutorial.isClickable = false
+        binding.tutorial.setOnClickListener {
+            binding.tutorial.isClickable = false
             startActivity(intent3)
         }
 
         val intent4 = Intent(this, SigninActivity::class.java)
-        account.setOnClickListener {
-            account.isClickable = false
+        binding.account.setOnClickListener {
+            binding.account.isClickable = false
             startActivity(intent4)
         }
 
@@ -289,15 +293,15 @@ open class MainActivity : AppCompatActivity(){
 
     private fun currentRecycler (i : Int) : RecyclerView {
         return when(i) {
-            0 -> recyclerViewhor1
-            1 -> recyclerViewhor2
-            2 -> recyclerViewhor3
-            3 -> recyclerViewhor4
-            4 -> recyclerViewhor5
-            5 -> recyclerViewhor6
-            6 -> recyclerViewhor7
-            7 -> recyclerViewhor8
-            else -> recyclerViewhor9
+            0 -> binding.recyclerViewhor1
+            1 -> binding.recyclerViewhor2
+            2 -> binding.recyclerViewhor3
+            3 -> binding.recyclerViewhor4
+            4 -> binding.recyclerViewhor5
+            5 -> binding.recyclerViewhor6
+            6 -> binding.recyclerViewhor7
+            7 -> binding.recyclerViewhor8
+            else -> binding.recyclerViewhor9
         }
     }
 
@@ -351,8 +355,8 @@ open class MainActivity : AppCompatActivity(){
                     prevMusicLength < getMusicLength())
                 if (prevMusicLength < getMusicLength()) setMusicLength()
             }
-            buttonDelete.setOnClickListener {}
-            buttonEdit.setOnClickListener {}
+            binding.buttonDelete.setOnClickListener {}
+            binding.buttonEdit.setOnClickListener {}
         }
         else Toast.makeText(this, "Oops! Sound is too big!", Toast.LENGTH_SHORT).show()
     }
@@ -365,8 +369,8 @@ open class MainActivity : AppCompatActivity(){
     }
 
     private fun isReady () : Boolean {
-        return edittextmain1.text.toString().trim().isNotEmpty() && edittextmain3.text.toString()
-            .trim().isNotEmpty() && edittextmain4.text.toString().trim().isNotEmpty()
+        return binding.edittextmain1.text.toString().trim().isNotEmpty() && binding.edittextmain3.text.toString()
+            .trim().isNotEmpty() && binding.edittextmain4.text.toString().trim().isNotEmpty()
     }
 
     private fun showProjectDialog() {
@@ -381,7 +385,7 @@ open class MainActivity : AppCompatActivity(){
                 saveProject()
                 projectName = newProject
                 projects.add(projectName)
-                txt.text = projectName
+                binding.txt.text = projectName
                 val fileSettings = File(filesDir, "settings.conf")
                 val contentSettings: String = fileSettings.readText()
                 val contentArray = contentSettings.split("\n").toTypedArray()
@@ -409,7 +413,7 @@ open class MainActivity : AppCompatActivity(){
         else {
             saveProject()
             projectName = itemTitle
-            txt.text = projectName
+            binding.txt.text = projectName
             clearSounds()
             openProject()
             state = "unready"
@@ -423,8 +427,8 @@ open class MainActivity : AppCompatActivity(){
     private fun selectSoundClicked (menuItem: MenuItem) {
         val itemTitle = menuItem.title.toString()
         currentSound = itemTitle
-        txt2.text = currentSound
-        txtLen.text = getSoundLength(currentSound).toString()
+        binding.txt2.text = currentSound
+        binding.txtLen.text = getSoundLength(currentSound).toString()
     }
 
     private fun isRawResource (name : String): Boolean {
@@ -471,7 +475,7 @@ open class MainActivity : AppCompatActivity(){
     }
 
     private fun setMusicLength(length : Long = getMusicLength(), changeRecycler : Boolean = true) {
-        time.text = if (state != "unready") {
+        binding.time.text = if (state != "unready") {
             if (changeRecycler) setMaxLength ()
             val millis = length % 1000
             val seconds = (length / 1000) % 60
@@ -582,20 +586,20 @@ open class MainActivity : AppCompatActivity(){
 
     fun editSelected (i : Int, j : Int) {
         infoAboutSelected(i, j)
-        if (maxSounds[i] != -1) buttonDelete.setOnClickListener { deleteSelected(i, j) }
-        else buttonDelete.setOnClickListener {}
-        if (maxSounds[i] != -1) buttonEdit.setOnClickListener { changeSelected(i, j) }
-        else buttonEdit.setOnClickListener {}
+        if (maxSounds[i] != -1) binding.buttonDelete.setOnClickListener { deleteSelected(i, j) }
+        else binding.buttonDelete.setOnClickListener {}
+        if (maxSounds[i] != -1) binding.buttonEdit.setOnClickListener { changeSelected(i, j) }
+        else binding.buttonEdit.setOnClickListener {}
     }
 
     private fun infoAboutSelected (i : Int, j : Int) {
         val sound = sounds[i][j]
         currentSound = sound.res
-        txt2.text = currentSound
-        txtLen.text = getSoundLength(currentSound).toString()
-        edittextmain1.setText(sound.delay.toString())
-        edittextmain3.setText((sound.volume * 100).toInt().toString())
-        edittextmain4.setText((100 / sound.ratio).toString())
+        binding.txt2.text = currentSound
+        binding.txtLen.text = getSoundLength(currentSound).toString()
+        binding.edittextmain1.setText(sound.delay.toString())
+        binding.edittextmain3.setText((sound.volume * 100).toInt().toString())
+        binding.edittextmain4.setText((100 / sound.ratio).toString())
     }
 
     private fun deleteSelected (i : Int, j: Int) {
@@ -696,19 +700,19 @@ open class MainActivity : AppCompatActivity(){
 
     private fun getSoundParameters(x : Int, y : Int): SoundInfo {
         val res : String = currentSound
-        var volume : Float = abs(edittextmain3.text.toString().toFloat() / 100)
+        var volume : Float = abs(binding.edittextmain3.text.toString().toFloat() / 100)
         if (volume > 1) volume = 1.0F
-        if (edittextmain4.text.toString().toFloat() < 12.5) edittextmain4.setText(12.5F.toString())
-        else if (edittextmain4.text.toString().toFloat() > 800)
-            edittextmain4.setText(800.toString())
-        val ratio : Float = abs(100 / (edittextmain4.text.toString().toFloat()))
+        if (binding.edittextmain4.text.toString().toFloat() < 12.5) binding.edittextmain4.setText(12.5F.toString())
+        else if (binding.edittextmain4.text.toString().toFloat() > 800)
+            binding.edittextmain4.setText(800.toString())
+        val ratio : Float = abs(100 / (binding.edittextmain4.text.toString().toFloat()))
         val len : Long = (getSoundLength(res) / ratio).toLong()
         if (y > 0) {
             val soundPrev = sounds[x][y - 1]
-            if (edittextmain1.text.toString().toLong() < soundPrev.len)
-                edittextmain1.setText(soundPrev.len.toString())
+            if (binding.edittextmain1.text.toString().toLong() < soundPrev.len)
+                binding.edittextmain1.setText(soundPrev.len.toString())
         }
-        val delay : Long = edittextmain1.text.toString().toLong()
+        val delay : Long = binding.edittextmain1.text.toString().toLong()
         return SoundInfo(res, 0, delay, volume, 0, ratio, len)
     }
 

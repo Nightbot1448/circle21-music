@@ -16,8 +16,8 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bigri239.easymusic.adapter.*
+import com.bigri239.easymusic.databinding.ActivityRecoveryBinding
 import com.bigri239.easymusic.net.WebRequester
-import kotlinx.android.synthetic.main.activity_recovery.*
 import java.io.*
 
 @Suppress("DEPRECATION")
@@ -33,6 +33,7 @@ class RecoveryActivity : AppCompatActivity() {
     private val projects = mutableListOf<String>()
     private val customArray = mutableListOf<String>()
     private lateinit var email : String
+    private lateinit var binding: ActivityRecoveryBinding
 
     private val connectorProject = object : CustomConnector {
         override fun function(string: String) {
@@ -52,7 +53,10 @@ class RecoveryActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_recovery)
+        binding = ActivityRecoveryBinding.inflate(layoutInflater)
+        val view = binding.root.also {
+            setContentView(it)
+        }
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
@@ -65,8 +69,8 @@ class RecoveryActivity : AppCompatActivity() {
         val info = webRequester.getInfo()
         if (!info.contentEquals(Array (5) {arrayOf("")})) {
             email = info[0][0]
-            username.text = "Username: " + info[0][0]
-            editInfo.setText(info[1][0])
+            binding.username.text = "Username: " + info[0][0]
+            binding.editInfo.setText(info[1][0])
             friendsList = info[2] as MutableList
             soundsList = info[3] as MutableList
             projectsList = info[4] as MutableList
@@ -83,7 +87,7 @@ class RecoveryActivity : AppCompatActivity() {
         val displayMetrics = resources.displayMetrics
         val pixelsWidth = (displayMetrics.widthPixels * 0.95F - 190 * scale + 0.5f).toInt()
 
-        editInfo.layoutParams = LinearLayout.LayoutParams(pixelsWidth,
+        binding.editInfo.layoutParams = LinearLayout.LayoutParams(pixelsWidth,
             LinearLayout.LayoutParams.WRAP_CONTENT)
 
         val path = filesDir
@@ -120,25 +124,25 @@ class RecoveryActivity : AppCompatActivity() {
         }
 
         val intent = Intent(this, MainActivity::class.java)
-        backrec.setOnClickListener {
-            backrec.isClickable = false
+        binding.backrec.setOnClickListener {
+            binding.backrec.isClickable = false
             startActivity(intent)
         }
 
         friendsAdapter = CustomAdapter(friendsList, connectorFriend)
-        recyclerView.layoutManager = LinearLayoutManager(applicationContext)
-        recyclerView.adapter = friendsAdapter
-        recyclerView.layoutParams = getLayoutParametersRelativeWidth()
+        binding.recyclerView.layoutManager = LinearLayoutManager(applicationContext)
+        binding.recyclerView.adapter = friendsAdapter
+        binding.recyclerView.layoutParams = getLayoutParametersRelativeWidth()
 
         soundsAdapter = CustomAdapter(soundsList, connectorSound)
-        recyclerView2.layoutManager = LinearLayoutManager(applicationContext)
-        recyclerView2.adapter = soundsAdapter
-        recyclerView2.layoutParams = getLayoutParametersRelativeWidth()
+        binding.recyclerView2.layoutManager = LinearLayoutManager(applicationContext)
+        binding.recyclerView2.adapter = soundsAdapter
+        binding.recyclerView2.layoutParams = getLayoutParametersRelativeWidth()
 
         projectsAdapter = CustomAdapter(projectsList, connectorProject)
-        recyclerView3.layoutManager = LinearLayoutManager(applicationContext)
-        recyclerView3.adapter = projectsAdapter
-        recyclerView3.layoutParams = getLayoutParametersRelativeWidth()
+        binding.recyclerView3.layoutManager = LinearLayoutManager(applicationContext)
+        binding.recyclerView3.adapter = projectsAdapter
+        binding.recyclerView3.layoutParams = getLayoutParametersRelativeWidth()
     }
 
     private fun showFriendDialog() {
@@ -154,7 +158,7 @@ class RecoveryActivity : AppCompatActivity() {
                 && !newFriend.contains(';')) {
                 if (webRequester.changeInfo("friends", newFriend)) {
                     friendsList.add(newFriend)
-                    (recyclerView.adapter as CustomAdapter).notifyItemInserted(
+                    (binding.recyclerView.adapter as CustomAdapter).notifyItemInserted(
                         friendsList.size - 1)
                     dialog.dismiss()
                     Toast.makeText(this, "Friend added successfully!",
@@ -184,7 +188,7 @@ class RecoveryActivity : AppCompatActivity() {
                 newSound = newSound.replace("&", "AMPERSAND")
                 if (webRequester.changeInfo("sounds", "$soundName $newSound")) {
                     soundsList.add("$soundName $newSound")
-                    (recyclerView2.adapter as CustomAdapter).notifyItemInserted(
+                    (binding.recyclerView2.adapter as CustomAdapter).notifyItemInserted(
                         soundsList.size - 1)
                     dialog.dismiss()
                     Toast.makeText(this, "Sound added successfully!",
@@ -205,7 +209,7 @@ class RecoveryActivity : AppCompatActivity() {
             if (webRequester.uploadProject(itemTitle)) {
                 if (!projectsList.contains(itemTitle)) {
                     projectsList.add(itemTitle)
-                    (recyclerView3.adapter as CustomAdapter).notifyItemInserted(
+                    (binding.recyclerView3.adapter as CustomAdapter).notifyItemInserted(
                         projectsList.size - 1)
                 }
                 Toast.makeText(this, "Project $itemTitle uploaded successfully!",
@@ -277,7 +281,7 @@ class RecoveryActivity : AppCompatActivity() {
     }
 
     fun changeAbout (view: View) {
-        val newInfo = editInfo.text.toString()
+        val newInfo = binding.editInfo.text.toString()
         if (webRequester.changeInfo("about", newInfo)) Toast.makeText(this,
             "Edited successfully", Toast.LENGTH_SHORT).show()
         else Toast.makeText(this, "Oops! Something went wrong!",

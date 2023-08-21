@@ -4,14 +4,18 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.StrictMode
 import androidx.appcompat.app.AppCompatActivity
+import com.bigri239.easymusic.databinding.ActivityFaqBinding
 import com.bigri239.easymusic.net.WebRequester
-import kotlinx.android.synthetic.main.activity_faq.*
 
 @Suppress("DEPRECATION")
 class FaqActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityFaqBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_faq)
+        binding = ActivityFaqBinding.inflate(layoutInflater)
+        val view = binding.root.also {
+            setContentView(it)
+        }
     }
 
     override fun onStart() {
@@ -21,13 +25,13 @@ class FaqActivity : AppCompatActivity() {
         val webRequester = WebRequester(this@FaqActivity)
 
         val intent = Intent(this, HelpActivity::class.java)
-        backfaq.setOnClickListener {
-            backfaq.isClickable = false
+        binding.backfaq.setOnClickListener {
+            binding.backfaq.isClickable = false
             startActivity(intent)
         }
 
         val faqText = webRequester.getTextResource("faq")
-        text_view.text = if (faqText != "0") faqText
+        binding.textView0.text = if (faqText != "0") faqText
         else {
             "1. Q: Is it possible to save the sound to the device in mp3 or other audio format? \n" +
                 "A: Unfortunately, no, the application was created for educational purposes and aims to explain in simple terms the principle of creating music from sounds and understand if you want to do it. However, you can share music with your friends inside the app by uploading projects to your account. Or, if desired, record music using the built-in screen recording application on your phone, and then extract the audio track from the video in the online service. \n\n" +
@@ -42,7 +46,7 @@ class FaqActivity : AppCompatActivity() {
         val pixelsWidth = (displayMetrics.widthPixels * 0.95F).toInt()
         val pixelsHeight = (displayMetrics.heightPixels * 0.95F - 100 * scale + 0.5f).toInt()
 
-        scroll.layoutParams.height = pixelsHeight
-        scroll.layoutParams.width = pixelsWidth
+        binding.scroll.layoutParams.height = pixelsHeight
+        binding.scroll.layoutParams.width = pixelsWidth
     }
 }

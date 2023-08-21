@@ -8,17 +8,21 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import com.bigri239.easymusic.databinding.ActivitySignInBinding
 import com.bigri239.easymusic.net.WebRequester
-import kotlinx.android.synthetic.main.activity_sign_in.*
 
 
 @Suppress("DEPRECATION")
 class SigninActivity : AppCompatActivity() {
     private lateinit var webRequester : WebRequester
+    private lateinit var binding: ActivitySignInBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign_in)
+        binding = ActivitySignInBinding.inflate(layoutInflater)
+        val view = binding.root.also {
+            setContentView(it)
+        }
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         val policy = ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
@@ -29,14 +33,14 @@ class SigninActivity : AppCompatActivity() {
         super.onStart()
 
         val intent = Intent(this, MainActivity::class.java)
-        backsi.setOnClickListener {
-            backsi.isClickable = false
+        binding.backsi.setOnClickListener {
+            binding.backsi.isClickable = false
             startActivity(intent)
         }
 
         val intents2 = Intent(this, SignupActivity::class.java)
-        signup.setOnClickListener {
-            signup.isClickable = false
+        binding.signup.setOnClickListener {
+            binding.signup.isClickable = false
             startActivity(intents2)
         }
 
@@ -48,9 +52,9 @@ class SigninActivity : AppCompatActivity() {
     }
 
     fun logIn (view : View) {
-        if (mail.text.toString().trim().isNotEmpty() &&
-            password.text.toString().trim().isNotEmpty()) {
-            if (webRequester.logIn(mail.text.toString(), password.text.toString())) {
+        if (binding.mail.text.toString().trim().isNotEmpty() &&
+            binding.password.text.toString().trim().isNotEmpty()) {
+            if (webRequester.logIn(binding.mail.text.toString(), binding.password.text.toString())) {
                 val intents3 = Intent(this, RecoveryActivity::class.java)
                 startActivity(intents3)
             }
